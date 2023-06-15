@@ -18,3 +18,9 @@ export const HOLD_BAR_EMPTY_COLOR = 0xFF8370
 export const FULLCHARGE_SCALE = 1.12
 export const FULLCHARGE_ANIMATION_MS = 300
 
+export const METEOR_FREQUENCY_MS = 2500
+export const METEOR_SPEED = 300
+export const METEOR_SPIN_SPEED = 100
+export const PLAYER_HIT_DELAY_MS = 3000
+export const HIT_METEOR_SCORE = -200
+export const DESTROY_METEOR_SCORE = 400
