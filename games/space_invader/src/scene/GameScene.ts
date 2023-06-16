@@ -139,7 +139,7 @@ export default class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(MARGIN, MARGIN, `score: ${this.score}`, {fontSize: '42px'})
     }
 
-    update(time: number, delta: number) {
+    update(_: number, delta: number) {
         // scroll the background
         this.background.tilePositionY -= 1
 
@@ -166,7 +166,7 @@ export default class GameScene extends Phaser.Scene {
             this.bulletCount -= 1;
             if (!Array.isArray(this.meteors) || this.meteors.length === 0) continue;
             this.meteors.forEach(meteor => {
-                this.physics.add.overlap(laser, meteor, (player, _meteor) => {
+                this.physics.add.overlap(laser, meteor, (_, _meteor) => {
                     _meteor.destroy();
                     this.score += DESTROY_METEOR_SCORE
                     this.scoreText.text = `score: ${this.score}`
@@ -233,7 +233,7 @@ export default class GameScene extends Phaser.Scene {
         meteor.setVelocityX(velocityX)
         meteor.setAngularVelocity(METEOR_SPIN_SPEED);
 
-        this.physics.add.overlap(this.player, meteor, (player, _meteor) => {
+        this.physics.add.overlap(this.player, meteor, (_, _meteor) => {
             if (this.isHit) return;
             this.isHit = true
             this.playerHitTweens.restart()

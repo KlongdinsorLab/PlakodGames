@@ -9,7 +9,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	width: SCREEN_WIDTH,
 	height: SCREEN_HEIGHT,
 	scale: {
-		mode: Phaser.Scale.WIDTH_CONTROLS_HEIGHT ,
+		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH
 	},
 	physics: {
