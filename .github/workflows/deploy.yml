@@ -38,6 +38,9 @@ jobs:
         run: npm install
       - name: build
         run: npm run build
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist/
     # <Not provided for brevity>
     # At a minimum this job should upload artifacts using actions/upload-pages-artifact
 
