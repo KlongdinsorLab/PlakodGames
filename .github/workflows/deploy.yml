@@ -30,6 +30,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: install
+        working-directory: ./games/space_invader
+        run: npm install
       - name: build
         working-directory: ./games/space_invader
         run: npm run build

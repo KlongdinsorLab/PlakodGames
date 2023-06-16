@@ -37,6 +37,15 @@ Go to `localhost:8000`
 ```bash
 npm run build
 ```
+Test build file
+```bash
+cd ./dist
+python3 -m http.server
+```
+
+### Deploy
+Deploy to Github pages with Github Action
+
 
 ### Template
 Phaser 3 + TypeScript + Vite.js Template
