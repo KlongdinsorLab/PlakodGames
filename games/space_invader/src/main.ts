@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 
-import GameScene from './Scene/GameScene'
+import GameScene from './scene/GameScene'
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from "./config";
 
 const config: Phaser.Types.Core.GameConfig = {
