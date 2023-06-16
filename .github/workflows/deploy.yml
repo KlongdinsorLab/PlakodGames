@@ -21,6 +21,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+defaults:
+  run:
+    working-directory: games/space_invader
+
 jobs:
   # Build job
   build:
@@ -31,10 +35,8 @@ jobs:
         with:
           node-version: 18
       - name: install
-        working-directory: ./games/space_invader
         run: npm install
       - name: build
-        working-directory: ./games/space_invader
         run: npm run build
     # <Not provided for brevity>
     # At a minimum this job should upload artifacts using actions/upload-pages-artifact
@@ -57,9 +59,6 @@ jobs:
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - name: cd to dist folder
-        id: cd
-        run: cd ./games/space_invader/dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action
