@@ -278,10 +278,11 @@ export default class GameScene extends Phaser.Scene {
         if (this.input.gamepad.total === 0) {
             const text = this.add.text(0, SCREEN_HEIGHT / 2, 'Press any button on a connected Gamepad', {fontSize: '24px'}).setOrigin(0);
             text.x = SCREEN_WIDTH / 2 - text.width / 2
-            this.scene.pause()
-            this.input.gamepad.once('connected', function (pad) {
+            const scene = this.scene
+            scene.pause()
+            this.input.gamepad.once('connected', function () {
                 text.destroy();
-                this.scene.resume()
+                scene.resume()
             }, this);
         } else {
 //            for (let i = 0; i < this.input.gamepad.total; i++) {
