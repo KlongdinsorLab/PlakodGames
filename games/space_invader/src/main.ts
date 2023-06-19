@@ -8,6 +8,10 @@ const config: Phaser.Types.Core.GameConfig = {
 	parent: 'app',
 	width: SCREEN_WIDTH,
 	height: SCREEN_HEIGHT,
+	input: {
+		keyboard: true,
+		gamepad: true
+	},
 	scale: {
 		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH

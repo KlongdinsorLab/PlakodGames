@@ -46,6 +46,7 @@ export default class GameScene extends Phaser.Scene {
     private score = 0;
     private scoreText!: Phaser.GameObjects.Text;
     private meteors: Phaser.Physics.Arcade.Body[] | Phaser.GameObjects.GameObject[] | any[] = [];
+    private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
 
     constructor() {
         super('game')
@@ -54,22 +55,25 @@ export default class GameScene extends Phaser.Scene {
     preload() {
         this.load.image('background', 'assets/background/purple.png')
         this.load.image('player', 'assets/character/player/playerShip1_blue.png')
-        this.load.image('jetEngine', 'assets/effect/fire03.png')
+        this.load.image('fire', 'assets/effect/fire03.png')
         this.load.image('laser', 'assets/effect/laserBlue02.png')
         this.load.image('charge', 'assets/effect/chargeBlue.png')
         this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
         this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
         this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
         this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
+        this.load.image('explosion', 'assets/effect/explosionYellow.png')
     }
 
     create() {
+
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
 
-        const particles = this.add.particles('jetEngine')
+        this.checkGamepad()
 
-        const emitter = particles.createEmitter({
+        const jetEngine = this.add.particles('fire')
+        const jetEngineEmitter = jetEngine.createEmitter({
             gravityY: 200,
             speed: 100,
             scale: {start: 1, end: 0},
@@ -82,6 +86,15 @@ export default class GameScene extends Phaser.Scene {
             scale: 0.1,
             blendMode: Phaser.BlendModes.ADD,
         })
+
+        const explosion = this.add.particles('explosion')
+        this.explosionEmitter = explosion.createEmitter({
+            speed: 80,
+            scale: 0.6,
+            blendMode: Phaser.BlendModes.ADD,
+            gravityY: -20,
+        })
+        this.explosionEmitter.active = false
 
         this.player = this.physics.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT - PLAYER_START_MARGIN, 'player')
         this.playerHitTweens = this.tweens.add({
@@ -114,9 +127,8 @@ export default class GameScene extends Phaser.Scene {
 
         this.player.setCollideWorldBounds(true)
 
-        emitter.startFollow(this.player, 0, MARGIN)
+        jetEngineEmitter.startFollow(this.player, 0, MARGIN)
         this.chargeEmitter.startFollow(this.player)
-
         this.chargeEmitter.active = false
 
         this.add.rectangle(0, SCREEN_HEIGHT - (HOLD_BAR_HEIGHT / 2) - (2 * MARGIN), width, HOLD_BAR_HEIGHT + (MARGIN * 2), 0x000000)
@@ -140,6 +152,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(_: number, delta: number) {
+
         // scroll the background
         this.background.tilePositionY -= 1
 
@@ -149,7 +162,7 @@ export default class GameScene extends Phaser.Scene {
             this.meteorTimer -= METEOR_FREQUENCY_MS;
             meteor = this.createRandomMeteor()
             this.meteors.forEach(meteor => {
-                if(!meteor.active) {
+                if (!meteor.active) {
                     this.meteors.splice(this.meteors.indexOf(meteor), 1)
                     return
                 }
@@ -167,6 +180,12 @@ export default class GameScene extends Phaser.Scene {
             if (!Array.isArray(this.meteors) || this.meteors.length === 0) continue;
             this.meteors.forEach(meteor => {
                 this.physics.add.overlap(laser, meteor, (_, _meteor) => {
+                    this.explosionEmitter.startFollow(_meteor)
+                    this.explosionEmitter.active = true
+                    this.explosionEmitter.start()
+                    this.time.delayedCall(200, () => {
+                        this.explosionEmitter.stop()
+                    })
                     _meteor.destroy();
                     this.score += DESTROY_METEOR_SCORE
                     this.scoreText.text = `score: ${this.score}`
@@ -249,9 +268,26 @@ export default class GameScene extends Phaser.Scene {
 
         })
         this.time.delayedCall(5000, () => {
-           meteor.destroy()
+            meteor.destroy()
         })
         return meteor;
+    }
+
+    checkGamepad() {
+        console.log(this.input.gamepad)
+        if (this.input.gamepad.total === 0) {
+            const text = this.add.text(0, SCREEN_HEIGHT / 2, 'Press any button on a connected Gamepad', {fontSize: '24px'}).setOrigin(0);
+            text.x = SCREEN_WIDTH / 2 - text.width / 2
+            this.scene.pause()
+            this.input.gamepad.once('connected', function (pad) {
+                text.destroy();
+                this.scene.resume()
+            }, this);
+        } else {
+//            for (let i = 0; i < this.input.gamepad.total; i++) {
+//                this.sprites.push(this.add.sprite(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), 'elephant'));
+//            }
+        }
     }
 }
 
