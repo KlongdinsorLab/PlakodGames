@@ -9,7 +9,6 @@ const config: Phaser.Types.Core.GameConfig = {
 	width: SCREEN_WIDTH,
 	height: SCREEN_HEIGHT,
 	input: {
-		keyboard: true,
 		gamepad: true
 	},
 	scale: {
@@ -20,7 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {},
 	},
-	scene: [GameScene],
+	scene: [GameScene]
 }
 
 export default new Phaser.Game(config)

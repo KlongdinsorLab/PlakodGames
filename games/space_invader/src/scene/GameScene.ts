@@ -23,7 +23,8 @@ import {
     PLAYER_START_MARGIN,
     RELOAD_COUNT,
     SCREEN_HEIGHT,
-    SCREEN_WIDTH
+    SCREEN_WIDTH,
+    START_TEXT
 } from "../config";
 
 export default class GameScene extends Phaser.Scene {
@@ -33,7 +34,6 @@ export default class GameScene extends Phaser.Scene {
     private timer = 0;
     private meteorTimer = 0;
     private bulletCount = 0;
-    private bulletKey!: Phaser.Input.Keyboard.Key;
     private holdbar!: Phaser.GameObjects.GameObject | any;
     private isReload = false;
     private isReloading = false;
@@ -47,6 +47,8 @@ export default class GameScene extends Phaser.Scene {
     private scoreText!: Phaser.GameObjects.Text;
     private meteors: Phaser.Physics.Arcade.Body[] | Phaser.GameObjects.GameObject[] | any[] = [];
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
+    private mergedInput?: MergedInput;
+    private holdButtonDuration = 0;
 
     constructor() {
         super('game')
@@ -69,8 +71,6 @@ export default class GameScene extends Phaser.Scene {
 
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
-
-        this.checkGamepad()
 
         const jetEngine = this.add.particles('fire')
         const jetEngineEmitter = jetEngine.createEmitter({
@@ -107,24 +107,6 @@ export default class GameScene extends Phaser.Scene {
         })
         this.playerHitTweens.pause()
 
-        this.input.keyboard.on('keydown-RIGHT', () => {
-            this.player.setVelocityX(PLAYER_SPEED);
-        });
-
-        this.input.keyboard.on('keydown-LEFT', () => {
-            this.player.setVelocityX(-1 * PLAYER_SPEED);
-        });
-
-        this.input.keyboard.on('keyup-RIGHT', () => {
-            this.player.setVelocityX(0);
-        });
-
-        this.input.keyboard.on('keyup-LEFT', () => {
-            this.player.setVelocityX(0);
-        });
-
-        this.bulletKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
         this.player.setCollideWorldBounds(true)
 
         jetEngineEmitter.startFollow(this.player, 0, MARGIN)
@@ -152,6 +134,29 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(_: number, delta: number) {
+
+        if (this.input.gamepad.total === 0) {
+            const text = this.add.text(0, SCREEN_HEIGHT / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
+            text.x = SCREEN_WIDTH / 2 - text.width / 2
+            this.input.gamepad.once('connected', function () {
+                text.destroy();
+            }, this);
+            return;
+        }
+
+        const pad = this.input.gamepad.gamepads[0]
+
+        if (pad.X || pad.left) {
+            this.player.x = this.player.x - ((PLAYER_SPEED * delta) / 1000)
+        }
+
+        if (pad.B || pad.right) {
+            this.player.x = this.player.x + ((PLAYER_SPEED * delta) / 1000)
+        }
+
+        if (pad.A) {
+            this.holdButtonDuration += delta;
+        }
 
         // scroll the background
         this.background.tilePositionY -= 1
@@ -201,13 +206,12 @@ export default class GameScene extends Phaser.Scene {
             return;
         }
 
-        const duration = this.bulletKey.getDuration();
-        if (duration > HOLD_DURATION_MS) {
+        if (this.holdButtonDuration > HOLD_DURATION_MS && pad.A) {
             this.isReload = true
             this.isReloading = false
             this.chargeEmitter.active = true
             this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-        } else if (duration <= HOLD_DURATION_MS && duration !== 0) {
+        } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && pad.A) {
             this.isReloading = true
             this.holdbar.width += (this.holdbarWidth + (HOLD_BAR_BORDER * 2)) / (HOLD_DURATION_MS / delta)
             this.chargeEmitter.active = true
@@ -215,7 +219,7 @@ export default class GameScene extends Phaser.Scene {
             this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         }
 
-        if (this.isReload && this.bulletKey.isUp) {
+        if (this.isReload && !pad.A) {
             this.bulletCount = BULLET_COUNT
             this.isReload = false
             this.chargeEmitter.stop()
@@ -228,17 +232,19 @@ export default class GameScene extends Phaser.Scene {
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
             this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
+            this.holdButtonDuration = 0
         }
 
-        if (this.isReloading && this.bulletKey.isUp) {
+        if (this.isReloading && !pad.A) {
+            this.isReloading = false
             this.tweens.add({
                 targets: this.holdbar,
                 width: HOLD_BAR_BORDER / 2,
                 duration: LASER_FREQUENCY_MS * BULLET_COUNT * (this.holdbar.width / this.holdbarWidth),
                 ease: 'sine.inout'
             });
-            this.isReloading = false
             this.chargeEmitter.stop()
+            this.holdButtonDuration = 0
         }
 
     }
@@ -271,24 +277,6 @@ export default class GameScene extends Phaser.Scene {
             meteor.destroy()
         })
         return meteor;
-    }
-
-    checkGamepad() {
-        console.log(this.input.gamepad)
-        if (this.input.gamepad.total === 0) {
-            const text = this.add.text(0, SCREEN_HEIGHT / 2, 'Press any button on a connected Gamepad', {fontSize: '24px'}).setOrigin(0);
-            text.x = SCREEN_WIDTH / 2 - text.width / 2
-            const scene = this.scene
-            scene.pause()
-            this.input.gamepad.once('connected', function () {
-                text.destroy();
-                scene.resume()
-            }, this);
-        } else {
-//            for (let i = 0; i < this.input.gamepad.total; i++) {
-//                this.sprites.push(this.add.sprite(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), 'elephant'));
-//            }
-        }
     }
 }
 
