@@ -26,7 +26,7 @@ defaults:
     working-directory: games/space_invader
 
 env:
-  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+  VITE_URL_PATH: ${{ vars.VITE_URL_PATH }}
 
 jobs:
   # Build job
@@ -41,8 +41,6 @@ jobs:
         run: npm install
       - name: build
         run: npm run build
-        env:
-          VITE_URL_PATH: ${{ vars.VITE_URL_PATH }}
       - uses: actions/upload-pages-artifact@v1
         with:
           path: games/space_invader/dist
