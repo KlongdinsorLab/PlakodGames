@@ -26,6 +26,7 @@ import {
     SCREEN_WIDTH,
     START_TEXT
 } from "../config";
+import MergedInput from 'phaser3-merged-input'
 
 export default class GameScene extends Phaser.Scene {
 
@@ -48,6 +49,8 @@ export default class GameScene extends Phaser.Scene {
     private meteors: Phaser.Physics.Arcade.Body[] | Phaser.GameObjects.GameObject[] | any[] = [];
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
     private holdButtonDuration = 0;
+    private mergedInput?: MergedInput;
+    private player1: any;
 
     constructor() {
         super('game')
@@ -64,12 +67,18 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
         this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
         this.load.image('explosion', 'assets/effect/explosionYellow.png')
+        this.load.scenePlugin('mergedInput', MergedInput);
     }
 
     create() {
 
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
+
+        this.player1 = this.mergedInput.addPlayer(0);
+        this.mergedInput.defineKey(0, 'LEFT', 'LEFT')
+            .defineKey(0, 'RIGHT', 'RIGHT')
+            .defineKey(0, 'B0', 'SPACE')
 
         const jetEngine = this.add.particles('fire')
         const jetEngineEmitter = jetEngine.createEmitter({
@@ -134,26 +143,25 @@ export default class GameScene extends Phaser.Scene {
 
     update(_: number, delta: number) {
 
-        if (this.input.gamepad.total === 0) {
-            const text = this.add.text(0, SCREEN_HEIGHT / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
-            text.x = SCREEN_WIDTH / 2 - text.width / 2
-            this.input.gamepad.once('connected', function () {
-                text.destroy();
-            }, this);
-            return;
-        }
+//        if (this.input.gamepad.total === 0) {
+//            const text = this.add.text(0, SCREEN_HEIGHT / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
+//            text.x = SCREEN_WIDTH / 2 - text.width / 2
+//            this.input.gamepad.once('connected', function () {
+//                text.destroy();
+//            }, this);
+//            return;
+//        }
+//        const pad = this.input.gamepad.gamepads[0]
 
-        const pad = this.input.gamepad.gamepads[0]
-
-        if (pad.X || pad.left) {
+        if (this.player1.direction.LEFT) {
             this.player.x = this.player.x - ((PLAYER_SPEED * delta) / 1000)
         }
 
-        if (pad.B || pad.right) {
+        if (this.player1.direction.RIGHT) {
             this.player.x = this.player.x + ((PLAYER_SPEED * delta) / 1000)
         }
 
-        if (pad.A) {
+        if (this.player1.buttons.B0 > 0) {
             this.holdButtonDuration += delta;
         }
 
@@ -205,12 +213,12 @@ export default class GameScene extends Phaser.Scene {
             return;
         }
 
-        if (this.holdButtonDuration > HOLD_DURATION_MS && pad.A) {
+        if (this.holdButtonDuration > HOLD_DURATION_MS && this.player1.buttons.B0 > 0) {
             this.isReload = true
             this.isReloading = false
             this.chargeEmitter.active = true
             this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-        } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && pad.A) {
+        } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && this.player1.buttons.B0 > 0) {
             this.isReloading = true
             this.holdbar.width += (this.holdbarWidth + (HOLD_BAR_BORDER * 2)) / (HOLD_DURATION_MS / delta)
             this.chargeEmitter.active = true
@@ -218,7 +226,7 @@ export default class GameScene extends Phaser.Scene {
             this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         }
 
-        if (this.isReload && !pad.A) {
+        if (this.isReload && !this.player1.buttons.B0 > 0) {
             this.bulletCount = BULLET_COUNT
             this.isReload = false
             this.chargeEmitter.stop()
@@ -234,7 +242,7 @@ export default class GameScene extends Phaser.Scene {
             this.holdButtonDuration = 0
         }
 
-        if (this.isReloading && !pad.A) {
+        if (this.isReloading && !this.player1.buttons.B0 > 0) {
             this.isReloading = false
             this.tweens.add({
                 targets: this.holdbar,
