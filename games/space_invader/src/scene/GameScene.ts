@@ -23,8 +23,7 @@ import {
     PLAYER_START_MARGIN,
     RELOAD_COUNT,
     SCREEN_HEIGHT,
-    SCREEN_WIDTH,
-    START_TEXT
+    SCREEN_WIDTH
 } from "../config";
 import MergedInput from 'phaser3-merged-input'
 
@@ -75,8 +74,8 @@ export default class GameScene extends Phaser.Scene {
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
 
-        this.player1 = this.mergedInput.addPlayer(0);
-        this.mergedInput.defineKey(0, 'LEFT', 'LEFT')
+        this.player1 = this.mergedInput?.addPlayer(0);
+        this.mergedInput?.defineKey(0, 'LEFT', 'LEFT')
             .defineKey(0, 'RIGHT', 'RIGHT')
             .defineKey(0, 'B0', 'SPACE')
 
@@ -226,7 +225,7 @@ export default class GameScene extends Phaser.Scene {
             this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         }
 
-        if (this.isReload && !this.player1.buttons.B0 > 0) {
+        if (this.isReload && !(this.player1.buttons.B0 > 0)) {
             this.bulletCount = BULLET_COUNT
             this.isReload = false
             this.chargeEmitter.stop()
@@ -242,7 +241,7 @@ export default class GameScene extends Phaser.Scene {
             this.holdButtonDuration = 0
         }
 
-        if (this.isReloading && !this.player1.buttons.B0 > 0) {
+        if (this.isReloading && !(this.player1.buttons.B0 > 0)) {
             this.isReloading = false
             this.tweens.add({
                 targets: this.holdbar,
