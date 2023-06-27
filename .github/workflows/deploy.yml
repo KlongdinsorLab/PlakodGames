@@ -23,10 +23,10 @@ concurrency:
 
 defaults:
   run:
-    working-directory: games/space_invader
+    working-directory: space_invader
 
 env:
-  VITE_URL_PATH: Plakod
+  VITE_URL_PATH: PlakodGames
 
 jobs:
   # Build job
