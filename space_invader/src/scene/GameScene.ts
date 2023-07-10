@@ -4,6 +4,7 @@ import {
     DESTROY_METEOR_SCORE,
     FULLCHARGE_ANIMATION_MS,
     FULLCHARGE_SCALE,
+    GAME_TIME_LIMIT_MS,
     HIT_METEOR_SCORE,
     HOLD_BAR_BORDER,
     HOLD_BAR_CHARGED_COLOR,
@@ -50,6 +51,7 @@ export default class GameScene extends Phaser.Scene {
     private holdButtonDuration = 0;
     private mergedInput?: MergedInput;
     private player1: any;
+    private timerText!: Phaser.GameObjects.Text;
 
     constructor() {
         super('game')
@@ -70,6 +72,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop: string) => searchParams.get(prop),
+        });
+        // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+//        console.log(params)
+//      console.log(window.location.href)
 
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
@@ -138,9 +146,10 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.scoreText = this.add.text(MARGIN, MARGIN, `score: ${this.score}`, {fontSize: '42px'})
+        this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS/ 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
     }
 
-    update(_: number, delta: number) {
+    update(time: number, delta: number) {
 
 //        if (this.input.gamepad.total === 0) {
 //            const text = this.add.text(0, SCREEN_HEIGHT / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
@@ -151,6 +160,12 @@ export default class GameScene extends Phaser.Scene {
 //            return;
 //        }
 //        const pad = this.input.gamepad.gamepads[0]
+
+        const timeLeft = Math.floor((GAME_TIME_LIMIT_MS - time) / 1000)
+        this.timerText.text = `time: ${timeLeft}`
+        if(timeLeft <= 0) {
+            this.scene.pause()
+        }
 
         if (this.player1.direction.LEFT) {
             this.player.x = this.player.x - ((PLAYER_SPEED * delta) / 1000)

@@ -25,3 +25,5 @@ export const PLAYER_HIT_DELAY_MS = 3000
 export const HIT_METEOR_SCORE = -200
 export const DESTROY_METEOR_SCORE = 400
 export const START_TEXT = "กดปุ่มบนปลากดเพื่อเริ่มเกมส์"
+
+export const GAME_TIME_LIMIT_MS = 160000
