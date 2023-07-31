@@ -25,7 +25,7 @@ import Player from "../component/player/Player"
 import Holdbar from "../component/ui/Holdbar";
 import MergedInput from 'phaser3-merged-input'
 import { SingleLaserFactory } from "../component/weapon/SingleLaserFactory"
-import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
+//import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 
 export default class GameScene extends Phaser.Scene {
 
@@ -187,7 +187,7 @@ export default class GameScene extends Phaser.Scene {
         while (this.timer > LASER_FREQUENCY_MS) {
             this.timer -= LASER_FREQUENCY_MS;
             if (this.bulletCount <= 0) return;
-            const laser = new TripleLaserFactory().createLaser(this, this.player)
+            const laser = new SingleLaserFactory().createLaser(this, this.player)
             const laserBodies = laser.shoot()
             this.bulletCount -= 1;
             if (!Array.isArray(this.meteors) || this.meteors.length === 0) continue;
@@ -242,7 +242,7 @@ export default class GameScene extends Phaser.Scene {
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-            this.holdButtonDuration = 0
+//            this.holdButtonDuration = 0
         }
 
         if (this.isReloading && !(this.controller1.buttons.B0 > 0)) {
@@ -255,7 +255,7 @@ export default class GameScene extends Phaser.Scene {
             });
             this.chargeEmitter.stop()
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-            this.holdButtonDuration = 0
+//            this.holdButtonDuration = 0
         }
 
     }
