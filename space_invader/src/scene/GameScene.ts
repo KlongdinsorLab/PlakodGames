@@ -257,14 +257,14 @@ export default class GameScene extends Phaser.Scene {
 
         if (this.isReloading && !(this.player1.buttons.B0 > 0)) {
             this.isReloading = false
-            this.tweens.add({
-                targets: this.holdbar,
-                width: HOLD_BAR_BORDER / 2,
-                duration: LASER_FREQUENCY_MS * BULLET_COUNT * (this.holdbar.width / this.holdbarWidth),
-                ease: 'sine.inout'
-            });
+//            this.tweens.add({
+//                targets: this.holdbar,
+//                width: HOLD_BAR_BORDER / 2,
+//                duration: LASER_FREQUENCY_MS * BULLET_COUNT * (this.holdbar.width / this.holdbarWidth),
+//                ease: 'sine.inout'
+//            });
             this.chargeEmitter.stop()
-            this.holdButtonDuration = 0
+//            this.holdButtonDuration = 0
         }
 
     }
