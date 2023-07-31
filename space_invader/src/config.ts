@@ -4,6 +4,7 @@ export const MARGIN = 48
 export const PLAYER_START_MARGIN = 240
 export const PLAYER_SPEED = 480
 export const LASER_SPEED = 800
+export const TRIPLE_LASER_X_SPEED = 80
 export const LASER_FREQUENCY_MS = 500
 export const BULLET_COUNT = 10
 export const RELOAD_COUNT = 10

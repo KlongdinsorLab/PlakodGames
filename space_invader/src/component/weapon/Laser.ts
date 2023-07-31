@@ -1,3 +1,4 @@
 export abstract class Laser {
-    abstract shoot(): void
+    abstract shoot(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody[]
+    abstract destroy(): void
 }

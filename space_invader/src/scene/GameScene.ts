@@ -12,7 +12,6 @@ import {
     HOLD_BAR_IDLE_COLOR,
     HOLD_DURATION_MS,
     LASER_FREQUENCY_MS,
-    LASER_SPEED,
     MARGIN,
     METEOR_FREQUENCY_MS,
     METEOR_SPEED,
@@ -26,6 +25,7 @@ import Player from "../component/player/Player"
 import Holdbar from "../component/ui/Holdbar";
 import MergedInput from 'phaser3-merged-input'
 import { SingleLaserFactory } from "../component/weapon/SingleLaserFactory"
+import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 
 export default class GameScene extends Phaser.Scene {
 
@@ -187,24 +187,23 @@ export default class GameScene extends Phaser.Scene {
         while (this.timer > LASER_FREQUENCY_MS) {
             this.timer -= LASER_FREQUENCY_MS;
             if (this.bulletCount <= 0) return;
-            const {x: laserX, y: laserY} = this.player.getLaserLocation()
-            const a = new SingleLaserFactory().createLaser()
-            a.shoot()
-//            const laser = this.physics.add.image(laserX, laserY, 'laser')
-//            laser.setVelocityY(-1 * LASER_SPEED)
-//            this.bulletCount -= 1;
+            const laser = new TripleLaserFactory().createLaser(this, this.player)
+            const laserBodies = laser.shoot()
+            this.bulletCount -= 1;
             if (!Array.isArray(this.meteors) || this.meteors.length === 0) continue;
             this.meteors.forEach(meteor => {
-                this.physics.add.overlap(laser, meteor, (_, _meteor) => {
-                    this.explosionEmitter.startFollow(_meteor)
-                    this.explosionEmitter.active = true
-                    this.explosionEmitter.start()
-                    this.time.delayedCall(200, () => {
-                        this.explosionEmitter.stop()
+                laserBodies.forEach(laserBody => {
+                    this.physics.add.overlap(laserBody, meteor, (_, _meteor) => {
+                        this.explosionEmitter.startFollow(_meteor)
+                        this.explosionEmitter.active = true
+                        this.explosionEmitter.start()
+                        this.time.delayedCall(200, () => {
+                            this.explosionEmitter.stop()
+                        })
+                        _meteor.destroy();
+                        this.score += DESTROY_METEOR_SCORE
+                        this.scoreText.text = `score: ${this.score}`
                     })
-                    _meteor.destroy();
-                    this.score += DESTROY_METEOR_SCORE
-                    this.scoreText.text = `score: ${this.score}`
                 })
             })
             this.time.delayedCall(5000, () => {
