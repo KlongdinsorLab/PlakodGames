@@ -2,8 +2,6 @@ import Phaser from 'phaser'
 import {
     BULLET_COUNT,
     DESTROY_METEOR_SCORE,
-    FULLCHARGE_ANIMATION_MS,
-    FULLCHARGE_SCALE,
     GAME_TIME_LIMIT_MS,
     HIT_METEOR_SCORE,
     HOLD_BAR_BORDER,
@@ -14,33 +12,38 @@ import {
     HOLD_BAR_IDLE_COLOR,
     HOLD_DURATION_MS,
     LASER_FREQUENCY_MS,
-    LASER_SPEED,
     MARGIN,
     METEOR_FREQUENCY_MS,
     METEOR_SPEED,
     METEOR_SPIN_SPEED,
     PLAYER_HIT_DELAY_MS,
-    PLAYER_SPEED,
-    PLAYER_START_MARGIN,
     RELOAD_COUNT,
     SCREEN_HEIGHT,
     SCREEN_WIDTH
 } from "../config";
+import Player from "../component/player/Player"
+import Holdbar from "../component/ui/Holdbar";
 import MergedInput from 'phaser3-merged-input'
+import { SingleLaserFactory } from "../component/weapon/SingleLaserFactory"
+//import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 
 export default class GameScene extends Phaser.Scene {
 
     private background!: Phaser.GameObjects.TileSprite
-    private player!: Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any
+    private player: Player | any
+//    private player!: Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any
     private timer = 0;
     private meteorTimer = 0;
     private bulletCount = 0;
-    private holdbar!: Phaser.GameObjects.GameObject | any;
     private isReload = false;
     private isReloading = false;
+    private isHoldbarReducing = false;
     private holdbarWidth = 0;
+
+    private holdbar: Holdbar;
+    private holdbars!: Phaser.GameObjects.GameObject[] | any[];
+
     private chargeEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
-    private playerHitTweens!: any;
     private reloadCount = RELOAD_COUNT;
     private reloadCountText!: Phaser.GameObjects.Text;
     private isHit = false;
@@ -50,11 +53,12 @@ export default class GameScene extends Phaser.Scene {
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
     private holdButtonDuration = 0;
     private mergedInput?: MergedInput;
-    private player1: any;
+    private controller1: any;
     private timerText!: Phaser.GameObjects.Text;
 
     constructor() {
         super('game')
+        this.holdbar = new Holdbar(this, 1)
     }
 
     preload() {
@@ -81,10 +85,13 @@ export default class GameScene extends Phaser.Scene {
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
 
-        this.player1 = this.mergedInput?.addPlayer(0);
+        this.controller1 = this.mergedInput?.addPlayer(0);
+        // https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
         this.mergedInput?.defineKey(0, 'LEFT', 'LEFT')
             .defineKey(0, 'RIGHT', 'RIGHT')
             .defineKey(0, 'B0', 'SPACE')
+            .defineKey(0, 'B1', 'CTRL')
+            .defineKey(0, 'B2', 'ALT')
 
         const jetEngine = this.add.particles('fire')
         const jetEngineEmitter = jetEngine.createEmitter({
@@ -110,42 +117,24 @@ export default class GameScene extends Phaser.Scene {
         })
         this.explosionEmitter.active = false
 
-        this.player = this.physics.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT - PLAYER_START_MARGIN, 'player')
-        this.playerHitTweens = this.tweens.add({
-            targets: this.player,
-            scale: FULLCHARGE_SCALE,
-            duration: FULLCHARGE_ANIMATION_MS,
-            ease: 'sine.inout',
-            yoyo: true,
-            repeat: -1
-        })
-        this.playerHitTweens.pause()
+        this.player = new Player(this)
 
-        this.player.setCollideWorldBounds(true)
-
-        jetEngineEmitter.startFollow(this.player, 0, MARGIN)
-        this.chargeEmitter.startFollow(this.player)
+        jetEngineEmitter.startFollow(this.player.getPlayer(), 0, MARGIN)
+        this.chargeEmitter.startFollow(this.player.getPlayer())
         this.chargeEmitter.active = false
 
-        this.add.rectangle(0, SCREEN_HEIGHT - (HOLD_BAR_HEIGHT / 2) - (2 * MARGIN), width, HOLD_BAR_HEIGHT + (MARGIN * 2), 0x000000)
-            .setOrigin(0)
+        this.add.rectangle(0, SCREEN_HEIGHT, width, HOLD_BAR_HEIGHT + (MARGIN * 2), 0x000000)
+            .setOrigin(0, 1)
             .setAlpha(0.25);
 
-        this.reloadCountText = this.add.text(width - (MARGIN + MARGIN / 2), SCREEN_HEIGHT - (HOLD_BAR_HEIGHT / 2) - MARGIN - HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
+        this.holdbarWidth = this.holdbar.getWidth();
+        this.holdbars = this.holdbar.createbyDivision()
 
-        this.holdbar = this.add.rectangle(MARGIN, SCREEN_HEIGHT - (HOLD_BAR_HEIGHT / 2) - MARGIN - HOLD_BAR_BORDER, width - (3 * MARGIN), HOLD_BAR_HEIGHT, 0x9966ff)
-            .setOrigin(0);
-        this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-        this.holdbarWidth = this.holdbar.width
-        this.tweens.add({
-            targets: this.holdbar,
-            width: HOLD_BAR_BORDER / 2,
-            duration: 0,
-            ease: 'sine.inout'
-        });
+        this.reloadCountText = this.add.text(MARGIN + this.holdbarWidth + MARGIN / 2, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
+            .setOrigin(0, 1)
 
         this.scoreText = this.add.text(MARGIN, MARGIN, `score: ${this.score}`, {fontSize: '42px'})
-        this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS/ 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
+        this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
     }
 
     update(time: number, delta: number) {
@@ -162,19 +151,20 @@ export default class GameScene extends Phaser.Scene {
 
         const timeLeft = Math.floor((GAME_TIME_LIMIT_MS - time) / 1000)
         this.timerText.text = `time: ${timeLeft}`
-        if(timeLeft <= 0) {
+        if (timeLeft <= 0) {
             this.scene.pause()
         }
 
-        if (this.player1.direction.LEFT) {
-            this.player.x = this.player.x - ((PLAYER_SPEED * delta) / 1000)
+        if (this.controller1.direction.LEFT) {
+            this.player.moveLeft(delta)
         }
 
-        if (this.player1.direction.RIGHT) {
-            this.player.x = this.player.x + ((PLAYER_SPEED * delta) / 1000)
+        if (this.controller1.direction.RIGHT) {
+            this.player.moveRight(delta)
         }
 
-        if (this.player1.buttons.B0 > 0) {
+        if (this.controller1.buttons.B0 > 0) {
+            this.isHoldbarReducing = false
             this.holdButtonDuration += delta;
         }
 
@@ -199,21 +189,23 @@ export default class GameScene extends Phaser.Scene {
         while (this.timer > LASER_FREQUENCY_MS) {
             this.timer -= LASER_FREQUENCY_MS;
             if (this.bulletCount <= 0) return;
-            const laser = this.physics.add.image(this.player.x, this.player.y - 20, 'laser')
-            laser.setVelocityY(-1 * LASER_SPEED)
+            const laser = new SingleLaserFactory().createLaser(this, this.player)
+            const laserBodies = laser.shoot()
             this.bulletCount -= 1;
             if (!Array.isArray(this.meteors) || this.meteors.length === 0) continue;
             this.meteors.forEach(meteor => {
-                this.physics.add.overlap(laser, meteor, (_, _meteor) => {
-                    this.explosionEmitter.startFollow(_meteor)
-                    this.explosionEmitter.active = true
-                    this.explosionEmitter.start()
-                    this.time.delayedCall(200, () => {
-                        this.explosionEmitter.stop()
+                laserBodies.forEach(laserBody => {
+                    this.physics.add.overlap(laserBody, meteor, (_, _meteor) => {
+                        this.explosionEmitter.startFollow(_meteor)
+                        this.explosionEmitter.active = true
+                        this.explosionEmitter.start()
+                        this.time.delayedCall(200, () => {
+                            this.explosionEmitter.stop()
+                        })
+                        _meteor.destroy();
+                        this.score += DESTROY_METEOR_SCORE
+                        this.scoreText.text = `score: ${this.score}`
                     })
-                    _meteor.destroy();
-                    this.score += DESTROY_METEOR_SCORE
-                    this.scoreText.text = `score: ${this.score}`
                 })
             })
             this.time.delayedCall(5000, () => {
@@ -222,49 +214,50 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.reloadCount <= 0) {
-            this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
+            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
             return;
         }
 
-        if (this.holdButtonDuration > HOLD_DURATION_MS && this.player1.buttons.B0 > 0) {
+        if (this.holdButtonDuration > HOLD_DURATION_MS && this.controller1.buttons.B0 > 0) {
             this.isReload = true
             this.isReloading = false
             this.chargeEmitter.active = true
-            this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-        } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && this.player1.buttons.B0 > 0) {
+            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
+        } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && this.controller1.buttons.B0 > 0) {
             this.isReloading = true
-            this.holdbar.width += (this.holdbarWidth + (HOLD_BAR_BORDER * 2)) / (HOLD_DURATION_MS / delta)
+            this.holdbars[0].width += (this.holdbarWidth + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
             this.chargeEmitter.active = true
             this.chargeEmitter.start()
-            this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
+            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         }
 
-        if (this.isReload && !(this.player1.buttons.B0 > 0)) {
+        if (this.isReload && !(this.controller1.buttons.B0 > 0)) {
             this.bulletCount = BULLET_COUNT
             this.isReload = false
             this.chargeEmitter.stop()
             this.tweens.add({
-                targets: this.holdbar,
+                targets: this.holdbars[0],
                 width: HOLD_BAR_BORDER / 2,
                 duration: LASER_FREQUENCY_MS * BULLET_COUNT,
                 ease: 'sine.inout'
             });
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
-            this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
+            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
             this.holdButtonDuration = 0
+            setTimeout(()=> this.holdButtonDuration = 0, LASER_FREQUENCY_MS * BULLET_COUNT)
         }
 
-        if (this.isReloading && !(this.player1.buttons.B0 > 0)) {
+        if (this.isReloading && !(this.controller1.buttons.B0 > 0)) {
             this.isReloading = false
-//            this.tweens.add({
-//                targets: this.holdbar,
-//                width: HOLD_BAR_BORDER / 2,
-//                duration: LASER_FREQUENCY_MS * BULLET_COUNT * (this.holdbar.width / this.holdbarWidth),
-//                ease: 'sine.inout'
-//            });
             this.chargeEmitter.stop()
-//            this.holdButtonDuration = 0
+            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
+            this.isHoldbarReducing = true
+        }
+
+        if(this.isHoldbarReducing && this.holdbars[0].width > 0) {
+            this.holdbars[0].width -= (this.holdbarWidth + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
+            this.holdButtonDuration -= delta
         }
 
     }
@@ -281,15 +274,12 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.player, meteor, (_, _meteor) => {
             if (this.isHit) return;
             this.isHit = true
-            this.playerHitTweens.restart()
-            this.playerHitTweens.play()
-            this.player.alpha = 0.8;
+            this.player.damaged()
             this.score += HIT_METEOR_SCORE
             this.scoreText.text = `score: ${this.score}`
             this.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
                 this.isHit = false
-                this.player.alpha = 1;
-                this.playerHitTweens.pause()
+                this.player.recovered()
             })
 
         })
