@@ -37,6 +37,7 @@ export default class GameScene extends Phaser.Scene {
     private bulletCount = 0;
     private isReload = false;
     private isReloading = false;
+    private isHoldbarReducing = false;
     private holdbarWidth = 0;
 
     private holdbar: Holdbar;
@@ -163,6 +164,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.controller1.buttons.B0 > 0) {
+            this.isHoldbarReducing = false
             this.holdButtonDuration += delta;
         }
 
@@ -223,7 +225,7 @@ export default class GameScene extends Phaser.Scene {
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
         } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && this.controller1.buttons.B0 > 0) {
             this.isReloading = true
-            this.holdbars[0].width += (this.holdbarWidth + (HOLD_BAR_BORDER/2)) / (HOLD_DURATION_MS / delta)
+            this.holdbars[0].width += (this.holdbarWidth + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
             this.chargeEmitter.active = true
             this.chargeEmitter.start()
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
@@ -243,19 +245,19 @@ export default class GameScene extends Phaser.Scene {
             this.reloadCountText.text = `${this.reloadCount}`
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
             this.holdButtonDuration = 0
+            setTimeout(()=> this.holdButtonDuration = 0, LASER_FREQUENCY_MS * BULLET_COUNT)
         }
 
         if (this.isReloading && !(this.controller1.buttons.B0 > 0)) {
             this.isReloading = false
-            this.tweens.add({
-                targets: this.holdbars[0],
-                width: HOLD_BAR_BORDER / 2,
-                duration: LASER_FREQUENCY_MS * BULLET_COUNT * (this.holdbars[0].width / this.holdbarWidth),
-                ease: 'sine.inout'
-            });
             this.chargeEmitter.stop()
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-            this.holdButtonDuration = 0
+            this.isHoldbarReducing = true
+        }
+
+        if(this.isHoldbarReducing && this.holdbars[0].width > 0) {
+            this.holdbars[0].width -= (this.holdbarWidth + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
+            this.holdButtonDuration -= delta
         }
 
     }
