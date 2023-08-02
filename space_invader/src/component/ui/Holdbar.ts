@@ -4,20 +4,22 @@ export default class Holdbar {
 
     private scene: Phaser.Scene
     private SPACE_BETWEEN_MARGIN_SCALE = 0.5
+    private division: number
 
-    constructor(scene: Phaser.Scene) {
+    constructor(scene: Phaser.Scene, division: number) {
         this.scene = scene
+        this.division = division
     }
 
-    getWidth(division: number): number {
+    getWidth(): number {
         const {width} = this.scene.scale
         const totalMargin = 2 * MARGIN
-        const betweenMargin = this.SPACE_BETWEEN_MARGIN_SCALE * (division - 1) * MARGIN
-        return (width - totalMargin - betweenMargin) / division
+        const betweenMargin = this.SPACE_BETWEEN_MARGIN_SCALE * (this.division - 1) * MARGIN
+        return (width - totalMargin - betweenMargin) / this.division
     }
 
-    getX(index: number, division: number): number {
-        const width = this.getWidth(division)
+    getX(index: number): number {
+        const width = this.getWidth()
         const spaceBetween = this.SPACE_BETWEEN_MARGIN_SCALE * MARGIN
         return MARGIN + (index * (width + spaceBetween))
     }
@@ -34,10 +36,10 @@ export default class Holdbar {
         return holdbar
     }
 
-    createByIndex(index: number, division: number): Phaser.GameObjects.GameObject {
-        const x = this.getX(index, division)
+    createByIndex(index: number): Phaser.GameObjects.GameObject {
+        const x = this.getX(index)
         const y = this.getY()
-        const width = this.getWidth(division)
+        const width = this.getWidth()
         const holdbar = this.create(x, y, width)
         this.scene.tweens.add({
             targets: holdbar,
@@ -48,8 +50,8 @@ export default class Holdbar {
         return holdbar
     }
 
-    createbyDivision(division: number): Phaser.GameObjects.GameObject[] {
-        return [...Array(division)].map((_, index: number) => this.createByIndex(index, division));
+    createbyDivision(): Phaser.GameObjects.GameObject[] {
+        return [...Array(this.division)].map((_, index: number) => this.createByIndex(index));
     }
     
     

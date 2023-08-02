@@ -57,7 +57,7 @@ export default class GameScene extends Phaser.Scene {
 
     constructor() {
         super('game')
-        this.holdbar = new Holdbar(this)
+        this.holdbar = new Holdbar(this, 1)
     }
 
     preload() {
@@ -126,8 +126,8 @@ export default class GameScene extends Phaser.Scene {
             .setOrigin(0, 1)
             .setAlpha(0.25);
 
-        this.holdbarWidth = this.holdbar.getWidth(3);
-        this.holdbars = this.holdbar.createbyDivision(3)
+        this.holdbarWidth = this.holdbar.getWidth();
+        this.holdbars = this.holdbar.createbyDivision()
 
         this.reloadCountText = this.add.text(MARGIN + this.holdbarWidth + MARGIN / 2, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
             .setOrigin(0, 1)
@@ -223,7 +223,7 @@ export default class GameScene extends Phaser.Scene {
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
         } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && this.controller1.buttons.B0 > 0) {
             this.isReloading = true
-            this.holdbars[0].width += (this.holdbarWidth) / (HOLD_DURATION_MS / delta)
+            this.holdbars[0].width += (this.holdbarWidth + (HOLD_BAR_BORDER/2)) / (HOLD_DURATION_MS / delta)
             this.chargeEmitter.active = true
             this.chargeEmitter.start()
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
@@ -242,7 +242,7 @@ export default class GameScene extends Phaser.Scene {
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-//            this.holdButtonDuration = 0
+            this.holdButtonDuration = 0
         }
 
         if (this.isReloading && !(this.controller1.buttons.B0 > 0)) {
@@ -255,7 +255,7 @@ export default class GameScene extends Phaser.Scene {
             });
             this.chargeEmitter.stop()
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-//            this.holdButtonDuration = 0
+            this.holdButtonDuration = 0
         }
 
     }
