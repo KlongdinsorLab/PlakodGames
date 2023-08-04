@@ -1,4 +1,11 @@
-import {HOLD_BAR_BORDER, HOLD_BAR_COLOR, HOLD_BAR_HEIGHT, HOLD_BAR_IDLE_COLOR, MARGIN} from "../../config";
+import {
+    HOLD_BAR_BORDER,
+    HOLD_BAR_COLOR,
+    HOLD_BAR_HEIGHT,
+    HOLD_BAR_IDLE_COLOR,
+    HOLD_DURATION_MS,
+    MARGIN
+} from "../../config";
 
 export default class Holdbar {
 
@@ -53,7 +60,11 @@ export default class Holdbar {
     createbyDivision(): Phaser.GameObjects.GameObject[] {
         return [...Array(this.division)].map((_, index: number) => this.createByIndex(index));
     }
-    
+
+    getHoldWithIncrement(delta: number): number {
+        return (this.getWidth() + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
+    }
+
     
     charge() {
         console.log("charge")

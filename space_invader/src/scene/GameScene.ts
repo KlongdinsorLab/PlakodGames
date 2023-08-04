@@ -31,15 +31,16 @@ export default class GameScene extends Phaser.Scene {
 
     private background!: Phaser.GameObjects.TileSprite
     private player: Player | any
-//    private player!: Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any
     private timer = 0;
     private meteorTimer = 0;
     private bulletCount = 0;
     private isReload = false;
     private isReloading = false;
-    private isHoldbarReducing = false;
-    private holdbarWidth = 0;
 
+    // TODO move to Holdbar
+    private isHoldbarReducing = false;
+
+    // TODO move to holdbar Registry
     private holdbar: Holdbar;
     private holdbars!: Phaser.GameObjects.GameObject[] | any[];
 
@@ -51,6 +52,8 @@ export default class GameScene extends Phaser.Scene {
     private scoreText!: Phaser.GameObjects.Text;
     private meteors: Phaser.Physics.Arcade.Body[] | Phaser.GameObjects.GameObject[] | any[] = [];
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
+
+    // TODO move to Holdbar
     private holdButtonDuration = 0;
     private mergedInput?: MergedInput;
     private controller1: any;
@@ -58,6 +61,7 @@ export default class GameScene extends Phaser.Scene {
 
     constructor() {
         super('game')
+        // TODO this.holdbar = new HoldBarRegistry(this, 1)
         this.holdbar = new Holdbar(this, 1)
     }
 
@@ -127,11 +131,11 @@ export default class GameScene extends Phaser.Scene {
             .setOrigin(0, 1)
             .setAlpha(0.25);
 
-        this.holdbarWidth = this.holdbar.getWidth();
+        // TODO use HoldbarRegistry
         this.holdbars = this.holdbar.createbyDivision()
 
-        this.reloadCountText = this.add.text(MARGIN + this.holdbarWidth + MARGIN / 2, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
-            .setOrigin(0, 1)
+        this.reloadCountText = this.add.text(SCREEN_WIDTH, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
+            .setOrigin(1, 1)
 
         this.scoreText = this.add.text(MARGIN, MARGIN, `score: ${this.score}`, {fontSize: '42px'})
         this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
@@ -164,6 +168,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.controller1.buttons.B0 > 0) {
+            // TODO Move to holdbar
             this.isHoldbarReducing = false
             this.holdButtonDuration += delta;
         }
@@ -222,30 +227,36 @@ export default class GameScene extends Phaser.Scene {
             this.isReload = true
             this.isReloading = false
             this.chargeEmitter.active = true
+
+            // TODO this.holdbarRegistry.get(index).setFullCharge()
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
         } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && this.controller1.buttons.B0 > 0) {
             this.isReloading = true
-            this.holdbars[0].width += (this.holdbarWidth + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
             this.chargeEmitter.active = true
             this.chargeEmitter.start()
+
+            // TODO this.holdbarRegistry.get(index).charge(delta)
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
+            this.holdbars[0].width += this.holdbar.getHoldWithIncrement(delta)
         }
 
         if (this.isReload && !(this.controller1.buttons.B0 > 0)) {
             this.bulletCount = BULLET_COUNT
             this.isReload = false
             this.chargeEmitter.stop()
+            // TODO this.holdbarRegistry.get(index).reset()
             this.tweens.add({
                 targets: this.holdbars[0],
                 width: HOLD_BAR_BORDER / 2,
                 duration: LASER_FREQUENCY_MS * BULLET_COUNT,
                 ease: 'sine.inout'
             });
-            this.reloadCount -= 1
-            this.reloadCountText.text = `${this.reloadCount}`
             this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
             this.holdButtonDuration = 0
             setTimeout(()=> this.holdButtonDuration = 0, LASER_FREQUENCY_MS * BULLET_COUNT)
+
+            this.reloadCount -= 1
+            this.reloadCountText.text = `${this.reloadCount}`
         }
 
         if (this.isReloading && !(this.controller1.buttons.B0 > 0)) {
@@ -256,7 +267,8 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if(this.isHoldbarReducing && this.holdbars[0].width > 0) {
-            this.holdbars[0].width -= (this.holdbarWidth + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
+            // TODO this.holdbarRegistry.get(index).retreat(delta)
+            this.holdbars[0].width -= this.holdbar.getHoldWithIncrement(delta)
             this.holdButtonDuration -= delta
         }
 
