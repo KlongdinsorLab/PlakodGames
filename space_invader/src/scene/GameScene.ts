@@ -20,7 +20,8 @@ import {
 import Player from "../component/player/Player"
 import HoldbarRegistry from "../component/ui/HoldbarRegistry";
 import MergedInput from 'phaser3-merged-input'
-import { SingleLaserFactory } from "../component/weapon/SingleLaserFactory"
+import Score from "../component/ui/Score";
+import {SingleLaserFactory} from "../component/weapon/SingleLaserFactory"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 
 export default class GameScene extends Phaser.Scene {
@@ -34,13 +35,12 @@ export default class GameScene extends Phaser.Scene {
     private isReloading = false;
 
     private holdbars!: HoldbarRegistry;
+    private score!: Score;
 
     private chargeEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
     private reloadCount = RELOAD_COUNT;
     private reloadCountText!: Phaser.GameObjects.Text;
     private isHit = false;
-    private score = 0;
-    private scoreText!: Phaser.GameObjects.Text;
     private meteors: Phaser.Physics.Arcade.Body[] | Phaser.GameObjects.GameObject[] | any[] = [];
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
 
@@ -84,14 +84,6 @@ export default class GameScene extends Phaser.Scene {
             .defineKey(0, 'B1', 'CTRL')
             .defineKey(0, 'B2', 'ALT')
 
-        const jetEngine = this.add.particles('fire')
-        const jetEngineEmitter = jetEngine.createEmitter({
-            gravityY: 200,
-            speed: 100,
-            scale: {start: 1, end: 0},
-            blendMode: Phaser.BlendModes.ADD,
-        })
-
         const charge = this.add.particles('charge')
         this.chargeEmitter = charge.createEmitter({
             speed: 64,
@@ -109,8 +101,8 @@ export default class GameScene extends Phaser.Scene {
         this.explosionEmitter.active = false
 
         this.player = new Player(this)
+        this.player.addJetEngine()
 
-        jetEngineEmitter.startFollow(this.player.getPlayer(), 0, MARGIN)
         this.chargeEmitter.startFollow(this.player.getPlayer())
         this.chargeEmitter.active = false
 
@@ -124,7 +116,7 @@ export default class GameScene extends Phaser.Scene {
         this.reloadCountText = this.add.text(SCREEN_WIDTH, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
             .setOrigin(1, 1)
 
-        this.scoreText = this.add.text(MARGIN, MARGIN, `score: ${this.score}`, {fontSize: '42px'})
+        this.score = new Score(this)
         this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
     }
 
@@ -195,8 +187,7 @@ export default class GameScene extends Phaser.Scene {
                             this.explosionEmitter.stop()
                         })
                         _meteor.destroy();
-                        this.score += DESTROY_METEOR_SCORE
-                        this.scoreText.text = `score: ${this.score}`
+                        this.score.add(DESTROY_METEOR_SCORE)
                     })
                 })
             })
@@ -252,12 +243,11 @@ export default class GameScene extends Phaser.Scene {
         meteor.setVelocityX(velocityX)
         meteor.setAngularVelocity(METEOR_SPIN_SPEED);
 
-        this.physics.add.overlap(this.player, meteor, (_, _meteor) => {
+        this.physics.add.overlap(this.player.getPlayer(), meteor, (_, _meteor) => {
             if (this.isHit) return;
             this.isHit = true
             this.player.damaged()
-            this.score += HIT_METEOR_SCORE
-            this.scoreText.text = `score: ${this.score}`
+            this.score.add(HIT_METEOR_SCORE)
             this.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
                 this.isHit = false
                 this.player.recovered()

@@ -1,4 +1,4 @@
-import {PLAYER_START_MARGIN, FULLCHARGE_SCALE, FULLCHARGE_ANIMATION_MS, PLAYER_SPEED} from "../../config";
+import {FULLCHARGE_ANIMATION_MS, FULLCHARGE_SCALE, MARGIN, PLAYER_SPEED, PLAYER_START_MARGIN} from "../../config";
 
 export default class Player {
 
@@ -24,6 +24,17 @@ export default class Player {
 
     create(): Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any {
 
+    }
+
+    addJetEngine() {
+        const jetEngine = this.scene.add.particles('fire')
+        const jetEngineEmitter = jetEngine.createEmitter({
+            gravityY: 200,
+            speed: 100,
+            scale: {start: 1, end: 0},
+            blendMode: Phaser.BlendModes.ADD,
+        })
+        jetEngineEmitter.startFollow(this.player, 0, MARGIN)
     }
 
     moveLeft(delta: number): void {
