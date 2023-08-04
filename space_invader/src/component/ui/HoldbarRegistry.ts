@@ -2,11 +2,19 @@ import Holdbar from "./Holdbar";
 
 export default class HoldbarRegistry {
     
-    // TODO  private holdbars!: Phaser.GameObjects.GameObject[] | any[];
+    private scene: Phaser.Scene
+    private holdbars!: Phaser.GameObjects.GameObject[] | any[];
 
-    createbyDivision(scene: Phaser.Scene, division: number): Phaser.GameObjects.GameObject[] {
-        const holdbar = new Holdbar(scene, division)
-        return [...Array(division)].map((_, index: number) => holdbar.createByIndex(index));
+    constructor(scene: Phaser.Scene) {
+        this.scene = scene
+    }
+
+    createbyDivision(division: number) {
+        this.holdbars = [...Array(division)].map((_, index: number) => new Holdbar(this.scene, division, index));
+    }
+
+    get(index: number): Holdbar {
+        return this.holdbars[index]
     }
 
 }

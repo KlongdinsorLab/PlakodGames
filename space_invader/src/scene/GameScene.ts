@@ -5,11 +5,7 @@ import {
     GAME_TIME_LIMIT_MS,
     HIT_METEOR_SCORE,
     HOLD_BAR_BORDER,
-    HOLD_BAR_CHARGED_COLOR,
-    HOLD_BAR_CHARGING_COLOR,
-    HOLD_BAR_EMPTY_COLOR,
     HOLD_BAR_HEIGHT,
-    HOLD_BAR_IDLE_COLOR,
     HOLD_DURATION_MS,
     LASER_FREQUENCY_MS,
     MARGIN,
@@ -22,7 +18,7 @@ import {
     SCREEN_WIDTH
 } from "../config";
 import Player from "../component/player/Player"
-import Holdbar from "../component/ui/Holdbar";
+import HoldbarRegistry from "../component/ui/HoldbarRegistry";
 import MergedInput from 'phaser3-merged-input'
 import { SingleLaserFactory } from "../component/weapon/SingleLaserFactory"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
@@ -37,12 +33,7 @@ export default class GameScene extends Phaser.Scene {
     private isReload = false;
     private isReloading = false;
 
-    // TODO move to Holdbar
-    private isHoldbarReducing = false;
-
-    // TODO move to holdbar Registry
-    private holdbar: Holdbar;
-    private holdbars!: Phaser.GameObjects.GameObject[] | any[];
+    private holdbars!: HoldbarRegistry;
 
     private chargeEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
     private reloadCount = RELOAD_COUNT;
@@ -53,16 +44,12 @@ export default class GameScene extends Phaser.Scene {
     private meteors: Phaser.Physics.Arcade.Body[] | Phaser.GameObjects.GameObject[] | any[] = [];
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
 
-    // TODO move to Holdbar
-    private holdButtonDuration = 0;
     private mergedInput?: MergedInput;
     private controller1: any;
     private timerText!: Phaser.GameObjects.Text;
 
     constructor() {
         super('game')
-        // TODO this.holdbar = new HoldBarRegistry(this, 1)
-        this.holdbar = new Holdbar(this, 1)
     }
 
     preload() {
@@ -131,8 +118,8 @@ export default class GameScene extends Phaser.Scene {
             .setOrigin(0, 1)
             .setAlpha(0.25);
 
-        // TODO use HoldbarRegistry
-        this.holdbars = this.holdbar.createbyDivision()
+        this.holdbars = new HoldbarRegistry(this)
+        this.holdbars.createbyDivision(1)
 
         this.reloadCountText = this.add.text(SCREEN_WIDTH, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
             .setOrigin(1, 1)
@@ -153,6 +140,8 @@ export default class GameScene extends Phaser.Scene {
 //        }
 //        const pad = this.input.gamepad.gamepads[0]
 
+        const holdbar = this.holdbars?.get(0)
+
         const timeLeft = Math.floor((GAME_TIME_LIMIT_MS - time) / 1000)
         this.timerText.text = `time: ${timeLeft}`
         if (timeLeft <= 0) {
@@ -168,9 +157,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.controller1.buttons.B0 > 0) {
-            // TODO Move to holdbar
-            this.isHoldbarReducing = false
-            this.holdButtonDuration += delta;
+            holdbar.hold(delta)
         }
 
         // scroll the background
@@ -219,42 +206,27 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.reloadCount <= 0) {
-            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
+            holdbar.deplete()
             return;
         }
 
-        if (this.holdButtonDuration > HOLD_DURATION_MS && this.controller1.buttons.B0 > 0) {
+        if (holdbar.getDuratation() > HOLD_DURATION_MS && this.controller1.buttons.B0 > 0) {
             this.isReload = true
             this.isReloading = false
             this.chargeEmitter.active = true
-
-            // TODO this.holdbarRegistry.get(index).setFullCharge()
-            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-        } else if (this.holdButtonDuration <= HOLD_DURATION_MS && this.holdButtonDuration !== 0 && this.controller1.buttons.B0 > 0) {
+            holdbar.setFullCharge()
+        } else if (holdbar.getDuratation() <= HOLD_DURATION_MS && holdbar.getDuratation() !== 0 && this.controller1.buttons.B0 > 0) {
             this.isReloading = true
             this.chargeEmitter.active = true
             this.chargeEmitter.start()
-
-            // TODO this.holdbarRegistry.get(index).charge(delta)
-            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
-            this.holdbars[0].width += this.holdbar.getHoldWithIncrement(delta)
+            holdbar.charge(delta)
         }
 
         if (this.isReload && !(this.controller1.buttons.B0 > 0)) {
             this.bulletCount = BULLET_COUNT
             this.isReload = false
             this.chargeEmitter.stop()
-            // TODO this.holdbarRegistry.get(index).reset()
-            this.tweens.add({
-                targets: this.holdbars[0],
-                width: HOLD_BAR_BORDER / 2,
-                duration: LASER_FREQUENCY_MS * BULLET_COUNT,
-                ease: 'sine.inout'
-            });
-            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-            this.holdButtonDuration = 0
-            setTimeout(()=> this.holdButtonDuration = 0, LASER_FREQUENCY_MS * BULLET_COUNT)
-
+            holdbar.reset()
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
         }
@@ -262,14 +234,11 @@ export default class GameScene extends Phaser.Scene {
         if (this.isReloading && !(this.controller1.buttons.B0 > 0)) {
             this.isReloading = false
             this.chargeEmitter.stop()
-            this.holdbars[0].setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
-            this.isHoldbarReducing = true
+            holdbar.resetting()
         }
 
-        if(this.isHoldbarReducing && this.holdbars[0].width > 0) {
-            // TODO this.holdbarRegistry.get(index).retreat(delta)
-            this.holdbars[0].width -= this.holdbar.getHoldWithIncrement(delta)
-            this.holdButtonDuration -= delta
+        if(holdbar.isReducing()) {
+            holdbar.release(delta)
         }
 
     }
@@ -309,4 +278,3 @@ export default class GameScene extends Phaser.Scene {
 // TODO crete player, bullet, chargebar, emermy class
 // Player asset, render(), shoot(), moveLeft(), moveRight(),
 // TODO create test
-

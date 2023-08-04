@@ -1,9 +1,14 @@
 import {
+    BULLET_COUNT,
     HOLD_BAR_BORDER,
+    HOLD_BAR_CHARGED_COLOR,
+    HOLD_BAR_CHARGING_COLOR,
     HOLD_BAR_COLOR,
+    HOLD_BAR_EMPTY_COLOR,
     HOLD_BAR_HEIGHT,
     HOLD_BAR_IDLE_COLOR,
     HOLD_DURATION_MS,
+    LASER_FREQUENCY_MS,
     MARGIN
 } from "../../config";
 
@@ -12,10 +17,24 @@ export default class Holdbar {
     private scene: Phaser.Scene
     private SPACE_BETWEEN_MARGIN_SCALE = 0.5
     private division: number
+    private holdButtonDuration = 0
+    private isHoldbarReducing = false
+    private holdbar: Phaser.GameObjects.Rectangle
 
-    constructor(scene: Phaser.Scene, division: number) {
+    constructor(scene: Phaser.Scene, division: number, index: number) {
         this.scene = scene
         this.division = division
+
+        const x = this.getX(index)
+        const y = this.getY()
+        const width = this.getWidth()
+        this.holdbar = this.create(x, y, width)
+        this.scene.tweens.add({
+            targets: this.holdbar,
+            width: HOLD_BAR_BORDER / 2,
+            duration: 0,
+            ease: 'sine.inout'
+        });
     }
 
     getWidth(): number {
@@ -36,52 +55,69 @@ export default class Holdbar {
         return height - MARGIN + HOLD_BAR_BORDER
     }
 
-    create(x: number, y: number, width: number): Phaser.GameObjects.GameObject {
+    create(x: number, y: number, width: number): Phaser.GameObjects.Rectangle {
         const holdbar = this.scene.add.rectangle(x, y, width, HOLD_BAR_HEIGHT, HOLD_BAR_COLOR)
             .setOrigin(0, 1);
         holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
         return holdbar
     }
 
-    createByIndex(index: number): Phaser.GameObjects.GameObject {
-        const x = this.getX(index)
-        const y = this.getY()
-        const width = this.getWidth()
-        const holdbar = this.create(x, y, width)
-        this.scene.tweens.add({
-            targets: holdbar,
-            width: HOLD_BAR_BORDER / 2,
-            duration: 0,
-            ease: 'sine.inout'
-        });
-        return holdbar
-    }
-
-    createbyDivision(): Phaser.GameObjects.GameObject[] {
-        return [...Array(this.division)].map((_, index: number) => this.createByIndex(index));
-    }
-
     getHoldWithIncrement(delta: number): number {
         return (this.getWidth() + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
     }
 
-    
-    charge() {
-        console.log("charge")
+    hold(delta: number) {
+        this.isHoldbarReducing = false
+        this.holdButtonDuration += delta;
+    }
+
+    charge(delta: number) {
+        this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
+        this.holdbar.width += this.getHoldWithIncrement(delta)
+    }
+
+    release(delta: number) {
+        this.holdbar.width -= this.getHoldWithIncrement(delta)
+        this.holdButtonDuration -= delta
+    }
+
+    setFullCharge() {
+        this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
+    }
+
+    reset() {
+        this.scene.tweens.add({
+            targets: this.holdbar,
+            width: HOLD_BAR_BORDER / 2,
+            duration: LASER_FREQUENCY_MS * BULLET_COUNT,
+            ease: 'sine.inout'
+        });
+        this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
+        this.holdButtonDuration = 0
+        setTimeout(()=> this.holdButtonDuration = 0, LASER_FREQUENCY_MS * BULLET_COUNT)
+    }
+
+    resetting(){
+        this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
+        this.isHoldbarReducing = true
+    }
+
+    deplete() {
+        this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
+    }
+
+    isReducing(): boolean{
+        return this.isHoldbarReducing && this.holdbar.width > 0
     }
     
-    release() {
-        console.log("release")
+    getDuratation(): number{
+        return this.holdButtonDuration
     }
-    
+
 //    getBulletCount(){
 //        
 //    }
     
     // setBullet(){}
-    
-    // reset() {}
-    
-    
 
 }
