@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import {
     BULLET_COUNT,
     DESTROY_METEOR_SCORE,
-    GAME_TIME_LIMIT_MS,
+//    GAME_TIME_LIMIT_MS,
     HIT_METEOR_SCORE,
     HOLD_BAR_BORDER,
     HOLD_BAR_HEIGHT,
@@ -19,7 +19,7 @@ import {
 } from "../config";
 import Player from "../component/player/Player"
 import HoldbarRegistry from "../component/ui/HoldbarRegistry";
-import MergedInput from 'phaser3-merged-input'
+import MergedInput, { Player as PlayerInput } from 'phaser3-merged-input'
 import Score from "../component/ui/Score";
 import {SingleLaserFactory} from "../component/weapon/SingleLaserFactory"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
@@ -45,11 +45,13 @@ export default class GameScene extends Phaser.Scene {
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
 
     private mergedInput?: MergedInput;
-    private controller1: any;
-    private timerText!: Phaser.GameObjects.Text;
+    private controller1?: PlayerInput;
+//    private timerText!: Phaser.GameObjects.Text;
+
+    private gameover?: Phaser.GameObjects.Image;
 
     constructor() {
-        super('game')
+        super({ key: 'game' })
     }
 
     preload() {
@@ -63,6 +65,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
         this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
         this.load.image('explosion', 'assets/effect/explosionYellow.png')
+        this.load.image('gameover', 'assets/logo/gameover.png')
         this.load.scenePlugin('mergedInput', MergedInput);
     }
 
@@ -70,7 +73,7 @@ export default class GameScene extends Phaser.Scene {
 //        const params = new Proxy(new URLSearchParams(window.location.search), {
 //            get: (searchParams, prop: string) => searchParams.get(prop),
 //        });
-        // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+//      Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
 //      console.log(window.location.href)
 
         const {width, height} = this.scale
@@ -117,7 +120,10 @@ export default class GameScene extends Phaser.Scene {
             .setOrigin(1, 1)
 
         this.score = new Score(this)
-        this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
+//        this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
+
+        this.gameover = this.add.image(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 'gameover').setOrigin(0.5, 1)
+        this.gameover.visible = false
     }
 
     update(time: number, delta: number) {
@@ -134,21 +140,21 @@ export default class GameScene extends Phaser.Scene {
 
         const holdbar = this.holdbars?.get(0)
 
-        const timeLeft = Math.floor((GAME_TIME_LIMIT_MS - time) / 1000)
-        this.timerText.text = `time: ${timeLeft}`
-        if (timeLeft <= 0) {
-            this.scene.pause()
-        }
+//        const timeLeft = Math.floor((GAME_TIME_LIMIT_MS - time) / 1000)
+//        this.timerText.text = `time: ${timeLeft}`
+//        if (timeLeft <= 0) {
+//            this.scene.pause()
+//        }
 
-        if (this.controller1.direction.LEFT) {
+        if (this.controller1?.direction.LEFT) {
             this.player.moveLeft(delta)
         }
 
-        if (this.controller1.direction.RIGHT) {
+        if (this.controller1?.direction.RIGHT) {
             this.player.moveRight(delta)
         }
 
-        if (this.controller1.buttons.B0 > 0) {
+        if (this.controller1?.buttons.B0 > 0) {
             holdbar.hold(delta)
         }
 
@@ -201,28 +207,35 @@ export default class GameScene extends Phaser.Scene {
             return;
         }
 
-        if (holdbar.getDuratation() > HOLD_DURATION_MS && this.controller1.buttons.B0 > 0) {
+        if (holdbar.getDuratation() > HOLD_DURATION_MS && this.controller1?.buttons.B0 > 0) {
             this.isReload = true
             this.isReloading = false
             this.chargeEmitter.active = true
             holdbar.setFullCharge()
-        } else if (holdbar.getDuratation() <= HOLD_DURATION_MS && holdbar.getDuratation() !== 0 && this.controller1.buttons.B0 > 0) {
+        } else if (holdbar.getDuratation() <= HOLD_DURATION_MS && holdbar.getDuratation() !== 0 && this.controller1?.buttons.B0 > 0) {
             this.isReloading = true
             this.chargeEmitter.active = true
             this.chargeEmitter.start()
             holdbar.charge(delta)
         }
 
-        if (this.isReload && !(this.controller1.buttons.B0 > 0)) {
+        if (this.isReload && !(this.controller1?.buttons.B0 > 0)) {
             this.bulletCount = BULLET_COUNT
             this.isReload = false
             this.chargeEmitter.stop()
             holdbar.reset()
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
+            if(this.reloadCount === 0){
+                setTimeout(()=> {
+                    this.scene.pause()
+                    this.gameover!.visible = true
+                }, LASER_FREQUENCY_MS * BULLET_COUNT)
+            }
+
         }
 
-        if (this.isReloading && !(this.controller1.buttons.B0 > 0)) {
+        if (this.isReloading && !(this.controller1?.buttons.B0 > 0)) {
             this.isReloading = false
             this.chargeEmitter.stop()
             holdbar.resetting()

@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import GameScene from './scene/GameScene'
+import TitleScene from './scene/TitleScene'
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from "./config";
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -19,7 +20,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {},
 	},
-	scene: [GameScene]
+	scene: [TitleScene, GameScene]
 }
 
 export default new Phaser.Game(config)
