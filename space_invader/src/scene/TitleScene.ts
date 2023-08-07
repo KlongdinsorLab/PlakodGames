@@ -6,8 +6,8 @@ import { START_TEXT } from "../config";
 export default class TitleScene extends Phaser.Scene {
     private background!: Phaser.GameObjects.TileSprite
     private mergedInput?: MergedInput;
-    private controller1?: InputPlayer;
-    private player: Player | any
+    private controller1?: InputPlayer | any;
+    private player?: Player
 
     constructor() {
         super('title')

@@ -45,7 +45,7 @@ export default class GameScene extends Phaser.Scene {
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
 
     private mergedInput?: MergedInput;
-    private controller1?: PlayerInput;
+    private controller1?: PlayerInput | any;
 //    private timerText!: Phaser.GameObjects.Text;
 
     private gameover?: Phaser.GameObjects.Image;
@@ -126,7 +126,7 @@ export default class GameScene extends Phaser.Scene {
         this.gameover.visible = false
     }
 
-    update(time: number, delta: number) {
+    update(_: number, delta: number) {
 
 //        if (this.input.gamepad.total === 0) {
 //            const text = this.add.text(0, SCREEN_HEIGHT / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
