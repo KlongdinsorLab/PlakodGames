@@ -8,6 +8,7 @@ import {
     HOLD_BAR_HEIGHT,
     HOLD_BAR_IDLE_COLOR,
     HOLD_DURATION_MS,
+    HOLDBAR_REDUCING_RATIO,
     LASER_FREQUENCY_MS,
     MARGIN
 } from "../../config";
@@ -77,8 +78,8 @@ export default class Holdbar {
     }
 
     release(delta: number) {
-        this.holdbar.width -= this.getHoldWithIncrement(delta)
-        this.holdButtonDuration -= delta
+        this.holdbar.width -= this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
+        this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
     }
 
     setFullCharge() {

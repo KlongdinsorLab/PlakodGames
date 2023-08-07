@@ -16,6 +16,7 @@ export const HOLD_BAR_IDLE_COLOR = 0x603F8B
 export const HOLD_BAR_CHARGING_COLOR = 0xefc53f
 export const HOLD_BAR_CHARGED_COLOR = 0x00B1B0
 export const HOLD_BAR_EMPTY_COLOR = 0xFF8370
+export const HOLDBAR_REDUCING_RATIO = 0.5
 export const FULLCHARGE_SCALE = 1.12
 export const FULLCHARGE_ANIMATION_MS = 300
 

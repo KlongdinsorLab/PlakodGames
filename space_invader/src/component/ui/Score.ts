@@ -14,4 +14,4 @@ export default class Score {
         this.scoreText.text = `score: ${this.score}`
     }
     
-}    
+}
