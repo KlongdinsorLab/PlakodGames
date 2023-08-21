@@ -19,7 +19,7 @@ import {
 } from "../config";
 import Player from "../component/player/Player"
 import HoldbarRegistry from "../component/ui/HoldbarRegistry";
-import MergedInput, { Player as PlayerInput } from 'phaser3-merged-input'
+import MergedInput, {Player as PlayerInput} from 'phaser3-merged-input'
 import Score from "../component/ui/Score";
 import {SingleLaserFactory} from "../component/weapon/SingleLaserFactory"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
@@ -48,10 +48,13 @@ export default class GameScene extends Phaser.Scene {
     private controller1?: PlayerInput | any;
 //    private timerText!: Phaser.GameObjects.Text;
 
+    private controlType?: 'tilt' | 'touch'
+    private tilt: 'left' | 'right' | null
+
     private gameover?: Phaser.GameObjects.Image;
 
     constructor() {
-        super({ key: 'game' })
+        super({key: 'game'})
     }
 
     preload() {
@@ -73,8 +76,13 @@ export default class GameScene extends Phaser.Scene {
 //        const params = new Proxy(new URLSearchParams(window.location.search), {
 //            get: (searchParams, prop: string) => searchParams.get(prop),
 //        });
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        this.controlType = <'tilt' | 'touch'>urlParams.get('control')
+
 //      Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-//      console.log(window.location.href)
+//        console.log(window.location.href)
 
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
@@ -122,8 +130,29 @@ export default class GameScene extends Phaser.Scene {
         this.score = new Score(this)
 //        this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
 
-        this.gameover = this.add.image(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 'gameover').setOrigin(0.5, 1)
+        this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
+
+        if (this.controlType === 'tilt') {
+            window.addEventListener("deviceorientation", (e) => {
+                {
+                    const x = <number> e.gamma; // range [-90,90], left-right
+                    console.log(x)
+                    if(x <= -90 && x < 0) {
+                        this.tilt = "left"
+                        return;
+                    }
+
+                    if(x > 0 && x <= 90) {
+                        this.tilt = "right"
+                        return;
+                    }
+
+                    this.tilt = null
+
+                }
+            }, true);
+        }
     }
 
     update(_: number, delta: number) {
@@ -156,6 +185,27 @@ export default class GameScene extends Phaser.Scene {
 
         if (this.controller1?.buttons.B0 > 0) {
             holdbar.hold(delta)
+        }
+
+        if (this.controlType === 'tilt') {
+            if(this.tilt === 'right') {
+                this.player.moveRight(delta)
+            }
+
+            if(this.tilt === 'left') {
+                this.player.moveLeft(delta)
+            }
+        }
+
+        if (this.controlType === 'touch') {
+            if (!this.input.pointer1.isDown) return
+            const {x} = this.input.pointer1
+            if (this.player.isRightOf(x)) {
+                this.player.moveRight(delta)
+            }
+            if (this.player.isLeftOf(x)) {
+                this.player.moveLeft(delta)
+            }
         }
 
         // scroll the background
@@ -226,8 +276,8 @@ export default class GameScene extends Phaser.Scene {
             holdbar.reset()
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
-            if(this.reloadCount === 0){
-                setTimeout(()=> {
+            if (this.reloadCount === 0) {
+                setTimeout(() => {
                     this.scene.pause()
                     this.gameover!.visible = true
                 }, LASER_FREQUENCY_MS * BULLET_COUNT)
@@ -241,7 +291,7 @@ export default class GameScene extends Phaser.Scene {
             holdbar.resetting()
         }
 
-        if(holdbar.isReducing()) {
+        if (holdbar.isReducing()) {
             holdbar.release(delta)
         }
 

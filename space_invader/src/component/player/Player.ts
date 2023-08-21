@@ -61,6 +61,14 @@ export default class Player {
         this.playerHitTweens.pause()
     }
 
+    isLeftOf(x: number): boolean {
+        return this.player.x > x
+    }
+
+    isRightOf(x: number): boolean {
+        return this.player.x < x
+    }
+
     getPlayer(): Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any {
         return this.player
     }

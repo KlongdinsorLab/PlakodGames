@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import MergedInput, {Player as InputPlayer} from 'phaser3-merged-input'
 import Player from "../component/player/Player"
-import { START_TEXT } from "../config";
+import {START_TEXT} from "../config";
 
 export default class TitleScene extends Phaser.Scene {
     private background!: Phaser.GameObjects.TileSprite
@@ -24,8 +24,8 @@ export default class TitleScene extends Phaser.Scene {
     create() {
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
-        this.add.image(width/2, height/2, 'logo').setOrigin(0.5, 1)
-        this.add.text(width/2, height/2, START_TEXT, {fontSize: '24px'}).setOrigin(0.5, 0)
+        this.add.image(width / 2, height / 2, 'logo').setOrigin(0.5, 1)
+        this.add.text(width / 2, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0.5, 0)
 
         this.controller1 = this.mergedInput?.addPlayer(0);
         this.mergedInput?.defineKey(0, 'LEFT', 'LEFT')
@@ -43,6 +43,10 @@ export default class TitleScene extends Phaser.Scene {
         this.background.tilePositionY -= 1
 
         if (this.controller1?.direction.LEFT || this.controller1?.direction.RIGHT || this.controller1?.buttons.B0 > 0) {
+            this.scene.start('game');
+        }
+
+        if (this.input.pointer1.isDown) {
             this.scene.start('game');
         }
 
