@@ -49,7 +49,7 @@ export default class GameScene extends Phaser.Scene {
 //    private timerText!: Phaser.GameObjects.Text;
 
     private controlType?: 'tilt' | 'touch'
-    private tilt: 'left' | 'right' | null
+    private tilt?: 'left' | 'right' | null
 
     private gameover?: Phaser.GameObjects.Image;
 
