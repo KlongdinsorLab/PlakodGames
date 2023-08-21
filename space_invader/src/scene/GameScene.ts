@@ -136,14 +136,13 @@ export default class GameScene extends Phaser.Scene {
         if (this.controlType === 'tilt') {
             window.addEventListener("deviceorientation", (e) => {
                 {
-                    const x = <number> e.gamma; // range [-90,90], left-right
-                    console.log(x)
-                    if(x <= -90 && x < 0) {
+                    const x = <number> e.gamma
+                    if(x >= -90 && x < -15) {
                         this.tilt = "left"
                         return;
                     }
 
-                    if(x > 0 && x <= 90) {
+                    if(x > 15 && x <= 90) {
                         this.tilt = "right"
                         return;
                     }
