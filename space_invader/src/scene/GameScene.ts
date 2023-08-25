@@ -197,13 +197,14 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.controlType === 'touch') {
-            if (!this.input.pointer1.isDown) return
-            const {x} = this.input.pointer1
-            if (this.player.isRightOf(x)) {
-                this.player.moveRight(delta)
-            }
-            if (this.player.isLeftOf(x)) {
-                this.player.moveLeft(delta)
+            if (this.input.pointer1.isDown) {
+                const {x} = this.input.pointer1
+                if (this.player.isRightOf(x)) {
+                    this.player.moveRight(delta)
+                }
+                if (this.player.isLeftOf(x)) {
+                    this.player.moveLeft(delta)
+                }
             }
         }
 
