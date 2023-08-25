@@ -133,24 +133,19 @@ export default class GameScene extends Phaser.Scene {
         this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
 
-        const setDeviceOrientationListener = () => {
-            window.addEventListener("deviceorientation", (e) => {
-                {
-                    const x = <number>e.gamma
-                    if (x >= -90 && x < -15) {
-                        this.tilt = "left"
-                        return;
-                    }
+        const setDeviceOrientation = (e:any) => {
+            const x = <number>e.gamma
+            if (x >= -90 && x < -15) {
+                this.tilt = "left"
+                return;
+            }
 
-                    if (x > 15 && x <= 90) {
-                        this.tilt = "right"
-                        return;
-                    }
+            if (x > 15 && x <= 90) {
+                this.tilt = "right"
+                return;
+            }
 
-                    this.tilt = null
-
-                }
-            }, true);
+            this.tilt = null
         }
 
         if (this.controlType === 'tilt') {
@@ -158,11 +153,15 @@ export default class GameScene extends Phaser.Scene {
                 (DeviceMotionEvent as any).requestPermission()
                 .then((response: any) => {
                     if (response == 'granted') {
-                        setDeviceOrientationListener()
+                        window.addEventListener("devicemotion", (e) => {
+                            setDeviceOrientation(e)
+                        });
                     }
                 })
             } else {
-                setDeviceOrientationListener()
+                window.addEventListener("deviceorientation", (e) => {
+                    setDeviceOrientation(e)
+                }, true);
             }
         }
     }
