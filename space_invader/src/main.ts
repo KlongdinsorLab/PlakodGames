@@ -20,6 +20,9 @@ const config: Phaser.Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {},
 	},
+	dom: {
+		createContainer: true
+	},
 	scene: [TitleScene, GameScene]
 }
 

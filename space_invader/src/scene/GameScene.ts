@@ -133,35 +133,43 @@ export default class GameScene extends Phaser.Scene {
         this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
 
-        const setDeviceOrientation = (e:any) => {
-            const x = <number>e.gamma
-            if (x >= -90 && x < -15) {
-                this.tilt = "left"
-                return;
-            }
+        const setDeviceOrientationListener = () => {
+            window.addEventListener("deviceorientation", (e) => {
+                const x = <number>e.gamma
 
-            if (x > 15 && x <= 90) {
-                this.tilt = "right"
-                return;
-            }
+                if (x >= -90 && x < -15) {
+                    this.tilt = "left"
+                    return;
+                }
 
-            this.tilt = null
+                if (x > 15 && x <= 90) {
+                    this.tilt = "right"
+                    return;
+                }
+
+                this.tilt = null
+            }, true)
         }
 
         if (this.controlType === 'tilt') {
-            if (typeof (DeviceMotionEvent as any).requestPermission === 'function') {
-                (DeviceMotionEvent as any).requestPermission()
-                .then((response: any) => {
-                    if (response == 'granted') {
-                        window.addEventListener("devicemotion", (e) => {
-                            setDeviceOrientation(e)
-                        });
-                    }
+
+            if (typeof (DeviceMotionEvent) !== "undefined" && typeof (DeviceMotionEvent as any)?.requestPermission === 'function') {
+                this.scene.pause();
+                const {width, height} = this.scale;
+                const permissionButton = this.add.dom(width / 2, height / 2).createFromHTML("<button>Request Screen Orientation Permission</button>")
+                permissionButton.addListener('click');
+                permissionButton.on('click', () => {
+                    (DeviceMotionEvent as any).requestPermission()
+                        .then((response: 'granted') => {
+                            if (response == 'granted') {
+                                this.scene.resume();
+                                setDeviceOrientationListener()
+                                permissionButton.destroy()
+                            }
+                        }).catch(console.error)
                 })
             } else {
-                window.addEventListener("deviceorientation", (e) => {
-                    setDeviceOrientation(e)
-                }, true);
+                setDeviceOrientationListener()
             }
         }
     }
