@@ -8,6 +8,7 @@ export default class TitleScene extends Phaser.Scene {
     private mergedInput?: MergedInput;
     private controller1?: InputPlayer | any;
     private player?: Player
+    private bgm?: Phaser.Sound.BaseSound
 
     constructor() {
         super('title')
@@ -18,6 +19,8 @@ export default class TitleScene extends Phaser.Scene {
         this.load.image('logo', 'assets/logo/logo.png')
         this.load.image('player', 'assets/character/player/playerShip1_blue.png')
         this.load.image('fire', 'assets/effect/fire03.png')
+        this.load.audio('bgm', 'sound/hofman-138068.mp3');
+
         this.load.scenePlugin('mergedInput', MergedInput);
     }
 
@@ -36,6 +39,9 @@ export default class TitleScene extends Phaser.Scene {
 
         this.player = new Player(this)
         this.player.addJetEngine()
+
+        this.bgm = this.sound.add('bgm');
+        if(!this.bgm?.isPlaying) this.bgm?.play()
     }
 
     update() {
@@ -44,10 +50,12 @@ export default class TitleScene extends Phaser.Scene {
 
         if (this.controller1?.direction.LEFT || this.controller1?.direction.RIGHT || this.controller1?.buttons.B0 > 0) {
             this.scene.start('game');
+            this.bgm?.stop()
         }
 
         if (this.input.pointer1.isDown) {
             this.scene.start('game');
+            this.bgm?.stop()
         }
 
     }

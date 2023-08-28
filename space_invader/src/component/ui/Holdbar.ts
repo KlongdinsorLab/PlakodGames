@@ -21,6 +21,8 @@ export default class Holdbar {
     private holdButtonDuration = 0
     private isHoldbarReducing = false
     private holdbar: Phaser.GameObjects.Rectangle
+    private chargingSound?: Phaser.Sound.BaseSound
+    private chargedSound?: Phaser.Sound.BaseSound
 
     constructor(scene: Phaser.Scene, division: number, index: number) {
         this.scene = scene
@@ -36,6 +38,8 @@ export default class Holdbar {
             duration: 0,
             ease: 'sine.inout'
         });
+        this.chargingSound = this.scene.sound.add('chargingSound')
+        this.chargedSound = this.scene.sound.add('chargedSound')
     }
 
     getWidth(): number {
@@ -75,15 +79,18 @@ export default class Holdbar {
     charge(delta: number) {
         this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         this.holdbar.width += this.getHoldWithIncrement(delta)
+        if(!this.chargingSound?.isPlaying) this.chargingSound?.play()
     }
 
     release(delta: number) {
         this.holdbar.width -= this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
         this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
+        if(!this.chargingSound?.isPaused) this.chargingSound?.pause()
     }
 
     setFullCharge() {
         this.holdbar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
+        if(!this.chargedSound?.isPlaying) this.chargedSound?.play()
     }
 
     reset() {

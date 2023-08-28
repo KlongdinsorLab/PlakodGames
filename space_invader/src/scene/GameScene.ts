@@ -53,6 +53,8 @@ export default class GameScene extends Phaser.Scene {
 
     private gameover?: Phaser.GameObjects.Image;
 
+    private meteorDestroyedSound?: Phaser.Sound.BaseSound;
+
     constructor() {
         super({key: 'game'})
     }
@@ -69,6 +71,12 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
         this.load.image('explosion', 'assets/effect/explosionYellow.png')
         this.load.image('gameover', 'assets/logo/gameover.png')
+
+        this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3');
+        this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
+        this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
+        this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
+
         this.load.scenePlugin('mergedInput', MergedInput);
     }
 
@@ -172,6 +180,8 @@ export default class GameScene extends Phaser.Scene {
                 setDeviceOrientationListener()
             }
         }
+
+        this.meteorDestroyedSound = this.sound.add('meteorDestroyedSound')
     }
 
     update(_: number, delta: number) {
@@ -263,6 +273,7 @@ export default class GameScene extends Phaser.Scene {
                             this.explosionEmitter.stop()
                         })
                         _meteor.destroy();
+                        this.meteorDestroyedSound?.play()
                         this.score.add(DESTROY_METEOR_SCORE)
                     })
                 })
