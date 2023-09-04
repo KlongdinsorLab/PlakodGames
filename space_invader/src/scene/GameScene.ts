@@ -55,6 +55,10 @@ export default class GameScene extends Phaser.Scene {
 
     private meteorDestroyedSound?: Phaser.Sound.BaseSound;
 
+    private up!: Phaser.GameObjects.Image;
+    private down!: Phaser.GameObjects.Image;
+
+
     constructor() {
         super({key: 'game'})
     }
@@ -71,6 +75,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
         this.load.image('explosion', 'assets/effect/explosionYellow.png')
         this.load.image('gameover', 'assets/logo/gameover.png')
+        this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
         this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3');
         this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
@@ -99,9 +104,11 @@ export default class GameScene extends Phaser.Scene {
         // https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
         this.mergedInput?.defineKey(0, 'LEFT', 'LEFT')
             .defineKey(0, 'RIGHT', 'RIGHT')
-            .defineKey(0, 'B0', 'SPACE')
-            .defineKey(0, 'B1', 'CTRL')
-            .defineKey(0, 'B2', 'ALT')
+            .defineKey(0, 'B0', 'SPACE') // A
+//            .defineKey(0, 'B1', 'CTRL')
+//            .defineKey(0, 'B2', 'ALT')
+            .defineKey(0, 'B1', 'UP') // B
+            .defineKey(0, 'B2', 'DOWN') // X
 
         const charge = this.add.particles('charge')
         this.chargeEmitter = charge.createEmitter({
@@ -140,6 +147,33 @@ export default class GameScene extends Phaser.Scene {
 
         this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
+
+        this.down = this.add.image(0, SCREEN_HEIGHT - MARGIN/2 - HOLD_BAR_HEIGHT, 'chevron').setOrigin(0, 1)
+        this.down.setScale(0.05)
+        this.tweens.add({
+            targets: this.down,
+            y: SCREEN_HEIGHT - MARGIN/2,
+            duration: 500,
+            repeat: -1,
+            hold: 250,
+            repeatDelay: 500,
+            ease: 'bounce.out'
+        });
+        this.down.setVisible(false)
+
+        this.up = this.add.image(0, SCREEN_HEIGHT - MARGIN/2, 'chevron').setOrigin(1, 0)
+        this.up.setScale(0.05)
+        this.up.setRotation(Math.PI)
+        this.tweens.add({
+            targets: this.up,
+            y: SCREEN_HEIGHT - HOLD_BAR_HEIGHT - MARGIN/2,
+            duration: 500,
+            repeat: -1,
+            hold: 250,
+            repeatDelay: 500,
+            ease: 'bounce.out'
+        });
+        this.up.setVisible(false)
 
         const setDeviceOrientationListener = () => {
             window.addEventListener("deviceorientation", (e) => {
@@ -210,6 +244,18 @@ export default class GameScene extends Phaser.Scene {
 
         if (this.controller1?.direction.RIGHT) {
             this.player.moveRight(delta)
+        }
+
+        if (this.controller1?.buttons.B1 > 0){
+            this.up.setVisible(true)
+        } else {
+            this.up.setVisible(false)
+        }
+
+        if (this.controller1?.buttons.B2 > 0){
+            this.down.setVisible(this.controller1?.buttons.B2 > 0)
+        } else {
+            this.down.setVisible(false)
         }
 
         if (this.controller1?.buttons.B0 > 0) {
