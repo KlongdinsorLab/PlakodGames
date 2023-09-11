@@ -18,7 +18,7 @@ import {
     SCREEN_WIDTH
 } from "../config";
 import Player from "../component/player/Player"
-import HoldbarRegistry from "../component/ui/HoldbarRegistry";
+import InhaleGaugeRegistry from "../component/ui/InhaleGaugeRegistry";
 import MergedInput, {Player as PlayerInput} from 'phaser3-merged-input'
 import Score from "../component/ui/Score";
 import {SingleLaserFactory} from "../component/weapon/SingleLaserFactory"
@@ -34,7 +34,7 @@ export default class GameScene extends Phaser.Scene {
     private isReload = false;
     private isReloading = false;
 
-    private holdbars!: HoldbarRegistry;
+    private holdbars!: InhaleGaugeRegistry;
     private score!: Score;
 
     private chargeEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
@@ -55,8 +55,8 @@ export default class GameScene extends Phaser.Scene {
 
     private meteorDestroyedSound?: Phaser.Sound.BaseSound;
 
-    private up!: Phaser.GameObjects.Image;
-    private down!: Phaser.GameObjects.Image;
+//    private up!: Phaser.GameObjects;
+//    private down!: Phaser.GameObjects;
 
 
     constructor() {
@@ -136,7 +136,7 @@ export default class GameScene extends Phaser.Scene {
             .setOrigin(0, 1)
             .setAlpha(0.25);
 
-        this.holdbars = new HoldbarRegistry(this)
+        this.holdbars = new InhaleGaugeRegistry(this)
         this.holdbars.createbyDivision(1)
 
         this.reloadCountText = this.add.text(SCREEN_WIDTH, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
@@ -147,33 +147,6 @@ export default class GameScene extends Phaser.Scene {
 
         this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
-
-        this.down = this.add.image(0, SCREEN_HEIGHT - MARGIN/2 - HOLD_BAR_HEIGHT, 'chevron').setOrigin(0, 1)
-        this.down.setScale(0.05)
-        this.tweens.add({
-            targets: this.down,
-            y: SCREEN_HEIGHT - MARGIN/2,
-            duration: 500,
-            repeat: -1,
-            hold: 250,
-            repeatDelay: 500,
-            ease: 'bounce.out'
-        });
-        this.down.setVisible(false)
-
-        this.up = this.add.image(0, SCREEN_HEIGHT - MARGIN/2, 'chevron').setOrigin(1, 0)
-        this.up.setScale(0.05)
-        this.up.setRotation(Math.PI)
-        this.tweens.add({
-            targets: this.up,
-            y: SCREEN_HEIGHT - HOLD_BAR_HEIGHT - MARGIN/2,
-            duration: 500,
-            repeat: -1,
-            hold: 250,
-            repeatDelay: 500,
-            ease: 'bounce.out'
-        });
-        this.up.setVisible(false)
 
         const setDeviceOrientationListener = () => {
             window.addEventListener("deviceorientation", (e) => {
@@ -247,15 +220,15 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.controller1?.buttons.B1 > 0){
-            this.up.setVisible(true)
+            holdbar.showUp()
         } else {
-            this.up.setVisible(false)
+            holdbar.hideUp()
         }
 
         if (this.controller1?.buttons.B2 > 0){
-            this.down.setVisible(this.controller1?.buttons.B2 > 0)
+            holdbar.showDown()
         } else {
-            this.down.setVisible(false)
+            holdbar.hideDown()
         }
 
         if (this.controller1?.buttons.B0 > 0) {

@@ -1,6 +1,6 @@
-import Holdbar from "./Holdbar";
+import CircleInhaleGauge from "./CircleInhaleGauge";
 
-export default class HoldbarRegistry {
+export default class InhaleGaugeRegistry {
     
     private scene: Phaser.Scene
     private holdbars!: Phaser.GameObjects.GameObject[] | any[];
@@ -10,7 +10,7 @@ export default class HoldbarRegistry {
     }
 
     createbyDivision(division: number) {
-        this.holdbars = [...Array(division)].map((_, index: number) => new Holdbar(this.scene, division, index));
+        this.holdbars = [...Array(division)].map((_, index: number) => new CircleInhaleGauge(this.scene, division, index));
     }
 
     get(index: number): Holdbar {
