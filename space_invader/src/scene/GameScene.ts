@@ -1,19 +1,12 @@
 import Phaser from 'phaser'
 import {
     BULLET_COUNT,
-    DESTROY_METEOR_SCORE,
-//    GAME_TIME_LIMIT_MS,
-    HIT_METEOR_SCORE,
     HOLD_BAR_BORDER,
     HOLD_BAR_HEIGHT,
     HOLD_DURATION_MS,
     LASER_FREQUENCY_MS,
     MARGIN,
-    METEOR_FREQUENCY_MS,
-    METEOR_SPEED,
-    METEOR_SPIN_SPEED,
-    PLAYER_HIT_DELAY_MS,
-    RELOAD_COUNT,
+    RELOAD_COUNT, // Move to weapon
     SCREEN_HEIGHT,
     SCREEN_WIDTH
 } from "../config";
@@ -24,38 +17,31 @@ import Score from "../component/ui/Score";
 import {SingleLaserFactory} from "../component/weapon/SingleLaserFactory"
 import SoundManager from "../component/sound/SoundManager"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
+import {MeteorFactory} from "../component/enemy/MeteorFactory";
 
 export default class GameScene extends Phaser.Scene {
 
     private background!: Phaser.GameObjects.TileSprite
-    private player: Player | any
+    private player!: Player
     private timer = 0;
-    private meteorTimer = 0;
-    private bulletCount = 0;
+    private bulletCount = 0; // TODO Move to SingleLaserFactory
     private isReload = false;
     private isReloading = false;
 
     private holdbars!: InhaleGaugeRegistry;
     private score!: Score;
 
-    private chargeEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
+    private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter; // TODO Move
     private reloadCount = RELOAD_COUNT;
     private reloadCountText!: Phaser.GameObjects.Text;
-    private isHit = false;
-    private meteors: Phaser.Physics.Arcade.Body[] | Phaser.GameObjects.GameObject[] | any[] = [];
-    private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter | any;
 
     private mergedInput?: MergedInput;
     private controller1?: PlayerInput | any;
 //    private timerText!: Phaser.GameObjects.Text;
-
     private gameover?: Phaser.GameObjects.Image;
 
-    private meteorDestroyedSound?: Phaser.Sound.BaseSound;
-
-//    private up!: Phaser.GameObjects;
-//    private down!: Phaser.GameObjects;
-
+    private singleLaserFactory!: SingleLaserFactory
+    private meteorFactory!: MeteorFactory
 
     constructor() {
         super({key: 'game'})
@@ -96,8 +82,8 @@ export default class GameScene extends Phaser.Scene {
         this.mergedInput?.defineKey(0, 'LEFT', 'LEFT')
             .defineKey(0, 'RIGHT', 'RIGHT')
             .defineKey(0, 'B0', 'SPACE') // A
-//            .defineKey(0, 'B1', 'CTRL')
-//            .defineKey(0, 'B2', 'ALT')
+            //            .defineKey(0, 'B1', 'CTRL')
+            //            .defineKey(0, 'B2', 'ALT')
             .defineKey(0, 'B1', 'UP') // B
             .defineKey(0, 'B2', 'DOWN') // X
 
@@ -108,19 +94,10 @@ export default class GameScene extends Phaser.Scene {
             blendMode: Phaser.BlendModes.ADD,
         })
 
-        const explosion = this.add.particles('explosion')
-        this.explosionEmitter = explosion.createEmitter({
-            speed: 80,
-            scale: 0.6,
-            blendMode: Phaser.BlendModes.ADD,
-            gravityY: -20,
-        })
-        this.explosionEmitter.active = false
-
         this.player = new Player(this)
         this.player.addJetEngine()
 
-        this.chargeEmitter.startFollow(this.player.getPlayer())
+        this.chargeEmitter.startFollow(this.player.getBody())
         this.chargeEmitter.active = false
 
         this.add.rectangle(0, SCREEN_HEIGHT, width, HOLD_BAR_HEIGHT + (MARGIN * 2), 0x000000)
@@ -139,9 +116,9 @@ export default class GameScene extends Phaser.Scene {
         this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
 
-        this.meteorDestroyedSound = this.sound.add('meteorDestroyedSound')
-
         new SoundManager(this).createSoundToggle(0, 0)
+        this.meteorFactory = new MeteorFactory()
+        this.singleLaserFactory = new SingleLaserFactory()
     }
 
     update(_: number, delta: number) {
@@ -172,13 +149,13 @@ export default class GameScene extends Phaser.Scene {
             this.player.moveRight(delta)
         }
 
-        if (this.controller1?.buttons.B1 > 0){
+        if (this.controller1?.buttons.B1 > 0) {
             holdbar.showUp()
         } else {
             holdbar.hideUp()
         }
 
-        if (this.controller1?.buttons.B2 > 0){
+        if (this.controller1?.buttons.B2 > 0) {
             holdbar.showDown()
         } else {
             holdbar.hideDown()
@@ -201,41 +178,21 @@ export default class GameScene extends Phaser.Scene {
         // scroll the background
         this.background.tilePositionY -= 1
 
-        this.meteorTimer += delta;
-        let meteor;
-        while (this.meteorTimer > METEOR_FREQUENCY_MS) {
-            this.meteorTimer -= METEOR_FREQUENCY_MS;
-            meteor = this.createRandomMeteor()
-            this.meteors.forEach(meteor => {
-                if (!meteor.active) {
-                    this.meteors.splice(this.meteors.indexOf(meteor), 1)
-                    return
-                }
-            })
-            this.meteors.push(meteor)
-        }
+        this.meteorFactory.createByTime(this, this.player, this.score, delta)
 
+        // TODO Move to SingleLaserFactory
         this.timer += delta;
         while (this.timer > LASER_FREQUENCY_MS) {
             this.timer -= LASER_FREQUENCY_MS;
             if (this.bulletCount <= 0) return;
-            const laser = new SingleLaserFactory().createLaser(this, this.player)
+            const laser = this.singleLaserFactory.createLaser(this, this.player)
             const laserBodies = laser.shoot()
             this.bulletCount -= 1;
-            if (!Array.isArray(this.meteors) || this.meteors.length === 0) continue;
-            this.meteors.forEach(meteor => {
+            const meteors = this.meteorFactory.getMeteors()
+            if (!Array.isArray(meteors) || meteors.length === 0) continue;
+            meteors.forEach(meteor => {
                 laserBodies.forEach(laserBody => {
-                    this.physics.add.overlap(laserBody, meteor, (_, _meteor) => {
-                        this.explosionEmitter.startFollow(_meteor)
-                        this.explosionEmitter.active = true
-                        this.explosionEmitter.start()
-                        this.time.delayedCall(200, () => {
-                            this.explosionEmitter.stop()
-                        })
-                        _meteor.destroy();
-                        new SoundManager(this).play(this.meteorDestroyedSound!, true)
-                        this.score.add(DESTROY_METEOR_SCORE)
-                    })
+                    this.physics.add.overlap(laserBody, meteor.getBody(), () => meteor.destroy())
                 })
             })
             this.time.delayedCall(5000, () => {
@@ -287,38 +244,6 @@ export default class GameScene extends Phaser.Scene {
         }
 
     }
-
-    createRandomMeteor(): Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any {
-        const imageNumber = Math.floor(Math.random() * 4) + 1
-        const startingX = Math.floor(Math.random() * SCREEN_WIDTH)
-        const meteor = this.physics.add.image(startingX, -MARGIN, `meteor${imageNumber}`)
-        meteor.setVelocityY(METEOR_SPEED)
-        const velocityX = Math.floor(Math.random() * (METEOR_SPEED / 3) - (METEOR_SPEED / 6));
-        meteor.setVelocityX(velocityX)
-        meteor.setAngularVelocity(METEOR_SPIN_SPEED);
-
-        this.physics.add.overlap(this.player.getPlayer(), meteor, (_, _meteor) => {
-            if (this.isHit) return;
-            this.isHit = true
-            this.player.damaged()
-            this.score.add(HIT_METEOR_SCORE)
-            this.time.delayedCall(PLAYER_HIT_DELAY_MS, () => {
-                this.isHit = false
-                this.player.recovered()
-            })
-
-        })
-        this.time.delayedCall(5000, () => {
-            meteor.destroy()
-        })
-        return meteor;
-    }
 }
 
-// https://labs.phaser.io/view.html?src=src/physics/arcade/disable%20collider.js
-
-// add credit to (Kenney or www.kenney.nl) for graphics
-
-// TODO crete player, bullet, chargebar, emermy class
-// Player asset, render(), shoot(), moveLeft(), moveRight(),
 // TODO create test

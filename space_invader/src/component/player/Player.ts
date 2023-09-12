@@ -3,8 +3,9 @@ import {FULLCHARGE_ANIMATION_MS, FULLCHARGE_SCALE, MARGIN, PLAYER_SPEED, PLAYER_
 export default class Player {
 
     private scene: Phaser.Scene
-    private player!: Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any
+    private player!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
     private playerHitTweens!: any;
+    private isHit = false
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene
@@ -69,7 +70,15 @@ export default class Player {
         return this.player.x < x
     }
 
-    getPlayer(): Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any {
+    getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
         return this.player
+    }
+
+    getIsHit(): boolean {
+        return this.isHit
+    }
+
+    setIsHit(isHit: boolean): void {
+        this.isHit = isHit
     }
 }
