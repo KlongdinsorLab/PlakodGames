@@ -1,7 +1,7 @@
 import {Laser} from "./Laser";
-import Player from "../player/Player"
-import {LASER_SPEED} from "../../config"
-import SoundManager from "../sound/SoundManager"
+import Player from "component/player/Player"
+import {LASER_SPEED} from "config"
+import SoundManager from "component/sound/SoundManager"
 
 export class SingleLaser extends Laser {
     

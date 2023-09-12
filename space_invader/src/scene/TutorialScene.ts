@@ -82,6 +82,3 @@ export default class TutorialScene extends Phaser.Scene {
         // TODO
     }
 }
-
-// TODO crete emermy class
-// TODO create test

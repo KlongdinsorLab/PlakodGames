@@ -1,6 +1,6 @@
 import { Enemy } from "./Enemy"
-import Player from "../player/Player"
-import Score from "../ui/Score"
+import Player from "component/player/Player"
+import Score from "component/ui/Score"
 
 import {
     DESTROY_METEOR_SCORE,

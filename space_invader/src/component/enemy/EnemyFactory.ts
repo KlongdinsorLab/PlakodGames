@@ -1,5 +1,5 @@
-import Player from "../player/Player"
-import Score from "../ui/Score"
+import Player from "component/player/Player"
+import Score from "component/ui/Score"
 import { Enemy } from "./Enemy"
 
 export abstract class EnemyFactory {

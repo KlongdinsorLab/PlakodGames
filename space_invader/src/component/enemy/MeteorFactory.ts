@@ -1,8 +1,8 @@
-import { METEOR_FREQUENCY_MS} from "../../config";
+import { METEOR_FREQUENCY_MS} from "config";
 import {EnemyFactory} from "./EnemyFactory";
 import {Meteor} from "./Meteor";
-import Player from "../player/Player"
-import Score from "../ui/Score"
+import Player from "component/player/Player"
+import Score from "component/ui/Score"
 
 export class MeteorFactory extends EnemyFactory {
     

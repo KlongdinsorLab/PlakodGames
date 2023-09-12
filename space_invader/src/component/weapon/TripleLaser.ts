@@ -1,6 +1,6 @@
 import { Laser } from "./Laser";
-import Player from "../player/Player"
-import {LASER_SPEED,TRIPLE_LASER_X_SPEED, MARGIN} from "../../config"
+import Player from "component/player/Player"
+import {LASER_SPEED,TRIPLE_LASER_X_SPEED, MARGIN} from "config"
 
 export class TripleLaser extends Laser {
 

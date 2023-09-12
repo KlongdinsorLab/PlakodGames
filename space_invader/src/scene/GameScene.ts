@@ -9,34 +9,28 @@ import {
     RELOAD_COUNT, // Move to weapon
     SCREEN_HEIGHT,
     SCREEN_WIDTH
-} from "../config";
-import Player from "../component/player/Player"
-import InhaleGaugeRegistry from "../component/ui/InhaleGaugeRegistry";
+} from "config";
+import Player from "component/player/Player"
+import InhaleGaugeRegistry from "component/ui/InhaleGaugeRegistry";
 import MergedInput, {Player as PlayerInput} from 'phaser3-merged-input'
-import Score from "../component/ui/Score";
-import {SingleLaserFactory} from "../component/weapon/SingleLaserFactory"
-import SoundManager from "../component/sound/SoundManager"
+import Score from "component/ui/Score";
+import {SingleLaserFactory} from "component/weapon/SingleLaserFactory"
+import SoundManager from "component/sound/SoundManager"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
-import {MeteorFactory} from "../component/enemy/MeteorFactory";
+import {MeteorFactory} from "component/enemy/MeteorFactory";
 
 export default class GameScene extends Phaser.Scene {
 
     private background!: Phaser.GameObjects.TileSprite
     private player!: Player
-    private timer = 0;
-    private bulletCount = 0; // TODO Move to SingleLaserFactory
-    private isReload = false;
-    private isReloading = false;
-
-    private holdbars!: InhaleGaugeRegistry;
+    private gaugeRegistry!: InhaleGaugeRegistry;
     private score!: Score;
 
-    private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter; // TODO Move
     private reloadCount = RELOAD_COUNT;
     private reloadCountText!: Phaser.GameObjects.Text;
 
     private mergedInput?: MergedInput;
-    private controller1?: PlayerInput | any;
+    private controller1!: PlayerInput | undefined;
 //    private timerText!: Phaser.GameObjects.Text;
     private gameover?: Phaser.GameObjects.Image;
 
@@ -70,9 +64,9 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-//        const queryString = window.location.search;
-//        const urlParams = new URLSearchParams(queryString);
-//        this.controlType = <'tilt' | 'touch'>urlParams.get('control')
+        // const queryString = window.location.search;
+        // const urlParams = new URLSearchParams(queryString);
+        // this.controlType = <'tilt' | 'touch'>urlParams.get('control')
 
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
@@ -87,26 +81,20 @@ export default class GameScene extends Phaser.Scene {
             .defineKey(0, 'B1', 'UP') // B
             .defineKey(0, 'B2', 'DOWN') // X
 
-        const charge = this.add.particles('charge')
-        this.chargeEmitter = charge.createEmitter({
-            speed: 64,
-            scale: 0.1,
-            blendMode: Phaser.BlendModes.ADD,
-        })
-
         this.player = new Player(this)
         this.player.addJetEngine()
 
-        this.chargeEmitter.startFollow(this.player.getBody())
-        this.chargeEmitter.active = false
+        this.player.addChargeParticle()
 
+        // TODO Move to UI
         this.add.rectangle(0, SCREEN_HEIGHT, width, HOLD_BAR_HEIGHT + (MARGIN * 2), 0x000000)
             .setOrigin(0, 1)
             .setAlpha(0.25);
 
-        this.holdbars = new InhaleGaugeRegistry(this)
-        this.holdbars.createbyDivision(1)
+        this.gaugeRegistry = new InhaleGaugeRegistry(this)
+        this.gaugeRegistry.createbyDivision(1)
 
+        // TODO move to UI
         this.reloadCountText = this.add.text(SCREEN_WIDTH, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
             .setOrigin(1, 1)
 
@@ -133,13 +121,16 @@ export default class GameScene extends Phaser.Scene {
 //        }
 //        const pad = this.input.gamepad.gamepads[0]
 
-        const holdbar = this.holdbars?.get(0)
+        const gauge = this.gaugeRegistry?.get(0)
 
 //        const timeLeft = Math.floor((GAME_TIME_LIMIT_MS - time) / 1000)
 //        this.timerText.text = `time: ${timeLeft}`
 //        if (timeLeft <= 0) {
 //            this.scene.pause()
 //        }
+
+        // TODO move to controller class
+        if(!this.controller1) return // TODO handle no controller
 
         if (this.controller1?.direction.LEFT) {
             this.player.moveLeft(delta)
@@ -150,19 +141,19 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.controller1?.buttons.B1 > 0) {
-            holdbar.showUp()
+            gauge.showUp()
         } else {
-            holdbar.hideUp()
+            gauge.hideUp()
         }
 
         if (this.controller1?.buttons.B2 > 0) {
-            holdbar.showDown()
+            gauge.showDown()
         } else {
-            holdbar.hideDown()
+            gauge.hideDown()
         }
 
         if (this.controller1?.buttons.B0 > 0) {
-            holdbar.hold(delta)
+            gauge.hold(delta)
         }
 
         if (this.input.pointer1.isDown) {
@@ -180,48 +171,25 @@ export default class GameScene extends Phaser.Scene {
 
         this.meteorFactory.createByTime(this, this.player, this.score, delta)
 
-        // TODO Move to SingleLaserFactory
-        this.timer += delta;
-        while (this.timer > LASER_FREQUENCY_MS) {
-            this.timer -= LASER_FREQUENCY_MS;
-            if (this.bulletCount <= 0) return;
-            const laser = this.singleLaserFactory.createLaser(this, this.player)
-            const laserBodies = laser.shoot()
-            this.bulletCount -= 1;
-            const meteors = this.meteorFactory.getMeteors()
-            if (!Array.isArray(meteors) || meteors.length === 0) continue;
-            meteors.forEach(meteor => {
-                laserBodies.forEach(laserBody => {
-                    this.physics.add.overlap(laserBody, meteor.getBody(), () => meteor.destroy())
-                })
-            })
-            this.time.delayedCall(5000, () => {
-                laser.destroy()
-            })
-        }
+        this.singleLaserFactory.createByTime(this, this.player, this.meteorFactory.getMeteors(), delta)
 
         if (this.reloadCount <= 0) {
-            holdbar.deplete()
+            gauge.deplete()
             return;
         }
 
-        if (holdbar.getDuratation() > HOLD_DURATION_MS && this.controller1?.buttons.B0 > 0) {
-            this.isReload = true
-            this.isReloading = false
-            this.chargeEmitter.active = true
-            holdbar.setFullCharge()
-        } else if (holdbar.getDuratation() <= HOLD_DURATION_MS && holdbar.getDuratation() !== 0 && this.controller1?.buttons.B0 > 0) {
-            this.isReloading = true
-            this.chargeEmitter.active = true
-            this.chargeEmitter.start()
-            holdbar.charge(delta)
+        if (gauge.getDuratation() > HOLD_DURATION_MS && this.controller1?.buttons.B0 > 0) {
+            this.player.startReload()
+            gauge.setFullCharge()
+        } else if (gauge.getDuratation() <= HOLD_DURATION_MS && gauge.getDuratation() !== 0 && this.controller1?.buttons.B0 > 0) {
+            this.player.charge()
+            gauge.charge(delta)
         }
 
-        if (this.isReload && !(this.controller1?.buttons.B0 > 0)) {
-            this.bulletCount = BULLET_COUNT
-            this.isReload = false
-            this.chargeEmitter.stop()
-            holdbar.reset()
+        if (this.player.getIsReload() && !(this.controller1?.buttons.B0 > 0)) {
+            this.singleLaserFactory.reset()
+            this.player.reloadReset()
+            gauge.reset()
             this.reloadCount -= 1
             this.reloadCountText.text = `${this.reloadCount}`
             if (this.reloadCount === 0) {
@@ -233,14 +201,13 @@ export default class GameScene extends Phaser.Scene {
 
         }
 
-        if (this.isReloading && !(this.controller1?.buttons.B0 > 0)) {
-            this.isReloading = false
-            this.chargeEmitter.stop()
-            holdbar.resetting()
+        if (this.player.getIsReloading() && !(this.controller1?.buttons.B0 > 0)) {
+            this.player.reloadResetting()
+            gauge.resetting()
         }
 
-        if (holdbar.isReducing()) {
-            holdbar.release(delta)
+        if (gauge.isReducing()) {
+            gauge.release(delta)
         }
 
     }

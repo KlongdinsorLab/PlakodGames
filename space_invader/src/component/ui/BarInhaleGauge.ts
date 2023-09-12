@@ -13,10 +13,10 @@ import {
     SPACE_BETWEEN_MARGIN_SCALE,
     MARGIN,
     SCREEN_HEIGHT,
-} from "../../config";
+} from "config";
 
 import InhaleGauge from "./InhaleGauge"
-import SoundManager from "../sound/SoundManager"
+import SoundManager from "component/sound/SoundManager"
 
 export default class BarInhaleGauge extends InhaleGauge {
 

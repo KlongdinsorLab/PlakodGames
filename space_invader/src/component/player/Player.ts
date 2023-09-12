@@ -1,4 +1,4 @@
-import {FULLCHARGE_ANIMATION_MS, FULLCHARGE_SCALE, MARGIN, PLAYER_SPEED, PLAYER_START_MARGIN} from "../../config";
+import {FULLCHARGE_ANIMATION_MS, FULLCHARGE_SCALE, MARGIN, PLAYER_SPEED, PLAYER_START_MARGIN} from "config";
 
 export default class Player {
 
@@ -6,6 +6,9 @@ export default class Player {
     private player!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
     private playerHitTweens!: any;
     private isHit = false
+    private isReload = false
+    private isReloading = false
+    private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene
@@ -23,10 +26,6 @@ export default class Player {
         this.player.setCollideWorldBounds(true)
     }
 
-    create(): Phaser.Physics.Arcade.Body | Phaser.GameObjects.GameObject | any {
-
-    }
-
     addJetEngine() {
         const jetEngine = this.scene.add.particles('fire')
         const jetEngineEmitter = jetEngine.createEmitter({
@@ -36,6 +35,17 @@ export default class Player {
             blendMode: Phaser.BlendModes.ADD,
         })
         jetEngineEmitter.startFollow(this.player, 0, MARGIN)
+    }
+
+    addChargeParticle() {
+        const charge = this.scene.add.particles('charge')
+        this.chargeEmitter = charge.createEmitter({
+            speed: 64,
+            scale: 0.1,
+            blendMode: Phaser.BlendModes.ADD,
+        })
+        this.chargeEmitter.startFollow(this.player)
+        this.chargeEmitter.active = false
     }
 
     moveLeft(delta: number): void {
@@ -49,6 +59,12 @@ export default class Player {
 
     getLaserLocation(): { x: number, y: number } {
         return {x: this.player.x, y: this.player.y - 20}
+    }
+
+    charge(): void {
+        this.isReloading = true
+        this.chargeEmitter.active = true
+        this.chargeEmitter.start()
     }
 
     damaged(): void {
@@ -81,4 +97,29 @@ export default class Player {
     setIsHit(isHit: boolean): void {
         this.isHit = isHit
     }
+
+    startReload(): void {
+        this.isReload = true
+        this.isReloading = false
+        if(this.chargeEmitter) this.chargeEmitter.active = true
+    }
+
+    reloadReset(): void {
+        this.isReload = false
+        this.chargeEmitter.stop()
+    }
+
+    reloadResetting(): void {
+        this.isReloading = false
+        this.chargeEmitter.stop()
+    }
+
+    getIsReload(): boolean {
+        return this.isReload
+    }
+
+    getIsReloading(): boolean {
+        return this.isReloading
+    }
+
 }

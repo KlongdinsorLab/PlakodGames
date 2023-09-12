@@ -1,5 +1,5 @@
-import Player from "../player/Player"
-import Score from "../ui/Score"
+import Player from "component/player/Player"
+import Score from "component/ui/Score"
 
 export abstract class Enemy {
 
@@ -20,4 +20,5 @@ export abstract class Enemy {
     abstract move(): void
     abstract attack(): void
     abstract destroy(): void
+    abstract getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 }

@@ -13,10 +13,10 @@ import {
     CIRCLE_GAUGE_RADUIS,
     CIRCLE_OVER_GAUGE_RADUIS,
     CIRCLE_GAUGE_SHAKE_X,
-} from "../../config";
+} from "config";
 
 import InhaleGauge from "./InhaleGauge"
-import SoundManager from "../sound/SoundManager"
+import SoundManager from "component/sound/SoundManager"
 
 export default class CircleInhaleGauge extends InhaleGauge {
     

@@ -1,8 +1,8 @@
 import Phaser from 'phaser'
 import MergedInput, {Player as InputPlayer} from 'phaser3-merged-input'
-import Player from "../component/player/Player"
-import {START_TEXT} from "../config";
-import SoundManager from "../component/sound/SoundManager"
+import Player from "component/player/Player"
+import {START_TEXT} from "config";
+import SoundManager from "component/sound/SoundManager"
 
 export default class TitleScene extends Phaser.Scene {
     private background!: Phaser.GameObjects.TileSprite

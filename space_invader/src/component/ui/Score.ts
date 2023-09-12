@@ -1,4 +1,4 @@
-import { MARGIN } from "../../config";
+import { MARGIN } from "config";
 
 export default class Score {
     
