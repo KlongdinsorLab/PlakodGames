@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import MergedInput, {Player as InputPlayer} from 'phaser3-merged-input'
 import Player from "../component/player/Player"
 import {START_TEXT} from "../config";
+import SoundManager from "../component/sound/SoundManager"
 
 export default class TitleScene extends Phaser.Scene {
     private background!: Phaser.GameObjects.TileSprite
@@ -41,7 +42,9 @@ export default class TitleScene extends Phaser.Scene {
         this.player.addJetEngine()
 
         this.bgm = this.sound.add('bgm');
-        if(!this.bgm?.isPlaying) this.bgm?.play()
+        const soundManager = new SoundManager(this)
+        soundManager.init(this)
+        soundManager.play(this.bgm)
     }
 
     update() {
@@ -50,12 +53,12 @@ export default class TitleScene extends Phaser.Scene {
 
         if (this.controller1?.direction.LEFT || this.controller1?.direction.RIGHT || this.controller1?.buttons.B0 > 0) {
             this.scene.start('game');
-            this.bgm?.stop()
+            new SoundManager(this).stop(this.bgm)
         }
 
         if (this.input.pointer1.isDown) {
             this.scene.start('game');
-            this.bgm?.stop()
+            new SoundManager(this).stop(this.bgm)
         }
 
     }

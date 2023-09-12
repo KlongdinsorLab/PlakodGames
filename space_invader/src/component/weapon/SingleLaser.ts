@@ -1,6 +1,7 @@
 import {Laser} from "./Laser";
 import Player from "../player/Player"
 import {LASER_SPEED} from "../../config"
+import SoundManager from "../sound/SoundManager"
 
 export class SingleLaser extends Laser {
     
@@ -19,7 +20,7 @@ export class SingleLaser extends Laser {
         const {x, y} = this.player.getLaserLocation()
         this.laser = this.scene.physics.add.image(x, y, 'laser')
         this.laser.setVelocityY(-1 * LASER_SPEED)
-        if(!this.shootSound?.isPlaying) this.shootSound?.play()
+        new SoundManager(this.scene).play(this.shootSound)
         return [this.laser]
     }
 

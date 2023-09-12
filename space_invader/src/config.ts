@@ -20,6 +20,7 @@ export const HOLDBAR_REDUCING_RATIO = 0.5
 export const CIRCLE_GAUGE_MARGIN = 68
 export const CIRCLE_GAUGE_RADUIS = 56
 export const CIRCLE_OVER_GAUGE_RADUIS = 40
+export const CIRCLE_GAUGE_SHAKE_X = 8
 export const SPACE_BETWEEN_MARGIN_SCALE = 0.5
 export const FULLCHARGE_SCALE = 1.12
 export const FULLCHARGE_ANIMATION_MS = 300

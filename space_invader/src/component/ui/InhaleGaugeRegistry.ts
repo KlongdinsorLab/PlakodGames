@@ -1,4 +1,6 @@
 import CircleInhaleGauge from "./CircleInhaleGauge";
+//import BarInhaleGauge from "./BarInhaleGauge";
+
 
 export default class InhaleGaugeRegistry {
     

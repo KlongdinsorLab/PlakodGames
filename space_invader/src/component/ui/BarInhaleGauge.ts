@@ -17,11 +17,15 @@ import {
 } from "../../config";
 
 import InhaleGauge from "./InhaleGauge"
+import SoundManager from "../sound/SoundManager"
 
 export default class BarInhaleGauge extends InhaleGauge {
 
+    private soundManager: SoundManager
+
     constructor(scene: Phaser.Scene, division: number, index: number) {
         super(scene, division, index)
+        this.soundManager = new SoundManager(scene)
     }
     
     createGauge(index: number): void {
@@ -103,18 +107,18 @@ export default class BarInhaleGauge extends InhaleGauge {
     charge(delta: number) {
         this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         this.gauge.width += this.getHoldWithIncrement(delta)
-        if(!this.chargingSound?.isPlaying) this.chargingSound?.play()
+        this.soundManager.play(this.chargingSound)
     }
 
     release(delta: number) {
         this.gauge.width -= this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
         this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
-        if(!this.chargingSound?.isPaused) this.chargingSound?.pause()
+        this.soundManager.pause(this.chargingSound)
     }
 
     setFullCharge() {
         this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-        if(!this.chargedSound?.isPlaying) this.chargedSound?.play()
+        this.soundManager.play(this.chargedSound)
     }
 
     reset() {

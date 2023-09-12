@@ -12,15 +12,30 @@ import {
     CIRCLE_GAUGE_MARGIN,
     CIRCLE_GAUGE_RADUIS,
     CIRCLE_OVER_GAUGE_RADUIS,
+    CIRCLE_GAUGE_SHAKE_X,
     MARGIN,
 } from "../../config";
 
 import InhaleGauge from "./InhaleGauge"
+import SoundManager from "../sound/SoundManager"
 
 export default class CircleInhaleGauge extends InhaleGauge {
     
+    private shake: Phase.Tween
+    private soundManager: SoundManager
+
     constructor(scene: Phaser.Scene, division: number, index: number) {
         super(scene, division, index)
+
+        this.shake = this.scene.tweens.add({
+            targets: this.gauge,
+            x: this.gauge.x + CIRCLE_GAUGE_SHAKE_X,
+            duration: 30,
+            yoyo: true,
+            ease: 'sine.inout'
+        });
+        this.shake.pause()
+        this.soundManager = new SoundManager(scene)
     }
     
     createGauge(index: number): void {
@@ -68,19 +83,20 @@ export default class CircleInhaleGauge extends InhaleGauge {
 //        this.gauge.setFillStyle(HOLD_BAR_CHARGING_COLOR, 1)
 //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         this.gauge.radius += this.getHoldWithIncrement(delta)
-        if(!this.chargingSound?.isPlaying) this.chargingSound?.play()
+        this.soundManager.play(this.chargingSound)
     }
 
     release(delta: number) {
         this.gauge.radius -= this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
         this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
-        if(!this.chargingSound?.isPaused) this.chargingSound?.pause()
+        this.soundManager.pause(this.chargingSound)
     }
 
     setFullCharge() {
 //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
         this.gauge.setFillStyle(HOLD_BAR_CHARGED_COLOR, 1)
-        if(!this.chargedSound?.isPlaying) this.chargedSound?.play()
+        this.shake.play()
+        this.soundManager.play(this.chargedSound)
     }
 
     reset() {

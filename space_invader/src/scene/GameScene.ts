@@ -22,6 +22,7 @@ import InhaleGaugeRegistry from "../component/ui/InhaleGaugeRegistry";
 import MergedInput, {Player as PlayerInput} from 'phaser3-merged-input'
 import Score from "../component/ui/Score";
 import {SingleLaserFactory} from "../component/weapon/SingleLaserFactory"
+import SoundManager from "../component/sound/SoundManager"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 
 export default class GameScene extends Phaser.Scene {
@@ -47,9 +48,6 @@ export default class GameScene extends Phaser.Scene {
     private mergedInput?: MergedInput;
     private controller1?: PlayerInput | any;
 //    private timerText!: Phaser.GameObjects.Text;
-
-    private controlType?: 'tilt' | 'touch'
-    private tilt?: 'left' | 'right' | null
 
     private gameover?: Phaser.GameObjects.Image;
 
@@ -86,16 +84,9 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-//        const params = new Proxy(new URLSearchParams(window.location.search), {
-//            get: (searchParams, prop: string) => searchParams.get(prop),
-//        });
-
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        this.controlType = <'tilt' | 'touch'>urlParams.get('control')
-
-//      Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-//        console.log(window.location.href)
+//        const queryString = window.location.search;
+//        const urlParams = new URLSearchParams(queryString);
+//        this.controlType = <'tilt' | 'touch'>urlParams.get('control')
 
         const {width, height} = this.scale
         this.background = this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0).setScrollFactor(0, 0)
@@ -148,47 +139,9 @@ export default class GameScene extends Phaser.Scene {
         this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
 
-        const setDeviceOrientationListener = () => {
-            window.addEventListener("deviceorientation", (e) => {
-                const x = <number>e.gamma
-
-                if (x >= -90 && x < -15) {
-                    this.tilt = "left"
-                    return;
-                }
-
-                if (x > 15 && x <= 90) {
-                    this.tilt = "right"
-                    return;
-                }
-
-                this.tilt = null
-            }, true)
-        }
-
-        if (this.controlType === 'tilt') {
-
-            if (typeof (DeviceMotionEvent) !== "undefined" && typeof (DeviceMotionEvent as any)?.requestPermission === 'function') {
-                this.scene.pause();
-                const {width, height} = this.scale;
-                const permissionButton = this.add.dom(width / 2, height / 2).createFromHTML("<button>Request Screen Orientation Permission</button>")
-                permissionButton.addListener('click');
-                permissionButton.on('click', () => {
-                    (DeviceMotionEvent as any).requestPermission()
-                        .then((response: 'granted') => {
-                            if (response == 'granted') {
-                                this.scene.resume();
-                                setDeviceOrientationListener()
-                                permissionButton.destroy()
-                            }
-                        }).catch(console.error)
-                })
-            } else {
-                setDeviceOrientationListener()
-            }
-        }
-
         this.meteorDestroyedSound = this.sound.add('meteorDestroyedSound')
+
+        new SoundManager(this).createSoundToggle(0, 0)
     }
 
     update(_: number, delta: number) {
@@ -235,25 +188,13 @@ export default class GameScene extends Phaser.Scene {
             holdbar.hold(delta)
         }
 
-        if (this.controlType === 'tilt') {
-            if(this.tilt === 'right') {
+        if (this.input.pointer1.isDown) {
+            const {x} = this.input.pointer1
+            if (this.player.isRightOf(x)) {
                 this.player.moveRight(delta)
             }
-
-            if(this.tilt === 'left') {
+            if (this.player.isLeftOf(x)) {
                 this.player.moveLeft(delta)
-            }
-        }
-
-        if (this.controlType === 'touch') {
-            if (this.input.pointer1.isDown) {
-                const {x} = this.input.pointer1
-                if (this.player.isRightOf(x)) {
-                    this.player.moveRight(delta)
-                }
-                if (this.player.isLeftOf(x)) {
-                    this.player.moveLeft(delta)
-                }
             }
         }
 
@@ -292,7 +233,7 @@ export default class GameScene extends Phaser.Scene {
                             this.explosionEmitter.stop()
                         })
                         _meteor.destroy();
-                        this.meteorDestroyedSound?.play()
+                        new SoundManager(this).play(this.meteorDestroyedSound, true)
                         this.score.add(DESTROY_METEOR_SCORE)
                     })
                 })
