@@ -2,7 +2,7 @@ import {
     BULLET_COUNT,
     HOLD_BAR_BORDER,
     HOLD_BAR_CHARGED_COLOR,
-    HOLD_BAR_CHARGING_COLOR,
+//    HOLD_BAR_CHARGING_COLOR,
     HOLD_BAR_COLOR,
     HOLD_BAR_EMPTY_COLOR,
     HOLD_BAR_IDLE_COLOR,
@@ -13,7 +13,6 @@ import {
     CIRCLE_GAUGE_RADUIS,
     CIRCLE_OVER_GAUGE_RADUIS,
     CIRCLE_GAUGE_SHAKE_X,
-    MARGIN,
 } from "../../config";
 
 import InhaleGauge from "./InhaleGauge"
@@ -21,13 +20,13 @@ import SoundManager from "../sound/SoundManager"
 
 export default class CircleInhaleGauge extends InhaleGauge {
     
-    private shake: Phase.Tween
+    private shake: Phaser.Tweens.Tween
     private soundManager: SoundManager
 
     constructor(scene: Phaser.Scene, division: number, index: number) {
         super(scene, division, index)
 
-        this.shake = this.scene.tweens.add({
+        this.shake = scene.tweens.add({
             targets: this.gauge,
             x: this.gauge.x + CIRCLE_GAUGE_SHAKE_X,
             duration: 30,
@@ -41,7 +40,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
     createGauge(index: number): void {
         
         const { width, height } = this.scene.scale
-        const x = (width/(this.division + 1)) + (index * (2 * (CIRCLE_GAUGE_RADUIS))) + (this.division !== 1 && CIRCLE_GAUGE_RADUIS)
+        const x = (width/(this.division + 1)) + (index * (2 * (CIRCLE_GAUGE_RADUIS))) + (this.division !== 1 ? CIRCLE_GAUGE_RADUIS : 0)
         const y = height - CIRCLE_GAUGE_MARGIN
 
         this.scene.add.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
@@ -82,21 +81,21 @@ export default class CircleInhaleGauge extends InhaleGauge {
     charge(delta: number) {
 //        this.gauge.setFillStyle(HOLD_BAR_CHARGING_COLOR, 1)
 //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
-        this.gauge.radius += this.getHoldWithIncrement(delta)
-        this.soundManager.play(this.chargingSound)
+        (<Phaser.GameObjects.Arc>this.gauge).radius += this.getHoldWithIncrement(delta)
+        this.soundManager.play(this.chargingSound!)
     }
 
     release(delta: number) {
-        this.gauge.radius -= this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
+        (<Phaser.GameObjects.Arc>this.gauge).radius -= this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
         this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
-        this.soundManager.pause(this.chargingSound)
+        this.soundManager.pause(this.chargingSound!)
     }
 
     setFullCharge() {
 //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
         this.gauge.setFillStyle(HOLD_BAR_CHARGED_COLOR, 1)
         this.shake.play()
-        this.soundManager.play(this.chargedSound)
+        this.soundManager.play(this.chargedSound!)
     }
 
     reset() {
@@ -123,23 +122,23 @@ export default class CircleInhaleGauge extends InhaleGauge {
     }
 
     isReducing(): boolean{
-        return this.isHoldbarReducing && this.gauge.radius > 0
+        return this.isHoldbarReducing && (<Phaser.GameObjects.Arc>this.gauge).radius > 0
     }
     
     showUp(): void {
-        this.up.setFillStyle(HOLD_BAR_COLOR, 1)
+        (<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_COLOR, 1)
     }
 
     hideUp(): void {
-        this.up.setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
+        (<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
     }
 
     showDown(): void {
-        this.down.setFillStyle(HOLD_BAR_COLOR, 1)
+        (<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_COLOR, 1)
     }
 
     hideDown(): void {
-        this.down.setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
+        (<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
     }
 
 }

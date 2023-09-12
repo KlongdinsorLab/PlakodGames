@@ -13,7 +13,6 @@ import {
     SPACE_BETWEEN_MARGIN_SCALE,
     MARGIN,
     SCREEN_HEIGHT,
-    HOLD_BAR_HEIGHT
 } from "../../config";
 
 import InhaleGauge from "./InhaleGauge"
@@ -107,18 +106,18 @@ export default class BarInhaleGauge extends InhaleGauge {
     charge(delta: number) {
         this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         this.gauge.width += this.getHoldWithIncrement(delta)
-        this.soundManager.play(this.chargingSound)
+        this.soundManager.play(this.chargingSound!)
     }
 
     release(delta: number) {
         this.gauge.width -= this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
         this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
-        this.soundManager.pause(this.chargingSound)
+        this.soundManager.pause(this.chargingSound!)
     }
 
     setFullCharge() {
         this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-        this.soundManager.play(this.chargedSound)
+        this.soundManager.play(this.chargedSound!)
     }
 
     reset() {

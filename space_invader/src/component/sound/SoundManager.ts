@@ -1,8 +1,8 @@
 export default class SoundManager {
     
-    private scene: Phaser.Sound.BaseSound
+    private scene: Phaser.Scene
     
-    constructor(scene:  Phaser.Sound.BaseSound) {
+    constructor(scene: Phaser.Scene) {
         this.scene = scene
     }
     
@@ -20,7 +20,7 @@ export default class SoundManager {
         this.scene.sound.mute = false
     }
     
-    play(sound: Phaser.Sound.BaseSound, overlap: bool = false) {
+    play(sound: Phaser.Sound.BaseSound, overlap = false) {
         if(!sound?.isPlaying || overlap) sound?.play()
     }
     
@@ -33,12 +33,12 @@ export default class SoundManager {
     }
     
     createSoundToggle(x: number, y: number): void {
-        let text = this.scene.add.text(x, y, `Sound: ${this.scene.sound.mute ? 'Off':'On'}`)
+        const text = this.scene.add.text(x, y, `Sound: ${this.scene?.sound.mute ? 'Off':'On'}`)
         text.setInteractive();
         text.on("pointerup", () => {
             this.scene.sound.mute = !this.scene.sound.mute;
-            localStorage.setItem("mute", !this.scene.sound.mute ? true: '')
-            text.setText(`Sound: ${this.scene.sound.mute ? 'On':'Off'}`);
+            localStorage.setItem("mute", !this.scene.sound.mute ? 'true': '')
+            text.setText(`Sound: ${this.scene?.sound.mute ? 'On':'Off'}`);
         });
         
     }

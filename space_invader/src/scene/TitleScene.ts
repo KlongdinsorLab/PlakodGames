@@ -43,7 +43,7 @@ export default class TitleScene extends Phaser.Scene {
 
         this.bgm = this.sound.add('bgm');
         const soundManager = new SoundManager(this)
-        soundManager.init(this)
+        soundManager.init()
         soundManager.play(this.bgm)
     }
 
@@ -53,12 +53,12 @@ export default class TitleScene extends Phaser.Scene {
 
         if (this.controller1?.direction.LEFT || this.controller1?.direction.RIGHT || this.controller1?.buttons.B0 > 0) {
             this.scene.start('game');
-            new SoundManager(this).stop(this.bgm)
+            new SoundManager(this).stop(this.bgm!)
         }
 
         if (this.input.pointer1.isDown) {
             this.scene.start('game');
-            new SoundManager(this).stop(this.bgm)
+            new SoundManager(this).stop(this.bgm!)
         }
 
     }

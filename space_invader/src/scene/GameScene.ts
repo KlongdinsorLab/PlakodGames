@@ -233,7 +233,7 @@ export default class GameScene extends Phaser.Scene {
                             this.explosionEmitter.stop()
                         })
                         _meteor.destroy();
-                        new SoundManager(this).play(this.meteorDestroyedSound, true)
+                        new SoundManager(this).play(this.meteorDestroyedSound!, true)
                         this.score.add(DESTROY_METEOR_SCORE)
                     })
                 })

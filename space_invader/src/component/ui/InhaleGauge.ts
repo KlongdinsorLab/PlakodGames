@@ -1,34 +1,18 @@
-import {
-    BULLET_COUNT,
-    HOLD_BAR_BORDER,
-    HOLD_BAR_CHARGED_COLOR,
-    HOLD_BAR_CHARGING_COLOR,
-    HOLD_BAR_COLOR,
-    HOLD_BAR_EMPTY_COLOR,
-    HOLD_BAR_HEIGHT,
-    HOLD_BAR_IDLE_COLOR,
-    HOLD_DURATION_MS,
-    HOLDBAR_REDUCING_RATIO,
-    LASER_FREQUENCY_MS,
-    MARGIN
-} from "../../config";
-
 export default abstract class InhaleGauge {
 
-    private scene: Phaser.Scene
-    private division: number
-    private holdButtonDuration = 0
-    private isHoldbarReducing = false
-    private gauge: Phaser.GameObjects.Shape
+    protected scene: Phaser.Scene
+    protected division: number
+    protected holdButtonDuration = 0
+    protected isHoldbarReducing = false
+    protected gauge!: Phaser.GameObjects.Shape
     
-    private up!: Phaser.GameObjects;
-    private down!: Phaser.GameObjects;
+    protected up!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image;
+    protected down!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image;
     
-    private chargingSound?: Phaser.Sound.BaseSound
-    private chargedSound?: Phaser.Sound.BaseSound
-    
+    protected chargingSound?: Phaser.Sound.BaseSound
+    protected chargedSound?: Phaser.Sound.BaseSound
 
-    constructor(scene: Phaser.Scene, division: number, index: number) {
+    protected constructor(scene: Phaser.Scene, division: number, index: number) {
         this.scene = scene
         this.division = division
 
@@ -38,7 +22,7 @@ export default abstract class InhaleGauge {
         this.chargedSound = this.scene.sound.add('chargedSound')
     }
 
-    abstract createGauge(): void;
+    abstract createGauge(index: number): void;
     
     abstract createUpDownGauge(): void;
 

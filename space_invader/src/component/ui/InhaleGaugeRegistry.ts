@@ -1,6 +1,5 @@
 import CircleInhaleGauge from "./CircleInhaleGauge";
-//import BarInhaleGauge from "./BarInhaleGauge";
-
+import BarInhaleGauge from "./BarInhaleGauge";
 
 export default class InhaleGaugeRegistry {
     
@@ -15,7 +14,7 @@ export default class InhaleGaugeRegistry {
         this.holdbars = [...Array(division)].map((_, index: number) => new CircleInhaleGauge(this.scene, division, index));
     }
 
-    get(index: number): Holdbar {
+    get(index: number): CircleInhaleGauge | BarInhaleGauge {
         return this.holdbars[index]
     }
 
