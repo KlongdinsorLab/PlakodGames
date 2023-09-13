@@ -15,7 +15,6 @@ export class MeteorFactory extends EnemyFactory {
     
     createByTime(scene: Phaser.Scene, player: Player, score: Score, delta: number): void {
         this.meteorTimer += delta;
-        console.log(delta)
         while (this.meteorTimer > METEOR_FREQUENCY_MS) {
             this.meteorTimer -= METEOR_FREQUENCY_MS;
             const meteor = this.create(scene, player, score)

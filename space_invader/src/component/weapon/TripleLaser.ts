@@ -6,9 +6,9 @@ export class TripleLaser extends Laser {
 
     private scene: Phaser.Scene
     private player: Player
-    private laser1: Phaser.Types.Physics.Arcade.ImageWithDynamicBody | undefined
-    private laser2: Phaser.Types.Physics.Arcade.ImageWithDynamicBody | undefined
-    private laser3: Phaser.Types.Physics.Arcade.ImageWithDynamicBody | undefined
+    private laser1!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+    private laser2!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+    private laser3!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
 
     constructor(scene: Phaser.Scene, player: Player) {
         super();

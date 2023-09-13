@@ -12,7 +12,6 @@ import {
     LASER_FREQUENCY_MS,
     SPACE_BETWEEN_MARGIN_SCALE,
     MARGIN,
-    SCREEN_HEIGHT,
 } from "config";
 
 import InhaleGauge from "./InhaleGauge"
@@ -41,11 +40,12 @@ export default class BarInhaleGauge extends InhaleGauge {
     }
     
     createUpDownGauge(): void {
-        this.down = this.scene.add.image(0, SCREEN_HEIGHT - MARGIN/2 - HOLD_BAR_HEIGHT, 'chevron').setOrigin(0, 1)
+        const { width, height } = this.scene.scale
+        this.down = this.scene.add.image(0, width - MARGIN/2 - HOLD_BAR_HEIGHT, 'chevron').setOrigin(0, 1)
         this.down.setScale(0.05)
         this.scene.tweens.add({
             targets: this.down,
-            y: SCREEN_HEIGHT - MARGIN/2,
+            y: height - MARGIN/2,
             duration: 500,
             repeat: -1,
             hold: 250,
@@ -54,12 +54,12 @@ export default class BarInhaleGauge extends InhaleGauge {
         });
         this.down.setVisible(false)
 
-        this.up = this.scene.add.image(0, SCREEN_HEIGHT - MARGIN/2, 'chevron').setOrigin(1, 0)
+        this.up = this.scene.add.image(0, width - MARGIN/2, 'chevron').setOrigin(1, 0)
         this.up.setScale(0.05)
         this.up.setRotation(Math.PI)
         this.scene.tweens.add({
             targets: this.up,
-            y: SCREEN_HEIGHT - HOLD_BAR_HEIGHT - MARGIN/2,
+            y: height - HOLD_BAR_HEIGHT - MARGIN/2,
             duration: 500,
             repeat: -1,
             hold: 250,

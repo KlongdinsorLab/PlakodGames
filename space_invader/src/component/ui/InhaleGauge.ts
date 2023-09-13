@@ -50,6 +50,9 @@ export default abstract class InhaleGauge {
 
     abstract hideDown(): void;
     
+    getBody(): Phaser.GameObjects.Shape {
+        return this.gauge
+    }
 
     getDuratation(): number {
         return this.holdButtonDuration

@@ -31,6 +31,6 @@ export const METEOR_SPIN_SPEED = 100
 export const PLAYER_HIT_DELAY_MS = 3000
 export const HIT_METEOR_SCORE = -200
 export const DESTROY_METEOR_SCORE = 400
-export const START_TEXT = "Press any ← or → button to start"
 
 export const GAME_TIME_LIMIT_MS = 160000
+export const TUTORIAL_DELAY_MS = 1500

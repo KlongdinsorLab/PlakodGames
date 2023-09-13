@@ -6,9 +6,7 @@ import {
     HOLD_DURATION_MS,
     LASER_FREQUENCY_MS,
     MARGIN,
-    RELOAD_COUNT, // Move to weapon
-    SCREEN_HEIGHT,
-    SCREEN_WIDTH
+    RELOAD_COUNT, // TODO Move to weapon
 } from "config";
 import Player from "component/player/Player"
 import InhaleGaugeRegistry from "component/ui/InhaleGaugeRegistry";
@@ -18,6 +16,8 @@ import {SingleLaserFactory} from "component/weapon/SingleLaserFactory"
 import SoundManager from "component/sound/SoundManager"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 import {MeteorFactory} from "component/enemy/MeteorFactory";
+import Tutorial from "./tutorial/Tutorial";
+import {Meteor} from "../component/enemy/Meteor";
 
 export default class GameScene extends Phaser.Scene {
 
@@ -36,6 +36,8 @@ export default class GameScene extends Phaser.Scene {
 
     private singleLaserFactory!: SingleLaserFactory
     private meteorFactory!: MeteorFactory
+    private tutorial!: Tutorial
+    private tutorialMeteor!: Meteor
 
     constructor() {
         super({key: 'game'})
@@ -81,39 +83,53 @@ export default class GameScene extends Phaser.Scene {
             .defineKey(0, 'B1', 'UP') // B
             .defineKey(0, 'B2', 'DOWN') // X
 
-        this.player = new Player(this)
+this.player = new Player(this)
         this.player.addJetEngine()
 
         this.player.addChargeParticle()
 
         // TODO Move to UI
-        this.add.rectangle(0, SCREEN_HEIGHT, width, HOLD_BAR_HEIGHT + (MARGIN * 2), 0x000000)
+        this.add.rectangle(0, height, width, HOLD_BAR_HEIGHT + (MARGIN * 2), 0x000000)
             .setOrigin(0, 1)
             .setAlpha(0.25);
 
-        this.gaugeRegistry = new InhaleGaugeRegistry(this)
+this.gaugeRegistry = new InhaleGaugeRegistry(this)
         this.gaugeRegistry.createbyDivision(1)
 
         // TODO move to UI
-        this.reloadCountText = this.add.text(SCREEN_WIDTH, SCREEN_HEIGHT - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
+        this.reloadCountText = this.add.text(width, height - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {fontSize: '42px'})
             .setOrigin(1, 1)
 
         this.score = new Score(this)
-//        this.timerText = this.add.text(SCREEN_WIDTH - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
+//        this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
 
-        this.gameover = this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'gameover').setOrigin(0.5, 1)
+        this.gameover = this.add.image(width / 2, height / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
 
         new SoundManager(this).createSoundToggle(0, 0)
         this.meteorFactory = new MeteorFactory()
         this.singleLaserFactory = new SingleLaserFactory()
+        this.tutorial = new Tutorial(this)
+
+        const pause = this.add.text(width, 0, "Pause").setOrigin(1, 0)
+        pause.setInteractive();
+        pause.on("pointerup", () => {
+            this.scene.pause()
+            this.scene.launch('pause')
+        })
+
+        if(!this.isCompleteTutorial()) {
+            this.tutorialMeteor = this.meteorFactory.create(this, this.player, this.score)
+        }
     }
+
+    isCompleteTutorial = () => localStorage.getItem("tutorial") || false
 
     update(_: number, delta: number) {
 
 //        if (this.input.gamepad.total === 0) {
-//            const text = this.add.text(0, SCREEN_HEIGHT / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
-//            text.x = SCREEN_WIDTH / 2 - text.width / 2
+//            const text = this.add.text(0, height / 2, START_TEXT, {fontSize: '24px'}).setOrigin(0);
+//            text.x = width / 2 - text.width / 2
 //            this.input.gamepad.once('connected', function () {
 //                text.destroy();
 //            }, this);
@@ -128,6 +144,24 @@ export default class GameScene extends Phaser.Scene {
 //        if (timeLeft <= 0) {
 //            this.scene.pause()
 //        }
+
+        // Tutorial
+        if(!this.isCompleteTutorial()) {
+            this.tutorial.launchTutorial(0, delta, {
+                meteor: this.tutorialMeteor, player: this.player
+            })
+
+            this.tutorial.launchTutorial(1, delta, {
+                score: this.score, gauge: gauge
+            })
+
+            this.tutorial.launchTutorial(2, delta)
+        }
+
+        //TODO should be after warm up
+        if(this.isCompleteTutorial()) {
+            this.meteorFactory.createByTime(this, this.player, this.score, delta)
+        }
 
         // TODO move to controller class
         if(!this.controller1) return // TODO handle no controller
@@ -168,8 +202,6 @@ export default class GameScene extends Phaser.Scene {
 
         // scroll the background
         this.background.tilePositionY -= 1
-
-        this.meteorFactory.createByTime(this, this.player, this.score, delta)
 
         this.singleLaserFactory.createByTime(this, this.player, this.meteorFactory.getMeteors(), delta)
 
