@@ -164,7 +164,7 @@ this.gaugeRegistry = new InhaleGaugeRegistry(this)
         }
 
         // TODO move to controller class
-        if(!this.controller1) return // TODO handle no controller
+        if(!this.controller1) return
 
         if (this.controller1?.direction.LEFT) {
             this.player.moveLeft(delta)
