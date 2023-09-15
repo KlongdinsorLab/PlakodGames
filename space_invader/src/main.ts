@@ -7,9 +7,6 @@ import TutorialCharacterScene from "./scene/tutorial/TutorialCharacter";
 import TutorialHudScene from "./scene/tutorial/TutorialHudScene";
 import TutorialControllerScene from "./scene/tutorial/TutorialControllerScene";
 import PauseScene from "./scene/PauseScene";
-import LocaleSingleton from "./LocaleSingleton";
-
-LocaleSingleton.getInstance()
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,

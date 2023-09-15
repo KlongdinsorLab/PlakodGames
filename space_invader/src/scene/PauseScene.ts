@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import i18next from 'i18next';
+import I18nSingleton from "i18n/I18nSingleton";
 
 export default class PauseScene extends Phaser.Scene {
 
@@ -10,7 +10,9 @@ export default class PauseScene extends Phaser.Scene {
     create() {
         const {width, height} = this.scale
         this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
-        this.add.text(width / 2, height / 2, i18next.t('pause')).setOrigin(0.5, 0.5)
+        I18nSingleton.getInstance()
+            .createTranslatedText(this, width / 2, height / 2, 'pause')
+            .setOrigin(0.5, 0.5);
 
         this.input.once('pointerdown', () => {
             this.scene.resume('game')
