@@ -29,7 +29,7 @@ export default class GameScene extends Phaser.Scene {
     private reloadCountText!: Phaser.GameObjects.Text;
 
     private mergedInput?: MergedInput;
-    private controller1!: PlayerInput | undefined;
+    private controller1!: PlayerInput | undefined | any;
 //    private timerText!: Phaser.GameObjects.Text;
     private gameover?: Phaser.GameObjects.Image;
 
