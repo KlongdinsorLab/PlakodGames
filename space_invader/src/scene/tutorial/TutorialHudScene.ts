@@ -34,7 +34,7 @@ export default class TutorialHudScene extends Phaser.Scene {
         
         this.input.once('pointerdown', () => {
             this.scene.resume('game')
-            this.scene.sendToBack('tutorial HUD')
+            this.scene.setVisible(false)
         }, this);
     }
 }

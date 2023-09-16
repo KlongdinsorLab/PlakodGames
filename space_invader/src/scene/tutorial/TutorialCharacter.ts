@@ -57,7 +57,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 
         this.input.once('pointerdown', () => {
             this.scene.resume('game')
-            this.scene.sendToBack('tutorial character')
+            this.scene.setVisible(false)
         }, this);
     }
 }
