@@ -122,7 +122,7 @@ export default class GameScene extends Phaser.Scene {
         })
 
         if (!this.isCompleteTutorial()) {
-            this.tutorialMeteor = this.meteorFactory.create(this, this.player, this.score)
+            this.tutorialMeteor = this.meteorFactory.create(this, this.player, this.score, true)
         }
     }
 

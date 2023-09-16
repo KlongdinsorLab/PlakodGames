@@ -1,4 +1,4 @@
-import { Enemy } from "./Enemy"
+import {Enemy} from "./Enemy"
 import Player from "component/player/Player"
 import Score from "component/ui/Score"
 
@@ -13,12 +13,12 @@ import {
 import SoundManager from "../sound/SoundManager";
 
 export class Meteor extends Enemy {
-    
+
     private soundManager: SoundManager
     private explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
-    constructor(scene: Phaser.Scene, player: Player, score: Score) {
-        super(scene, player, score);
+    constructor(scene: Phaser.Scene, player: Player, score: Score, isTutorial?: boolean) {
+        super(scene, player, score, isTutorial);
         this.move()
         this.attack()
         this.soundManager = new SoundManager(scene)
@@ -33,12 +33,12 @@ export class Meteor extends Enemy {
         this.enermyDestroyedSound = this.scene.sound.add('meteorDestroyedSound')
     }
 
-    create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody{
+    create(isTutorial?: boolean): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
         const {width} = this.scene.scale
         const imageNumber = Math.floor(Math.random() * 4) + 1
-        const startingX = Math.floor(Math.random() * width)
+        const startingX = isTutorial ? width / 2 : Math.floor(Math.random() * width)
         this.enemy = this.scene.physics.add.image(startingX, -MARGIN, `meteor${imageNumber}`)
-        
+
         this.scene.physics.add.overlap(this.player.getBody(), this.enemy, (_, _meteor) => {
             if (this.player.getIsHit()) return;
             this.player.setIsHit(true)
@@ -52,14 +52,14 @@ export class Meteor extends Enemy {
         this.scene.time.delayedCall(5000, () => {
             this.enemy.destroy()
         })
-        
+
         return this.enemy;
     }
 
     move(): void {
         this.enemy.setVelocityY(METEOR_SPEED)
         const velocityX = Math.floor(Math.random() * (METEOR_SPEED / 3) - (METEOR_SPEED / 6));
-        this.enemy.setVelocityX(velocityX)
+        this.enemy.setVelocityX(this.isTutorial ? 0 : velocityX)
         this.enemy.setAngularVelocity(METEOR_SPIN_SPEED);
     }
 
@@ -79,7 +79,7 @@ export class Meteor extends Enemy {
 //            this.enemy.destroy()
 //        })
     }
-    
+
     destroy(): void {
         this.explosionEmitter.startFollow(this.enemy)
         this.explosionEmitter.active = true
@@ -91,11 +91,11 @@ export class Meteor extends Enemy {
         this.soundManager.play(this.enermyDestroyedSound!, true)
         this.score.add(DESTROY_METEOR_SCORE)
     }
-    
+
     getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
         return this.enemy
     }
-    
+
     isActive(): boolean {
         return this.enemy.active
     }

@@ -33,4 +33,4 @@ export const HIT_METEOR_SCORE = -200
 export const DESTROY_METEOR_SCORE = 400
 
 export const GAME_TIME_LIMIT_MS = 160000
-export const TUTORIAL_DELAY_MS = 1500
+export const TUTORIAL_DELAY_MS = 2500
