@@ -59,7 +59,7 @@ export class Meteor extends Enemy {
     move(): void {
         this.enemy.setVelocityY(METEOR_SPEED)
         const velocityX = Math.floor(Math.random() * (METEOR_SPEED / 3) - (METEOR_SPEED / 6));
-        this.enemy.setVelocityX(this.isTutorial ? 0 : velocityX)
+        this.enemy.setVelocityX(this.isTutorial ? -80 : velocityX)
         this.enemy.setAngularVelocity(METEOR_SPIN_SPEED);
     }
 
