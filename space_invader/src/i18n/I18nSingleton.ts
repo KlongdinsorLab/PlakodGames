@@ -57,7 +57,7 @@ export default class I18nSingleton {
     }
 
     destroyEmitter() {
-        this.emitter.destroy()
+        this.emitter.removeAllListeners()
     }
 
 }

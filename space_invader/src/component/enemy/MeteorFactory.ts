@@ -9,8 +9,8 @@ export class MeteorFactory extends EnemyFactory {
     private meteors: Meteor[] = [];
     private meteorTimer = 0
     
-    create(scene: Phaser.Scene, player: Player, score: Score): Meteor {
-        return new Meteor(scene, player, score)
+    create(scene: Phaser.Scene, player: Player, score: Score, tutorial?: boolean): Meteor {
+        return new Meteor(scene, player, score, tutorial)
     }
     
     createByTime(scene: Phaser.Scene, player: Player, score: Score, delta: number): void {

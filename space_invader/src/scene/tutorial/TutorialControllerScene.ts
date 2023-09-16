@@ -12,7 +12,7 @@ export default class TutorialControllerScene extends Phaser.Scene {
 
         this.input.once('pointerdown', () => {
             this.scene.resume('game')
-            this.scene.remove('tutorial controller')
+            this.scene.setVisible(false)
         }, this);
     }
 }

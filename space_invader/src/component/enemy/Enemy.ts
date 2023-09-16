@@ -8,15 +8,17 @@ export abstract class Enemy {
     protected player: Player
     protected score: Score
     protected enermyDestroyedSound?: Phaser.Sound.BaseSound;
+    protected isTutorial = false
 
-    protected constructor(scene: Phaser.Scene, player: Player, score: Score) {
+    protected constructor(scene: Phaser.Scene, player: Player, score: Score, isTutorial?:boolean) {
         this.scene = scene
         this.player = player
         this.score = score
-        this.create()
+        this.isTutorial = isTutorial ?? false
+        this.create(isTutorial)
     }
 
-    abstract create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+    abstract create(isTutorial?: boolean): Phaser.Types.Physics.Arcade.ImageWithDynamicBody
     abstract move(): void
     abstract attack(): void
     abstract destroy(): void
