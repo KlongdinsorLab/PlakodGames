@@ -38,6 +38,8 @@ export default class GameScene extends Phaser.Scene {
     private tutorial!: Tutorial
     private tutorialMeteor!: Meteor
 
+    private menu!: Phaser.GameObjects.Image
+
     constructor() {
         super({key: 'game'})
     }
@@ -112,13 +114,13 @@ export default class GameScene extends Phaser.Scene {
         this.singleLaserFactory = new SingleLaserFactory()
         this.tutorial = new Tutorial(this)
 
-        const pause = this.add.image(width - MARGIN / 2, MARGIN / 2, 'pause').setOrigin(1, 0)
-        pause.scale = 0.5
-        pause.setInteractive();
-        pause.on("pointerup", () => {
-            pause.setTexture('resume')
+        this.menu = this.add.image(width - MARGIN / 2, MARGIN / 2, 'pause').setOrigin(1, 0)
+        this.menu.scale = 0.5
+        this.menu.setInteractive();
+        this.menu.on("pointerup", () => {
+            this.menu.setTexture('resume')
             this.scene.pause()
-            this.scene.launch('pause', {pause})
+            this.scene.launch('pause', {menu: this.menu})
         })
 
         if (!this.isCompleteTutorial()) {
@@ -155,7 +157,7 @@ export default class GameScene extends Phaser.Scene {
             })
 
             this.tutorial.launchTutorial(1, delta, {
-                score: this.score, gauge: gauge
+                score: this.score, gauge: gauge, menu: this.menu
             })
 
             this.tutorial.launchTutorial(2, delta)

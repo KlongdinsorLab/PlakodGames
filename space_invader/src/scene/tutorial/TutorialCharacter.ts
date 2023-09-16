@@ -57,8 +57,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 
         this.input.once('pointerdown', () => {
             this.scene.resume('game')
-            this.scene.remove('tutorial character')
-            i18n.destroyEmitter()
+            this.scene.sendToBack('tutorial character')
         }, this);
     }
 }
