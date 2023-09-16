@@ -32,14 +32,17 @@ export default class SoundManager {
         sound?.pause()
     }
     
-    createSoundToggle(x: number, y: number): void {
-        const text = this.scene.add.text(x, y, `Sound: ${this.scene?.sound.mute ? 'Off':'On'}`)
-        text.setInteractive();
-        text.on("pointerup", () => {
+    createSoundToggle(x: number, y: number): Phaser.GameObjects.Image | Phaser.GameObjects.Text {
+        const button = this.scene.add.image(x, y, this.scene?.sound.mute ? 'mute':'unmute')
+        button.scale = 0.5
+
+        button.setInteractive();
+        button.on("pointerup", () => {
             this.scene.sound.mute = !this.scene.sound.mute;
             localStorage.setItem("mute", !this.scene.sound.mute ? 'true': '')
-            text.setText(`Sound: ${this.scene?.sound.mute ? 'On':'Off'}`);
+            button.setTexture(this.scene?.sound.mute ? 'unmute':'mute')
         });
+        return button
         
     }
 }

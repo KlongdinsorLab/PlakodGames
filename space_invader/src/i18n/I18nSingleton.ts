@@ -32,7 +32,12 @@ export default class I18nSingleton {
         return I18nSingleton.instance;
     }
 
+    getLanguage(): string {
+        return i18next?.language
+    }
+
     setLanguage(language: string) {
+        localStorage.setItem('language', language)
         i18next?.changeLanguage(language, () => this.emitter.emit('setText'))
     }
 
@@ -49,6 +54,10 @@ export default class I18nSingleton {
         const text = scene.add.text(x, y, i18next.t(key, options), style)
         this.emitter.on('setText', () => this.setTextByKey(text, key, options))
         return text
+    }
+
+    destroyEmitter() {
+        this.emitter.destroy()
     }
 
 }

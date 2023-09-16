@@ -13,7 +13,6 @@ import InhaleGaugeRegistry from "component/ui/InhaleGaugeRegistry";
 import MergedInput, {Player as PlayerInput} from 'phaser3-merged-input'
 import Score from "component/ui/Score";
 import {SingleLaserFactory} from "component/weapon/SingleLaserFactory"
-import SoundManager from "component/sound/SoundManager"
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 import {MeteorFactory} from "component/enemy/MeteorFactory";
 import Tutorial from "./tutorial/Tutorial";
@@ -57,7 +56,10 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('gameover', 'assets/logo/gameover.png')
         this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
-        this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3');
+        this.load.svg('pause', 'assets/icon/pause.svg')
+        this.load.svg('resume', 'assets/icon/resume.svg')
+
+        this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
         this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
         this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
         this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
@@ -83,7 +85,7 @@ export default class GameScene extends Phaser.Scene {
             .defineKey(0, 'B1', 'UP') // B
             .defineKey(0, 'B2', 'DOWN') // X
 
-this.player = new Player(this)
+        this.player = new Player(this)
         this.player.addJetEngine()
 
         this.player.addChargeParticle()
@@ -93,7 +95,7 @@ this.player = new Player(this)
             .setOrigin(0, 1)
             .setAlpha(0.25);
 
-this.gaugeRegistry = new InhaleGaugeRegistry(this)
+        this.gaugeRegistry = new InhaleGaugeRegistry(this)
         this.gaugeRegistry.createbyDivision(1)
 
         // TODO move to UI
@@ -106,19 +108,20 @@ this.gaugeRegistry = new InhaleGaugeRegistry(this)
         this.gameover = this.add.image(width / 2, height / 2, 'gameover').setOrigin(0.5, 1)
         this.gameover.visible = false
 
-        new SoundManager(this).createSoundToggle(0, 0)
         this.meteorFactory = new MeteorFactory()
         this.singleLaserFactory = new SingleLaserFactory()
         this.tutorial = new Tutorial(this)
 
-        const pause = this.add.text(width, 0, "Pause").setOrigin(1, 0)
+        const pause = this.add.image(width - MARGIN / 2, MARGIN / 2, 'pause').setOrigin(1, 0)
+        pause.scale = 0.5
         pause.setInteractive();
         pause.on("pointerup", () => {
+            pause.setTexture('resume')
             this.scene.pause()
-            this.scene.launch('pause')
+            this.scene.launch('pause', {pause})
         })
 
-        if(!this.isCompleteTutorial()) {
+        if (!this.isCompleteTutorial()) {
             this.tutorialMeteor = this.meteorFactory.create(this, this.player, this.score)
         }
     }
@@ -146,7 +149,7 @@ this.gaugeRegistry = new InhaleGaugeRegistry(this)
 //        }
 
         // Tutorial
-        if(!this.isCompleteTutorial()) {
+        if (!this.isCompleteTutorial()) {
             this.tutorial.launchTutorial(0, delta, {
                 meteor: this.tutorialMeteor, player: this.player
             })
@@ -159,12 +162,12 @@ this.gaugeRegistry = new InhaleGaugeRegistry(this)
         }
 
         //TODO should be after warm up
-        if(this.isCompleteTutorial()) {
+        if (this.isCompleteTutorial()) {
             this.meteorFactory.createByTime(this, this.player, this.score, delta)
         }
 
         // TODO move to controller class
-        if(!this.controller1) return
+        if (!this.controller1) return
 
         if (this.controller1?.direction.LEFT) {
             this.player.moveLeft(delta)

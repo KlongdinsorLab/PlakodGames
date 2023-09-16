@@ -1,5 +1,8 @@
 {
     "start text": "Press any ← or → button to start",
     "pause": "Pause",
+    "resume": "Resume",
+    "restart": "Restart",
+    "home": "Home",
     "score": "score {{score, number}}"
 }

@@ -13,6 +13,7 @@ export default class TitleScene extends Phaser.Scene {
 
     constructor() {
         super('title')
+
     }
 
     preload() {
@@ -62,6 +63,7 @@ export default class TitleScene extends Phaser.Scene {
     }
 
     startGame() {
+        I18nSingleton.getInstance().destroyEmitter()
         this.scene.start('game')
         new SoundManager(this).stop(this.bgm!)
     }
