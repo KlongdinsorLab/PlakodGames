@@ -1,67 +1,65 @@
 export default abstract class InhaleGauge {
+	protected scene: Phaser.Scene
+	protected division: number
+	protected holdButtonDuration = 0
+	protected isHoldbarReducing = false
+	protected gauge!: Phaser.GameObjects.Shape
 
-    protected scene: Phaser.Scene
-    protected division: number
-    protected holdButtonDuration = 0
-    protected isHoldbarReducing = false
-    protected gauge!: Phaser.GameObjects.Shape
-    
-    protected up!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image;
-    protected down!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image;
-    
-    protected chargingSound?: Phaser.Sound.BaseSound
-    protected chargedSound?: Phaser.Sound.BaseSound
+	protected up!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
+	protected down!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
 
-    protected constructor(scene: Phaser.Scene, division: number, index: number) {
-        this.scene = scene
-        this.division = division
+	protected chargingSound?: Phaser.Sound.BaseSound
+	protected chargedSound?: Phaser.Sound.BaseSound
 
-        this.createGauge(index)
-        this.createUpDownGauge()
-        this.chargingSound = this.scene.sound.add('chargingSound')
-        this.chargedSound = this.scene.sound.add('chargedSound')
-    }
+	protected constructor(scene: Phaser.Scene, division: number, index: number) {
+		this.scene = scene
+		this.division = division
 
-    abstract createGauge(index: number): void;
-    
-    abstract createUpDownGauge(): void;
+		this.createGauge(index)
+		this.createUpDownGauge()
+		this.chargingSound = this.scene.sound.add('chargingSound')
+		this.chargedSound = this.scene.sound.add('chargedSound')
+	}
 
-    abstract hold(delta: number): void;
+	abstract createGauge(index: number): void
 
-    abstract charge(delta: number): void;
+	abstract createUpDownGauge(): void
 
-    abstract release(delta: number): void;
+	abstract hold(delta: number): void
 
-    abstract setFullCharge(): void;
+	abstract charge(delta: number): void
 
-    abstract reset(): void;
+	abstract release(delta: number): void
 
-    abstract resetting(): void;
+	abstract setFullCharge(): void
 
-    abstract deplete(): void;
+	abstract reset(): void
 
-    abstract isReducing(): boolean;
-    
-    abstract showUp(): void;
-    
-    abstract hideUp(): void;
-    
-    abstract showDown(): void;
+	abstract resetting(): void
 
-    abstract hideDown(): void;
-    
-    getBody(): Phaser.GameObjects.Shape {
-        return this.gauge
-    }
+	abstract deplete(): void
 
-    getDuratation(): number {
-        return this.holdButtonDuration
-    }
+	abstract isReducing(): boolean
 
-//    getBulletCount(){
-//        
-//    }
+	abstract showUp(): void
 
-    // setBullet(){}
+	abstract hideUp(): void
 
+	abstract showDown(): void
+
+	abstract hideDown(): void
+
+	getBody(): Phaser.GameObjects.Shape {
+		return this.gauge
+	}
+
+	getDuratation(): number {
+		return this.holdButtonDuration
+	}
+
+	//    getBulletCount(){
+	//
+	//    }
+
+	// setBullet(){}
 }
