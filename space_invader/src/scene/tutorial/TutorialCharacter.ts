@@ -30,7 +30,6 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 
         const i18n = I18nSingleton.getInstance()
 
-
         const meteor = this.meteor.getBody()
         const meterHighlight = this.add.rectangle(meteor.x, meteor.y, meteor.width + MARGIN / 2, meteor.height + MARGIN).setOrigin(0.5, 0.5)
         meterHighlight.setStrokeStyle(4, 0xffffff)
