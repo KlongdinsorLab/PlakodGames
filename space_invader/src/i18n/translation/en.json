@@ -4,9 +4,14 @@
     "resume": "Resume",
     "restart": "Restart",
     "home": "Home",
-    "score": "score {{score, number}}",
+    "score": "{{score, number}}",
     "tutorial_enemy_title": "Meteor",
-    "tutorial_enemy_description": "Dodge falling meteors to survive and score points, with each meteor impact deducting -{{score, number}} points from your score.",
+    "tutorial_enemy_description": "Dodge falling meteors to survive and score points, with each meteor impact deducting {{score, number}} points from your score.",
     "tutorial_player_title": "Jet (player)",
-    "tutorial_player_description": "Pilot a jet plane armed with lasers to destroy incoming meteors and earn +{{score, number}} points for each successful obliteration."
+    "tutorial_player_description": "Pilot a jet plane armed with lasers to destroy incoming meteors and earn +{{score, number}} points for each successful obliteration.",
+    "tutorial_score_title": "Score",
+    "tutorial_reload_title": "Played/Remaining",
+    "tutorial_menu_title": "Menu/Pause",
+    "tutorial_gauge_title": "Laser Charger",
+    "tutorial_gauge_description": "Player breathe in using Cliniflo to charge the laser"
 }

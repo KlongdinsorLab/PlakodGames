@@ -82,7 +82,6 @@ export default class PauseScene extends Phaser.Scene {
 			.setOrigin(0.5, 0.5)
 		resume.setInteractive()
 		resume.on('pointerup', () => {
-			this.pause.setTexture('pause')
 			this.scene.resume('game')
 			i18n.destroyEmitter()
 			this.scene.stop()

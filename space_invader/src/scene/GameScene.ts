@@ -1,12 +1,10 @@
 import Phaser from 'phaser'
 import {
 	BULLET_COUNT,
-	HOLD_BAR_BORDER,
 	HOLD_BAR_HEIGHT,
 	HOLD_DURATION_MS,
 	LASER_FREQUENCY_MS,
 	MARGIN,
-	RELOAD_COUNT, // TODO Move to weapon
 } from 'config'
 import Player from 'component/player/Player'
 import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
@@ -17,6 +15,7 @@ import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Tutorial from './tutorial/Tutorial'
 import { Meteor } from '../component/enemy/Meteor'
+import ReloadCount from '../component/ui/ReloadCount'
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -24,8 +23,9 @@ export default class GameScene extends Phaser.Scene {
 	private gaugeRegistry!: InhaleGaugeRegistry
 	private score!: Score
 
-	private reloadCount = RELOAD_COUNT
-	private reloadCountText!: Phaser.GameObjects.Text
+	private reloadCount!: ReloadCount
+	//	private reloadCount = RELOAD_COUNT
+	//	private reloadCountText!: Phaser.GameObjects.Text
 
 	private mergedInput?: MergedInput
 	private controller1!: PlayerInput | undefined | any
@@ -104,15 +104,11 @@ export default class GameScene extends Phaser.Scene {
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
 		this.gaugeRegistry.createbyDivision(1)
 
-		// TODO move to UI
-		this.reloadCountText = this.add
-			.text(width, height - MARGIN + HOLD_BAR_BORDER, `${this.reloadCount}`, {
-				fontSize: '42px',
-			})
-			.setOrigin(1, 1)
+		this.reloadCount = new ReloadCount(this, width / 2, MARGIN)
+		this.reloadCount.getBody().setOrigin(0.5, 0)
 
 		this.score = new Score(this)
-		//        this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
+		// this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
 
 		this.gameover = this.add
 			.image(width / 2, height / 2, 'gameover')
@@ -176,6 +172,7 @@ export default class GameScene extends Phaser.Scene {
 				score: this.score,
 				gauge: gauge,
 				menu: this.menu,
+				reloadCount: this.reloadCount
 			})
 
 			this.tutorial.launchTutorial(2, delta)
@@ -215,10 +212,10 @@ export default class GameScene extends Phaser.Scene {
 
 		if (this.input.pointer1.isDown) {
 			const { x } = this.input.pointer1
-			if (this.player.isRightOf(x)) {
+			if (this.player.isRightOf(x) && this.isCompleteTutorial()) {
 				this.player.moveRight(delta)
 			}
-			if (this.player.isLeftOf(x)) {
+			if (this.player.isLeftOf(x) && this.isCompleteTutorial()) {
 				this.player.moveLeft(delta)
 			}
 		}
@@ -233,7 +230,7 @@ export default class GameScene extends Phaser.Scene {
 			delta,
 		)
 
-		if (this.reloadCount <= 0) {
+		if (this.reloadCount.isDepleted()) {
 			gauge.deplete()
 			return
 		}
@@ -257,9 +254,9 @@ export default class GameScene extends Phaser.Scene {
 			this.singleLaserFactory.reset()
 			this.player.reloadReset()
 			gauge.reset()
-			this.reloadCount -= 1
-			this.reloadCountText.text = `${this.reloadCount}`
-			if (this.reloadCount === 0) {
+			this.reloadCount.decrementCount()
+
+			if (this.reloadCount.isDepleted()) {
 				setTimeout(() => {
 					this.scene.pause()
 					this.gameover!.visible = true

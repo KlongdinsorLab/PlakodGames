@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import { Meteor } from 'component/enemy/Meteor'
 import Player from 'component/player/Player'
-import { MARGIN } from '../../config'
+import {DESTROY_METEOR_SCORE, HIT_METEOR_SCORE, MARGIN} from '../../config'
 import I18nSingleton from '../../i18n/I18nSingleton'
 
 export type Character = {
@@ -54,7 +54,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				meteor.x + meteor.width / 2 + MARGIN / 2,
 				meteor.y - meteor.height / 2 + MARGIN / 2,
 				'tutorial_enemy_description',
-				{ score: 400 },
+				{ score: HIT_METEOR_SCORE },
 				{ wordWrap: { width: width / 2 }, fontSize: '22px' },
 			)
 			.setOrigin(0, 0)
@@ -85,7 +85,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				player.x + player.width / 2 + MARGIN / 2,
 				player.y - player.height / 2 + MARGIN / 2,
 				'tutorial_player_description',
-				{ score: 400 },
+				{ score: DESTROY_METEOR_SCORE },
 				{ wordWrap: { width: width / 2 - player.width }, fontSize: '22px' },
 			)
 			.setOrigin(0, 0)
