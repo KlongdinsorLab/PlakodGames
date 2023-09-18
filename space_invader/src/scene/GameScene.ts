@@ -291,6 +291,7 @@ export default class GameScene extends Phaser.Scene {
 			gauge.release(delta)
 		}
 	}
+
 }
 
 // TODO create test
