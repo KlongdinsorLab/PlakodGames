@@ -13,5 +13,6 @@
     "tutorial_reload_title": "Played/Remaining",
     "tutorial_menu_title": "Menu/Pause",
     "tutorial_gauge_title": "Laser Charger",
-    "tutorial_gauge_description": "Player breathe in using Cliniflo to charge the laser"
+    "tutorial_gauge_description": "Player breathe in using Cliniflo to charge the laser",
+    "tutorial_controller": "Touch the screen to move"
 }

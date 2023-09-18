@@ -14,8 +14,9 @@ import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Tutorial from './tutorial/Tutorial'
-import { Meteor } from '../component/enemy/Meteor'
-import ReloadCount from '../component/ui/ReloadCount'
+import { Meteor } from 'component/enemy/Meteor'
+import ReloadCount from 'component/ui/ReloadCount'
+import Menu from 'component/ui/Menu'
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -37,7 +38,7 @@ export default class GameScene extends Phaser.Scene {
 	private tutorial!: Tutorial
 	private tutorialMeteor!: Meteor
 
-	private menu!: Phaser.GameObjects.Image
+	private menu!: Menu
 
 	constructor() {
 		super({ key: 'game' })
@@ -59,6 +60,7 @@ export default class GameScene extends Phaser.Scene {
 
 		this.load.svg('pause', 'assets/icon/pause.svg')
 		this.load.svg('resume', 'assets/icon/resume.svg')
+		this.load.svg('finger press', 'assets/icon/finger-press.svg')
 
 		this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
 		this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
@@ -119,16 +121,7 @@ export default class GameScene extends Phaser.Scene {
 		this.singleLaserFactory = new SingleLaserFactory()
 		this.tutorial = new Tutorial(this)
 
-		this.menu = this.add
-			.image(width - MARGIN / 2, MARGIN / 2, 'pause')
-			.setOrigin(1, 0)
-		this.menu.scale = 0.5
-		this.menu.setInteractive()
-		this.menu.on('pointerup', () => {
-			this.menu.setTexture('resume')
-			this.scene.pause()
-			this.scene.launch('pause', { menu: this.menu })
-		})
+		this.menu = new Menu(this)
 
 		if (!this.isCompleteTutorial()) {
 			this.tutorialMeteor = this.meteorFactory.create(
@@ -172,7 +165,7 @@ export default class GameScene extends Phaser.Scene {
 				score: this.score,
 				gauge: gauge,
 				menu: this.menu,
-				reloadCount: this.reloadCount
+				reloadCount: this.reloadCount,
 			})
 
 			this.tutorial.launchTutorial(2, delta)

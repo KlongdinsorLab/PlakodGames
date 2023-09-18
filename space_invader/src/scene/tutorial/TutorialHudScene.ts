@@ -1,21 +1,22 @@
 import Phaser from 'phaser'
 import Score from 'component/ui/Score'
 import InhaleGauge from 'component/ui/InhaleGauge'
-import ReloadCount from '../../component/ui/ReloadCount'
-import I18nSingleton from '../../i18n/I18nSingleton'
-import { CIRCLE_GAUGE_RADUIS, HOLD_BAR_HEIGHT, MARGIN } from '../../config'
+import ReloadCount from 'component/ui/ReloadCount'
+import I18nSingleton from 'i18n/I18nSingleton'
+import Menu from "component/ui/Menu";
+import {CIRCLE_GAUGE_RADUIS, HOLD_BAR_HEIGHT, MARGIN} from 'config'
 
 export type Hud = {
 	score: Score
 	gauge: InhaleGauge
-	menu: Phaser.GameObjects.Image
+	menu: Menu
 	reloadCount: ReloadCount
 }
 
 export default class TutorialHudScene extends Phaser.Scene {
 	private score!: Score
 	private gauge!: InhaleGauge
-	private menu!: Phaser.GameObjects.Image
+	private menu!: Menu
 	private reloadCount!: ReloadCount
 
 	constructor() {
@@ -81,7 +82,7 @@ export default class TutorialHudScene extends Phaser.Scene {
 			.setOrigin(0, 0)
 
 		// menu
-		const menu = this.menu
+		const menu = this.menu.getBody()
 		const menuHighlight = this.add
 			.rectangle(
 				menu.x - menu.width / 4,
@@ -111,7 +112,6 @@ export default class TutorialHudScene extends Phaser.Scene {
 			gaugeWidth = 2 * CIRCLE_GAUGE_RADUIS
 			gaugeHeight = 2 * CIRCLE_GAUGE_RADUIS
 		}
-		console.log(gaugeHeight)
 		const gaugeHighlight = this.add
 			.rectangle(width / 2, gauge.y + gaugeHeight / 2, gaugeWidth, gaugeHeight)
 			.setOrigin(0.5, 1)

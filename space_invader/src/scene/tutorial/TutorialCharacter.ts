@@ -1,8 +1,8 @@
 import Phaser from 'phaser'
 import { Meteor } from 'component/enemy/Meteor'
 import Player from 'component/player/Player'
-import {DESTROY_METEOR_SCORE, HIT_METEOR_SCORE, MARGIN} from '../../config'
-import I18nSingleton from '../../i18n/I18nSingleton'
+import { DESTROY_METEOR_SCORE, HIT_METEOR_SCORE, MARGIN } from 'config'
+import I18nSingleton from 'i18n/I18nSingleton'
 
 export type Character = {
 	meteor: Meteor

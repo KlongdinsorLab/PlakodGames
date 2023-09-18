@@ -27,9 +27,6 @@ export default class Tutorial {
 				(tutorialScreen) => tutorialScreen.step === step,
 			)[0]['scene']
 			this.scene.scene.launch(sceneName, options)
-			if (step === this.tutorialScreens[this.tutorialScreens.length - 1].step) {
-				localStorage.setItem('tutorial', 'true')
-			}
 		}
 	}
 }
