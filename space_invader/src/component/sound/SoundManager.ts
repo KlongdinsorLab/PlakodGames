@@ -11,10 +11,13 @@ export default class SoundManager {
 		this.scene.sound.mute = true
 	}
 
+<<<<<<< HEAD
 	isMute(): boolean {
 		return this.scene.sound.mute
 	}
 
+=======
+>>>>>>> 55535a9 (Add Warmup (#2))
 	mute() {
 		this.scene.sound.mute = true
 	}
@@ -35,6 +38,7 @@ export default class SoundManager {
 		sound?.pause()
 	}
 
+<<<<<<< HEAD
 	pauseAll(): void {
 		this.scene.sound.pauseAll()
 	}
@@ -43,6 +47,8 @@ export default class SoundManager {
 		this.scene.sound.resumeAll()
 	}
 
+=======
+>>>>>>> 55535a9 (Add Warmup (#2))
 	createSoundToggle(
 		x: number,
 		y: number,
