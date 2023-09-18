@@ -119,7 +119,6 @@ export default class WarmupScene extends Phaser.Scene {
 					inhaleSprite.play('inhale-animation')
 					inhaleSprite.setDepth(1)
 
-					console.log(this.event)
 					this.event.once('inhale', () => {
 						this.scene.setVisible(false)
 						this.event.removeListener('inhale')
@@ -131,46 +130,5 @@ export default class WarmupScene extends Phaser.Scene {
 				// TODO Event Emiiter
 			},
 		})
-
-		//		sprite.playAfterDelay('exhale_animation', 1000)
-
-		//		this.tweens.add({
-		//			targets: sprite.anims,
-		//			timeScale: { from: 0.5, to: 2 },
-		//			ease: 'Sine.inOut',
-		//			yoyo: true,
-		//			repeat: -1,
-		//			repeatDelay: 1000,
-		//			hold: 1000,
-		//			duraton: 3000
-		//		});
-		//		const config = {
-		//			key: 'walk',
-		//			frames: this.anims.generateFrameNumbers('mummy'),
-		//			frameRate: 8,
-		//			yoyo: true,
-		//			repeat: -1
-		//		};
-
-		//		this.anim = this.anims.create(config);
-
-		//		this.sprite = this.add.sprite(400, 300, 'mummy').setScale(4)
-		//
-		//		this.sprite.anims.load('walk')
-
-		//		this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
-
-		//		this.input.once(
-		//			'pointerup',
-		//			() => {
-		//				this.scene.resume('game')
-		//				this.scene.setVisible(false)
-		//			},
-		//			this,
-		//		)
 	}
-
-	//	isWarmUpComplete(): boolean {
-	//		return this.isWarmUpComplete
-	//	}
 }

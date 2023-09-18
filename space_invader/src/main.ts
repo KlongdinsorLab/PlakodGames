@@ -34,8 +34,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		TutorialCharacterScene,
 		TutorialHudScene,
 		TutorialControllerScene,
-		PauseScene,
 		WarmupScene,
+		PauseScene,
 	],
 }
 

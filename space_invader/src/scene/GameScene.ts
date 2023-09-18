@@ -148,6 +148,7 @@ export default class GameScene extends Phaser.Scene {
 			)
 		}
 
+		this.isCompleteWarmup = false
 		this.event = new EventEmitter()
 	}
 
@@ -189,7 +190,7 @@ export default class GameScene extends Phaser.Scene {
 			this.tutorial.launchTutorial(2, delta)
 		}
 
-		if (!this.isCompleteWarmup) {
+		if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
 			this.scene.pause()
 			this.isCompleteWarmup = true
 			this.scene.launch('warmup', { event: this.event })

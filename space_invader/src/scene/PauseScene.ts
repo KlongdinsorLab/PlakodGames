@@ -3,18 +3,18 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import { MARGIN } from '../config'
 import SoundManager from '../component/sound/SoundManager'
 
-export type Pause = {
-	pause: Phaser.GameObjects.Image
+export type Menu = {
+	menu: Phaser.GameObjects.Image
 }
 export default class PauseScene extends Phaser.Scene {
-	private pause!: Phaser.GameObjects.Image
+	private menu!: Phaser.GameObjects.Image
 
 	constructor() {
 		super('pause')
 	}
 
-	init({ pause }: Pause) {
-		this.pause = pause
+	init({ menu }: Menu) {
+		this.menu = menu
 	}
 
 	preload() {
@@ -24,7 +24,7 @@ export default class PauseScene extends Phaser.Scene {
 
 	create() {
 		const { width, height } = this.scale
-		this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
+		this.add.rectangle(0, 0, width, height, 0, 0.75).setOrigin(0, 0)
 		const i18n = I18nSingleton.getInstance()
 
 		const menu = this.add
@@ -33,8 +33,8 @@ export default class PauseScene extends Phaser.Scene {
 				height / 2,
 				width - 4 * MARGIN,
 				height / 2,
-				0x999999,
-				0.25,
+				0x473D4D,
+				0.8,
 			)
 			.setOrigin(0.5, 0.5)
 
@@ -82,6 +82,7 @@ export default class PauseScene extends Phaser.Scene {
 			.setOrigin(0.5, 0.5)
 		resume.setInteractive()
 		resume.on('pointerup', () => {
+			this.menu.setTexture('pause')
 			this.scene.resume('game')
 			i18n.destroyEmitter()
 			this.scene.stop()
