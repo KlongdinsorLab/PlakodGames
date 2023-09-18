@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { MARGIN, PLAYER_START_MARGIN } from 'config'
-import I18nSingleton from '../../i18n/I18nSingleton'
+import I18nSingleton from 'i18n/I18nSingleton'
 
 export default class TutorialControllerScene extends Phaser.Scene {
 	constructor() {

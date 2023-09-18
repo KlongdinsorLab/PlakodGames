@@ -1,13 +1,18 @@
 import { RELOAD_COUNT } from '../../config'
 
 export default class ReloadCount {
-	private reloadCount = 0
+	private reloadCount = RELOAD_COUNT
 	private body: Phaser.GameObjects.Text
 
 	constructor(scene: Phaser.Scene, x: number, y: number) {
-		this.body = scene.add.text(x, y, `${this.reloadCount}/${RELOAD_COUNT}`, {
-			fontSize: '42px',
-		})
+		this.body = scene.add.text(
+			x,
+			y,
+			`${RELOAD_COUNT - this.reloadCount}/${RELOAD_COUNT}`,
+			{
+				fontSize: '42px',
+			},
+		)
 	}
 
 	getBody(): Phaser.GameObjects.Text {
@@ -15,7 +20,7 @@ export default class ReloadCount {
 	}
 
 	private getCountText(count: number): string {
-		return `${count}/${RELOAD_COUNT}`
+		return `${RELOAD_COUNT - count}/${RELOAD_COUNT}`
 	}
 
 	setCount(count: number): void {

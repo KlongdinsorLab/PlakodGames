@@ -17,6 +17,7 @@ import Tutorial from './tutorial/Tutorial'
 import { Meteor } from 'component/enemy/Meteor'
 import ReloadCount from 'component/ui/ReloadCount'
 import Menu from 'component/ui/Menu'
+import EventEmitter = Phaser.Events.EventEmitter
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -37,8 +38,10 @@ export default class GameScene extends Phaser.Scene {
 	private meteorFactory!: MeteorFactory
 	private tutorial!: Tutorial
 	private tutorialMeteor!: Meteor
-
+	private isCompleteWarmup = false
 	private menu!: Menu
+
+	private event!: EventEmitter
 
 	constructor() {
 		super({ key: 'game' })
@@ -68,14 +71,27 @@ export default class GameScene extends Phaser.Scene {
 		this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
+
+		this.load.spritesheet('exhale', 'assets/sprites/warmup/exhale.png', {
+			frameWidth: 665,
+			frameHeight: 664,
+		})
+		this.load.spritesheet('inhale', 'assets/sprites/warmup/inhale.png', {
+			frameWidth: 1056,
+			frameHeight: 540,
+		})
+		this.load.spritesheet('release', 'assets/sprites/warmup/releasex.png', {
+			frameWidth: 1324,
+			frameHeight: 780,
+		})
 	}
 
 	create() {
+		const { width, height } = this.scale
 		// const queryString = window.location.search;
 		// const urlParams = new URLSearchParams(queryString);
 		// this.controlType = <'tilt' | 'touch'>urlParams.get('control')
 
-		const { width, height } = this.scale
 		this.background = this.add
 			.tileSprite(0, 0, width, height, 'background')
 			.setOrigin(0)
@@ -131,6 +147,8 @@ export default class GameScene extends Phaser.Scene {
 				true,
 			)
 		}
+
+		this.event = new EventEmitter()
 	}
 
 	isCompleteTutorial = () => localStorage.getItem('tutorial') || false
@@ -171,8 +189,13 @@ export default class GameScene extends Phaser.Scene {
 			this.tutorial.launchTutorial(2, delta)
 		}
 
-		//TODO should be after warm up
-		if (this.isCompleteTutorial()) {
+		if (!this.isCompleteWarmup) {
+			this.scene.pause()
+			this.isCompleteWarmup = true
+			this.scene.launch('warmup', { event: this.event })
+		}
+
+		if (this.isCompleteTutorial() && this.isCompleteWarmup) {
 			this.meteorFactory.createByTime(this, this.player, this.score, delta)
 		}
 
@@ -234,6 +257,8 @@ export default class GameScene extends Phaser.Scene {
 		) {
 			this.player.startReload()
 			gauge.setFullCharge()
+			this.event.emit('inhale')
+			// TODO add release UI
 		} else if (
 			gauge.getDuratation() <= HOLD_DURATION_MS &&
 			gauge.getDuratation() !== 0 &&

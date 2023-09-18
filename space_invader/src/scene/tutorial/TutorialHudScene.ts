@@ -3,8 +3,8 @@ import Score from 'component/ui/Score'
 import InhaleGauge from 'component/ui/InhaleGauge'
 import ReloadCount from 'component/ui/ReloadCount'
 import I18nSingleton from 'i18n/I18nSingleton'
-import Menu from "component/ui/Menu";
-import {CIRCLE_GAUGE_RADUIS, HOLD_BAR_HEIGHT, MARGIN} from 'config'
+import Menu from 'component/ui/Menu'
+import { CIRCLE_GAUGE_RADUIS, HOLD_BAR_HEIGHT, MARGIN } from 'config'
 
 export type Hud = {
 	score: Score

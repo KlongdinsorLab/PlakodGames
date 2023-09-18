@@ -14,5 +14,9 @@
     "tutorial_menu_title": "Menu/Pause",
     "tutorial_gauge_title": "Laser Charger",
     "tutorial_gauge_description": "Player breathe in using Cliniflo to charge the laser",
-    "tutorial_controller": "Touch the screen to move"
+    "tutorial_controller": "Touch the screen to move",
+    "warmup_exhale": "Exhale...",
+    "warmup_release": "Hold the tube with your mouth",
+    "warmup_inhale": "Deeply inhale until the tube expands"
+
 }
