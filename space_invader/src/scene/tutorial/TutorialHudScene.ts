@@ -5,6 +5,7 @@ import ReloadCount from 'component/ui/ReloadCount'
 import I18nSingleton from 'i18n/I18nSingleton'
 import Menu from 'component/ui/Menu'
 import { CIRCLE_GAUGE_RADUIS, HOLD_BAR_HEIGHT, MARGIN } from 'config'
+import SoundManager from "component/sound/SoundManager";
 
 export type Hud = {
 	score: Score
@@ -31,6 +32,10 @@ export default class TutorialHudScene extends Phaser.Scene {
 	}
 
 	create() {
+		const soundManager = new SoundManager(this)
+		const isMute = soundManager.isMute()
+		soundManager.mute()
+
 		const { width, height } = this.scale
 		this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
 
@@ -144,6 +149,7 @@ export default class TutorialHudScene extends Phaser.Scene {
 			() => {
 				this.scene.resume('game')
 				this.scene.setVisible(false)
+				isMute ? soundManager.mute() : soundManager.unmute()
 			},
 			this,
 		)

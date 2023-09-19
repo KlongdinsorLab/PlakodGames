@@ -23,6 +23,9 @@ export default class PauseScene extends Phaser.Scene {
 	}
 
 	create() {
+		const soundManager = new SoundManager(this)
+		soundManager.pauseAll()
+
 		const { width, height } = this.scale
 		this.add.rectangle(0, 0, width, height, 0, 0.75).setOrigin(0, 0)
 		const i18n = I18nSingleton.getInstance()
@@ -82,6 +85,7 @@ export default class PauseScene extends Phaser.Scene {
 			.setOrigin(0.5, 0.5)
 		resume.setInteractive()
 		resume.on('pointerup', () => {
+			soundManager.resumeAll()
 			this.menu.setTexture('pause')
 			this.scene.resume('game')
 			i18n.destroyEmitter()

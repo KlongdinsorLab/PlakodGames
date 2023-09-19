@@ -1,10 +1,11 @@
 {
-    "start text": "Press any ← or → button to start",
+    "start text": "Tab the screen to start",
     "pause": "Pause",
     "resume": "Resume",
     "restart": "Restart",
     "home": "Home",
     "score": "{{score, number}}",
+    "release": "Release !",
     "tutorial_enemy_title": "Meteor",
     "tutorial_enemy_description": "Dodge falling meteors to survive and score points, with each meteor impact deducting {{score, number}} points from your score.",
     "tutorial_player_title": "Jet (player)",

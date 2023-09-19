@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import { MARGIN, PLAYER_START_MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+import SoundManager from "component/sound/SoundManager";
 
 export default class TutorialControllerScene extends Phaser.Scene {
 	constructor() {
@@ -8,6 +9,10 @@ export default class TutorialControllerScene extends Phaser.Scene {
 	}
 
 	create() {
+		const soundManager = new SoundManager(this)
+		const isMute = soundManager.isMute()
+		soundManager.mute()
+
 		const { width, height } = this.scale
 		this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
 
@@ -102,6 +107,7 @@ export default class TutorialControllerScene extends Phaser.Scene {
 				localStorage.setItem('tutorial', 'true')
 				this.scene.resume('game')
 				this.scene.setVisible(false)
+				isMute ? soundManager.mute() : soundManager.unmute()
 			},
 			this,
 		)

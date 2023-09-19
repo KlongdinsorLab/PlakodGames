@@ -3,6 +3,7 @@ import { Meteor } from 'component/enemy/Meteor'
 import Player from 'component/player/Player'
 import { DESTROY_METEOR_SCORE, HIT_METEOR_SCORE, MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
+import SoundManager from 'component/sound/SoundManager'
 
 export type Character = {
 	meteor: Meteor
@@ -23,6 +24,10 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 	}
 
 	create() {
+		const soundManager = new SoundManager(this)
+		const isMute = soundManager.isMute()
+		soundManager.mute()
+
 		const { width, height } = this.scale
 		this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
 
@@ -95,6 +100,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 			() => {
 				this.scene.resume('game')
 				this.scene.setVisible(false)
+				isMute ? soundManager.mute() : soundManager.unmute()
 			},
 			this,
 		)

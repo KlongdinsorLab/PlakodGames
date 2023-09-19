@@ -11,6 +11,10 @@ export default class SoundManager {
 		this.scene.sound.mute = true
 	}
 
+	isMute(): boolean {
+		return this.scene.sound.mute
+	}
+
 	mute() {
 		this.scene.sound.mute = true
 	}
@@ -29,6 +33,14 @@ export default class SoundManager {
 
 	pause(sound: Phaser.Sound.BaseSound) {
 		sound?.pause()
+	}
+
+	pauseAll(): void {
+		this.scene.sound.pauseAll()
+	}
+
+	resumeAll(): void {
+		this.scene.sound.resumeAll()
 	}
 
 	createSoundToggle(
