@@ -2,15 +2,21 @@ import { TUTORIAL_DELAY_MS } from 'config'
 import { Hud } from './TutorialHudScene'
 import { Character } from './TutorialCharacter'
 
+export enum Step {
+	CHARACTER = 0,
+	HUD = 1,
+	CONTROLLER = 2,
+}
+
 export default class Tutorial {
 	private timer = 0
 	private step = 0
 	private scene!: Phaser.Scene
 
 	private tutorialScreens = [
-		{ step: 0, scene: 'tutorial character' },
-		{ step: 1, scene: 'tutorial HUD' },
-		{ step: 2, scene: 'tutorial controller' },
+		{ step: Step.CHARACTER, scene: 'tutorial character' },
+		{ step: Step.HUD, scene: 'tutorial HUD' },
+		{ step: Step.CONTROLLER, scene: 'tutorial controller' },
 	]
 
 	constructor(scene: Phaser.Scene) {
@@ -28,5 +34,9 @@ export default class Tutorial {
 			)[0]['scene']
 			this.scene.scene.launch(sceneName, options)
 		}
+	}
+
+	getStep(): number {
+		return this.step
 	}
 }

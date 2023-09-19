@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
-import { MARGIN, PLAYER_START_MARGIN } from 'config'
+import { MARGIN, PLAYER_START_MARGIN, TUTORIAL_DELAY_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
-import SoundManager from "component/sound/SoundManager";
+import SoundManager from 'component/sound/SoundManager'
 
 export default class TutorialControllerScene extends Phaser.Scene {
 	constructor() {
@@ -104,11 +104,14 @@ export default class TutorialControllerScene extends Phaser.Scene {
 		this.input.once(
 			'pointerdown',
 			() => {
-				localStorage.setItem('tutorial', 'true')
 				this.scene.resume('game')
 				isMute ? soundManager.mute() : soundManager.unmute()
 				i18n.removeAllListeners(this)
 				this.scene.stop()
+				setTimeout(
+					() => localStorage.setItem('tutorial', 'true'),
+					TUTORIAL_DELAY_MS,
+				)
 			},
 			this,
 		)

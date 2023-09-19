@@ -13,11 +13,12 @@ import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 import { MeteorFactory } from 'component/enemy/MeteorFactory'
-import Tutorial from './tutorial/Tutorial'
+import Tutorial, {Step} from './tutorial/Tutorial'
 import { Meteor } from 'component/enemy/Meteor'
 import ReloadCount from 'component/ui/ReloadCount'
 import Menu from 'component/ui/Menu'
 import EventEmitter = Phaser.Events.EventEmitter
+import { t } from 'i18next'
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -175,19 +176,19 @@ export default class GameScene extends Phaser.Scene {
 
 		// Tutorial
 		if (!this.isCompleteTutorial()) {
-			this.tutorial.launchTutorial(0, delta, {
+			this.tutorial.launchTutorial(Step.CHARACTER, delta, {
 				meteor: this.tutorialMeteor,
 				player: this.player,
 			})
 
-			this.tutorial.launchTutorial(1, delta, {
+			this.tutorial.launchTutorial(Step.HUD, delta, {
 				score: this.score,
 				gauge: gauge,
 				menu: this.menu,
 				reloadCount: this.reloadCount,
 			})
 
-			this.tutorial.launchTutorial(2, delta)
+			this.tutorial.launchTutorial(Step.CONTROLLER, delta)
 		}
 
 		if (!this.isCompleteWarmup && this.isCompleteTutorial()) {
@@ -229,10 +230,10 @@ export default class GameScene extends Phaser.Scene {
 
 		if (this.input.pointer1.isDown) {
 			const { x } = this.input.pointer1
-			if (this.player.isRightOf(x) && this.isCompleteTutorial()) {
+			if (this.player.isRightOf(x) && this.tutorial.getStep() > Step.CONTROLLER) {
 				this.player.moveRight(delta)
 			}
-			if (this.player.isLeftOf(x) && this.isCompleteTutorial()) {
+			if (this.player.isLeftOf(x) && this.tutorial.getStep() > Step.CONTROLLER) {
 				this.player.moveLeft(delta)
 			}
 		}
@@ -291,7 +292,6 @@ export default class GameScene extends Phaser.Scene {
 			gauge.release(delta)
 		}
 	}
-
 }
 
 // TODO create test
