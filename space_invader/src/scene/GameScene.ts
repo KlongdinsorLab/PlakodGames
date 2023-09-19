@@ -153,6 +153,8 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	isCompleteTutorial = () => localStorage.getItem('tutorial') || false
+	isCompleteControlerTutorial = () =>
+		this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
 	update(_: number, delta: number) {
 		//        if (this.input.gamepad.total === 0) {
@@ -229,16 +231,10 @@ export default class GameScene extends Phaser.Scene {
 
 		if (this.input.pointer1.isDown) {
 			const { x } = this.input.pointer1
-			if (
-				this.player.isRightOf(x) &&
-				(this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial)
-			) {
+			if (this.player.isRightOf(x) && this.isCompleteControlerTutorial()) {
 				this.player.moveRight(delta)
 			}
-			if (
-				this.player.isLeftOf(x) &&
-				(this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial)
-			) {
+			if (this.player.isLeftOf(x) && this.isCompleteControlerTutorial()) {
 				this.player.moveLeft(delta)
 			}
 		}
