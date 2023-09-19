@@ -71,6 +71,10 @@ export default class I18nSingleton {
 	}
 
 	destroyEmitter() {
-		this.emitter.removeAllListeners()
+		this.emitter.removeListener('setText')
+	}
+
+	removeAllListeners(scene: Phaser.Scene) {
+		scene.events.removeAllListeners()
 	}
 }

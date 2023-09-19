@@ -259,7 +259,6 @@ export default class GameScene extends Phaser.Scene {
 			this.player.startReload()
 			gauge.setFullCharge()
 			this.event.emit('inhale')
-			// TODO add release UI
 		} else if (
 			gauge.getDuratation() <= HOLD_DURATION_MS &&
 			gauge.getDuratation() !== 0 &&

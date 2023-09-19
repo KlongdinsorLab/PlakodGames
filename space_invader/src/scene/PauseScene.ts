@@ -8,6 +8,7 @@ export type Menu = {
 }
 export default class PauseScene extends Phaser.Scene {
 	private menu!: Phaser.GameObjects.Image
+	private isInitiated = false
 
 	constructor() {
 		super('pause')
@@ -27,7 +28,12 @@ export default class PauseScene extends Phaser.Scene {
 		soundManager.pauseAll()
 
 		const { width, height } = this.scale
-		this.add.rectangle(0, 0, width, height, 0, 0.75).setOrigin(0, 0)
+
+		// a hack so that background wouldn't be so dark
+		if (!this.isInitiated) {
+			this.add.rectangle(0, 0, width, height, 0x000000, 0.75).setOrigin(0, 0)
+			this.isInitiated = true
+		}
 		const i18n = I18nSingleton.getInstance()
 
 		const menu = this.add
@@ -36,7 +42,7 @@ export default class PauseScene extends Phaser.Scene {
 				height / 2,
 				width - 4 * MARGIN,
 				height / 2,
-				0x473D4D,
+				0x473d4d,
 				0.8,
 			)
 			.setOrigin(0.5, 0.5)
@@ -56,17 +62,19 @@ export default class PauseScene extends Phaser.Scene {
 			width / 2 - MARGIN,
 			menu.y - menu.height / 2 + 1.5 * MARGIN,
 		)
-		const getFlag = (lang: string) => (lang === 'th' ? '🇹🇭' : '🇺🇸')
-		const language = this.add.text(
+
+		const language = i18n.createTranslatedText(
+			this,
 			width / 2 + MARGIN,
 			sound.y - MARGIN / 2,
-			getFlag(i18n.getLanguage()),
+			'language_flag',
+			undefined,
 			{ fontSize: '80px' },
 		)
+
 		language.setInteractive()
 		language.on('pointerup', () => {
 			i18n.setLanguage(i18n.getLanguage() === 'th' ? 'en' : 'th')
-			language.setText(getFlag(i18n.getLanguage()))
 		})
 
 		const resume = this.add
@@ -88,7 +96,7 @@ export default class PauseScene extends Phaser.Scene {
 			soundManager.resumeAll()
 			this.menu.setTexture('pause')
 			this.scene.resume('game')
-			i18n.destroyEmitter()
+			i18n.removeAllListeners(this)
 			this.scene.stop()
 		})
 

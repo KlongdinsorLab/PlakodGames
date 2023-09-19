@@ -99,8 +99,9 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 			'pointerdown',
 			() => {
 				this.scene.resume('game')
-				this.scene.setVisible(false)
 				isMute ? soundManager.mute() : soundManager.unmute()
+				i18n.removeAllListeners(this)
+				this.scene.stop()
 			},
 			this,
 		)

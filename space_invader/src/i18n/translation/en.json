@@ -6,6 +6,7 @@
     "home": "Home",
     "score": "{{score, number}}",
     "release": "Release !",
+    "language_flag": "🇺🇸",
     "tutorial_enemy_title": "Meteor",
     "tutorial_enemy_description": "Dodge falling meteors to survive and score points, with each meteor impact deducting {{score, number}} points from your score.",
     "tutorial_player_title": "Jet (player)",

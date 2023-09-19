@@ -1,3 +1,6 @@
+import I18nSingleton from 'i18n/I18nSingleton'
+import { MARGIN } from 'config'
+
 export default abstract class InhaleGauge {
 	protected scene: Phaser.Scene
 	protected division: number
@@ -11,6 +14,8 @@ export default abstract class InhaleGauge {
 	protected chargingSound?: Phaser.Sound.BaseSound
 	protected chargedSound?: Phaser.Sound.BaseSound
 
+	protected releaseText!: Phaser.GameObjects.Text
+
 	protected constructor(scene: Phaser.Scene, division: number, index: number) {
 		this.scene = scene
 		this.division = division
@@ -19,6 +24,18 @@ export default abstract class InhaleGauge {
 		this.createUpDownGauge()
 		this.chargingSound = this.scene.sound.add('chargingSound')
 		this.chargedSound = this.scene.sound.add('chargedSound')
+
+		this.releaseText = I18nSingleton.getInstance()
+			.createTranslatedText(
+				this.scene,
+				this.scene.scale.width / 2,
+				4 * MARGIN,
+				'release',
+				undefined,
+				{ fontSize: '32px' },
+			)
+			.setOrigin(0.5, 0)
+		this.releaseText.setVisible(false)
 	}
 
 	abstract createGauge(index: number): void
