@@ -47,12 +47,14 @@ export default class WarmupScene extends Phaser.Scene {
 			'exhale',
 		)
 
-		this.add.circle(
+		const circle = this.add.circle(
 			exhaleSprite.x,
 			exhaleSprite.y - MARGIN / 2,
 			exhaleSprite.width / 4 + MARGIN,
 			0xffffff,
+			0.5,
 		)
+		circle.setStrokeStyle(4, 0x58595b)
 
 		exhaleSprite.setScale(0.5)
 		exhaleSprite.play('exhale-animation')
@@ -123,6 +125,8 @@ export default class WarmupScene extends Phaser.Scene {
 						this.scene.setVisible(false)
 						this.event.removeListener('inhale')
 					})
+
+					// touch
 				}, 1500)
 
 				// TODO Add time out

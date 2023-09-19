@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { MARGIN } from '../config'
-import SoundManager from '../component/sound/SoundManager'
+import { MARGIN } from 'config'
+import SoundManager from 'component/sound/SoundManager'
 
 export type Menu = {
 	menu: Phaser.GameObjects.Image
@@ -29,11 +29,12 @@ export default class PauseScene extends Phaser.Scene {
 
 		const { width, height } = this.scale
 
+
 		// a hack so that background wouldn't be so dark
-		if (!this.isInitiated) {
-			this.add.rectangle(0, 0, width, height, 0x000000, 0.75).setOrigin(0, 0)
-			this.isInitiated = true
-		}
+//		if (!this.isInitiated) {
+		this.add.rectangle(0, 0, width, height, 0x000000, 0.75).setOrigin(0, 0)
+//		this.isInitiated = true
+//		}
 		const i18n = I18nSingleton.getInstance()
 
 		const menu = this.add
@@ -96,7 +97,7 @@ export default class PauseScene extends Phaser.Scene {
 			soundManager.resumeAll()
 			this.menu.setTexture('pause')
 			this.scene.resume('game')
-			i18n.removeAllListeners(this)
+//			i18n.removeAllListeners(this)
 			this.scene.stop()
 		})
 

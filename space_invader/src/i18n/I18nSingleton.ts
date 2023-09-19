@@ -54,7 +54,11 @@ export default class I18nSingleton {
 		key: string,
 		options?: any,
 	): void {
-		text.setText(i18next.t(key, options))
+		try {
+			text.setText(i18next.t(key, options))
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
 	createTranslatedText(

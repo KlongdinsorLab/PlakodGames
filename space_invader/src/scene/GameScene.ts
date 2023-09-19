@@ -80,7 +80,7 @@ export default class GameScene extends Phaser.Scene {
 			frameWidth: 1056,
 			frameHeight: 540,
 		})
-		this.load.spritesheet('release', 'assets/sprites/warmup/releasex.png', {
+		this.load.spritesheet('release', 'assets/sprites/warmup/release.png', {
 			frameWidth: 1324,
 			frameHeight: 780,
 		})
