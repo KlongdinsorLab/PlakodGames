@@ -11,6 +11,9 @@ export default abstract class InhaleGauge {
 	protected up!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
 	protected down!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
 
+	protected upText!: Phaser.GameObjects.Text
+	protected downText!: Phaser.GameObjects.Text
+
 	protected chargingSound?: Phaser.Sound.BaseSound
 	protected chargedSound?: Phaser.Sound.BaseSound
 
@@ -35,6 +38,13 @@ export default abstract class InhaleGauge {
 				{ fontSize: '32px' },
 			)
 			.setOrigin(0.5, 0)
+		scene.tweens.add({
+			targets: this.releaseText,
+			scale: 1.25,
+			duration: 500,
+			yoyo: true,
+			repeat: -1,
+		})
 		this.releaseText.setVisible(false)
 	}
 

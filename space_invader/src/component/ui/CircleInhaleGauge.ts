@@ -13,10 +13,12 @@ import {
 	CIRCLE_GAUGE_RADUIS,
 	CIRCLE_OVER_GAUGE_RADUIS,
 	CIRCLE_GAUGE_SHAKE_X,
+	MARGIN,
 } from 'config'
 
 import InhaleGauge from './InhaleGauge'
 import SoundManager from 'component/sound/SoundManager'
+import I18nSingleton from 'i18n/I18nSingleton'
 
 export default class CircleInhaleGauge extends InhaleGauge {
 	private shake: Phaser.Tweens.Tween
@@ -48,6 +50,12 @@ export default class CircleInhaleGauge extends InhaleGauge {
 			.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
 			.setOrigin(0.5, 0.5)
 
+		I18nSingleton.getInstance()
+			.createTranslatedText(this.scene, x, y, 'inhale', undefined, {
+				fontSize: '32px',
+			})
+			.setOrigin(0.5, 0.5)
+
 		this.gauge = this.scene.add
 			.circle(x, y, CIRCLE_GAUGE_RADUIS, HOLD_BAR_COLOR)
 			.setOrigin(0.5, 0.5)
@@ -72,6 +80,29 @@ export default class CircleInhaleGauge extends InhaleGauge {
 		this.up = this.scene.add
 			.circle(upX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
 			.setOrigin(0.5, 0.5)
+		const i18n = I18nSingleton.getInstance()
+
+		this.upText = i18n
+			.createTranslatedText(
+				this.scene,
+				upX + this.up.width / 2 + MARGIN / 2,
+				y,
+				'inhale+',
+				undefined,
+				{ fontSize: '22px' },
+			)
+			.setOrigin(0, 0.5)
+
+		this.downText = i18n
+			.createTranslatedText(
+				this.scene,
+				downX - this.down.width / 2 - MARGIN / 2,
+				y,
+				'inhale-',
+				undefined,
+				{ fontSize: '22px' },
+			)
+			.setOrigin(1, 0.5)
 	}
 
 	getHoldWithIncrement(delta: number): number {
@@ -140,18 +171,22 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	}
 
 	showUp(): void {
-		(<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_COLOR, 1)
+		this.upText?.setVisible(true)
+		;(<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_COLOR, 1)
 	}
 
 	hideUp(): void {
-		(<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
+		this.upText?.setVisible(false)
+		;(<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
 	}
 
 	showDown(): void {
-		(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_COLOR, 1)
+		this.downText?.setVisible(true)
+		;(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_COLOR, 1)
 	}
 
 	hideDown(): void {
-		(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
+		this.downText?.setVisible(false)
+		;(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
 	}
 }
