@@ -22,5 +22,6 @@
     "tutorial_controller": "Touch the screen to move",
     "warmup_exhale": "Exhale...",
     "warmup_release": "Hold the tube with your mouth",
-    "warmup_inhale": "Deeply inhale until the tube expands"
+    "warmup_inhale": "Deeply inhale until the tube expands",
+    "warmup_continue": "Touch to continue"
 }

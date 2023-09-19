@@ -13,7 +13,7 @@ import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 import { MeteorFactory } from 'component/enemy/MeteorFactory'
-import Tutorial, {Step} from './tutorial/Tutorial'
+import Tutorial, { Step } from './tutorial/Tutorial'
 import { Meteor } from 'component/enemy/Meteor'
 import ReloadCount from 'component/ui/ReloadCount'
 import Menu from 'component/ui/Menu'
@@ -230,10 +230,16 @@ export default class GameScene extends Phaser.Scene {
 
 		if (this.input.pointer1.isDown) {
 			const { x } = this.input.pointer1
-			if (this.player.isRightOf(x) && this.tutorial.getStep() > Step.CONTROLLER) {
+			if (
+				this.player.isRightOf(x) &&
+				(this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial)
+			) {
 				this.player.moveRight(delta)
 			}
-			if (this.player.isLeftOf(x) && this.tutorial.getStep() > Step.CONTROLLER) {
+			if (
+				this.player.isLeftOf(x) &&
+				(this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial)
+			) {
 				this.player.moveLeft(delta)
 			}
 		}
