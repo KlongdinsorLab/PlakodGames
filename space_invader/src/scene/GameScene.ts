@@ -18,7 +18,6 @@ import { Meteor } from 'component/enemy/Meteor'
 import ReloadCount from 'component/ui/ReloadCount'
 import Menu from 'component/ui/Menu'
 import EventEmitter = Phaser.Events.EventEmitter
-import { t } from 'i18next'
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
