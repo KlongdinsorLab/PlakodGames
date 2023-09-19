@@ -5,6 +5,7 @@ import EventEmitter = Phaser.Events.EventEmitter
 
 export enum Step {
 	EXHALE = 0,
+	EXHALE_COUNT_DOWN = 0.1,
 	RELEASE = 1,
 	INHALE = 2,
 }
@@ -112,6 +113,8 @@ export default class WarmupScene extends Phaser.Scene {
 						.setOrigin(0.5, 0.5)
 
 					continueText.setVisible(false)
+
+					this.step = Step.EXHALE_COUNT_DOWN
 
 					this.tweens.add({
 						targets: countText,
