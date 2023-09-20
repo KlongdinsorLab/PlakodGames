@@ -50,31 +50,24 @@ export default class WarmupScene extends Phaser.Scene {
 			repeat: -1,
 		})
 
-		const exhaleSprite = this.add.sprite(
-			width / 2,
-			height / 2 - 2 * MARGIN,
-			'exhale',
-		)
+		const spriteX = width / 2
+		const spriteY = height / 2 - 2 * MARGIN
 
-		const circle = this.add.circle(
-			exhaleSprite.x,
-			exhaleSprite.y - MARGIN / 2,
-			exhaleSprite.width / 4 + MARGIN,
-			0xffffff,
-			0.5,
-		)
-		circle.setStrokeStyle(4, 0x58595b)
+		const exhaleSprite = this.add.sprite(spriteX, spriteY, 'exhale')
 
 		exhaleSprite.setScale(0.5)
 		exhaleSprite.play('exhale-animation')
 		exhaleSprite.setDepth(1)
+
+		const descriptionY = exhaleSprite.y - exhaleSprite.height / 4 - 2 * MARGIN
+		const continueY = exhaleSprite.y + exhaleSprite.height / 4 + 2 * MARGIN
 
 		const i18n = I18nSingleton.getInstance()
 		const description = i18n
 			.createTranslatedText(
 				this,
 				width / 2,
-				exhaleSprite.y - exhaleSprite.height / 2,
+				descriptionY,
 				'warmup_exhale',
 				undefined,
 				{ wordWrap: { width: width / 2 }, fontSize: '32px' },
@@ -85,7 +78,7 @@ export default class WarmupScene extends Phaser.Scene {
 			.createTranslatedText(
 				this,
 				width / 2,
-				exhaleSprite.y + exhaleSprite.height / 2 + MARGIN,
+				continueY,
 				'warmup_continue',
 				undefined,
 				{ wordWrap: { width: width / 2 }, fontSize: '32px' },
@@ -96,7 +89,7 @@ export default class WarmupScene extends Phaser.Scene {
 			alpha: 0.5,
 			yoyo: true,
 			repeat: -1,
-			duration: 300
+			duration: 300,
 		})
 
 		this.input.on(
@@ -104,12 +97,9 @@ export default class WarmupScene extends Phaser.Scene {
 			() => {
 				if (this.step === Step.EXHALE) {
 					const countText = this.add
-						.text(
-							width / 2,
-							exhaleSprite.y + exhaleSprite.height / 2 + MARGIN,
-							`${this.exhaleCount}`,
-							{ fontSize: '160px' },
-						)
+						.text(width / 2, continueY, `${this.exhaleCount}`, {
+							fontSize: '160px',
+						})
 						.setOrigin(0.5, 0.5)
 
 					continueText.setVisible(false)
@@ -132,12 +122,8 @@ export default class WarmupScene extends Phaser.Scene {
 							exhaleSprite.setVisible(false)
 							i18n.setTranslatedText(description, 'warmup_release')
 
-							this.releaseSprite = this.add.sprite(
-								width / 2,
-								height / 2 - 2 * MARGIN,
-								'release',
-							)
-							this.releaseSprite.setScale(0.3)
+							this.releaseSprite = this.add.sprite(spriteX, spriteY, 'release')
+							this.releaseSprite.setScale(0.5)
 							this.releaseSprite.play('release-animation')
 							this.releaseSprite.setDepth(1)
 							this.step = Step.RELEASE
@@ -153,12 +139,8 @@ export default class WarmupScene extends Phaser.Scene {
 					this.scene.resume('game')
 					this.releaseSprite.setVisible(false)
 
-					const inhaleSprite = this.add.sprite(
-						width / 2,
-						height / 2 - 2 * MARGIN,
-						'inhale',
-					)
-					inhaleSprite.setScale(0.4)
+					const inhaleSprite = this.add.sprite(spriteX, spriteY, 'inhale')
+					inhaleSprite.setScale(0.5)
 					inhaleSprite.play('inhale-animation')
 					inhaleSprite.setDepth(1)
 					this.step = Step.INHALE
