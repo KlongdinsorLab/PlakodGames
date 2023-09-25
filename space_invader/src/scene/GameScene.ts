@@ -92,7 +92,7 @@ export default class GameScene extends Phaser.Scene {
 			.defineKey(0, 'B0', 'SPACE') // A
 			//            .defineKey(0, 'B1', 'CTRL')
 			//            .defineKey(0, 'B2', 'ALT')
-			.defineKey(0, 'B1', 'UP') // B
+			.defineKey(0, 'B3', 'UP') // Y
 			.defineKey(0, 'B2', 'DOWN') // X
 
 		this.player = new Player(this)
