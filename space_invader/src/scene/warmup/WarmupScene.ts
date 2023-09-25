@@ -91,45 +91,49 @@ export default class WarmupScene extends Phaser.Scene {
 			repeat: -1,
 			duration: 300,
 		})
+		
+		continueText.setVisible(false)
+		
+		const countText = this.add
+					.text(width / 2, continueY, `${this.exhaleCount}`, {
+						fontSize: '160px',
+					})
+					.setOrigin(0.5, 0.5)
+
+		continueText.setVisible(false)
+
+		this.step = Step.EXHALE_COUNT_DOWN
+
+		this.tweens.add({
+			targets: countText,
+			scale: 2,
+			alpha: 0,
+			ease: 'Sine.inOut',
+			loop: 2,
+			duration: 1000,
+			onLoop: () => {
+				this.exhaleCount--
+				countText.setText(`${this.exhaleCount}`)
+			},
+			onComplete: () => {
+				countText.setVisible(false)
+				exhaleSprite.setVisible(false)
+				i18n.setTranslatedText(description, 'warmup_release')
+
+				this.releaseSprite = this.add.sprite(spriteX, spriteY, 'release')
+				this.releaseSprite.setScale(0.5)
+				this.releaseSprite.play('release-animation')
+				this.releaseSprite.setDepth(1)
+				this.step = Step.RELEASE
+				continueText.setVisible(true)
+			},
+		})
 
 		this.input.on(
 			'pointerup',
 			() => {
 				if (this.step === Step.EXHALE) {
-					const countText = this.add
-						.text(width / 2, continueY, `${this.exhaleCount}`, {
-							fontSize: '160px',
-						})
-						.setOrigin(0.5, 0.5)
-
-					continueText.setVisible(false)
-
-					this.step = Step.EXHALE_COUNT_DOWN
-
-					this.tweens.add({
-						targets: countText,
-						scale: 2,
-						alpha: 0,
-						ease: 'Sine.inOut',
-						loop: 2,
-						duration: 1000,
-						onLoop: () => {
-							this.exhaleCount--
-							countText.setText(`${this.exhaleCount}`)
-						},
-						onComplete: () => {
-							countText.setVisible(false)
-							exhaleSprite.setVisible(false)
-							i18n.setTranslatedText(description, 'warmup_release')
-
-							this.releaseSprite = this.add.sprite(spriteX, spriteY, 'release')
-							this.releaseSprite.setScale(0.5)
-							this.releaseSprite.play('release-animation')
-							this.releaseSprite.setDepth(1)
-							this.step = Step.RELEASE
-							continueText.setVisible(true)
-						},
-					})
+					
 				}
 
 				if (this.step === Step.RELEASE) {
