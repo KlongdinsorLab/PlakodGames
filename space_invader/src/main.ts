@@ -8,6 +8,7 @@ import TutorialHudScene from './scene/tutorial/TutorialHudScene'
 import TutorialControllerScene from './scene/tutorial/TutorialControllerScene'
 import PauseScene from './scene/PauseScene'
 import WarmupScene from './scene/warmup/WarmupScene'
+import SetupScene from "./scene/setup/SetupScene";
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -30,6 +31,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	},
 	scene: [
 		TitleScene,
+		SetupScene,
 		GameScene,
 		TutorialCharacterScene,
 		TutorialHudScene,

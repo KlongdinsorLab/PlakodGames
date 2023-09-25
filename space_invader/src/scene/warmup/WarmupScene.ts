@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { MARGIN } from 'config'
+import { LARGE_FONT_SIZE, MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import EventEmitter = Phaser.Events.EventEmitter
 
@@ -18,6 +18,21 @@ export default class WarmupScene extends Phaser.Scene {
 
 	constructor() {
 		super('warmup')
+	}
+
+	preload() {
+		this.load.spritesheet('exhale', 'assets/sprites/warmup/warmup_exhale.png', {
+			frameWidth: 1024,
+			frameHeight: 1024,
+		})
+		this.load.spritesheet('inhale', 'assets/sprites/warmup/warmup_inhale.png', {
+			frameWidth: 1024,
+			frameHeight: 1024,
+		})
+		this.load.spritesheet('release', 'assets/sprites/warmup/warmup_tube.png', {
+			frameWidth: 1024,
+			frameHeight: 1024,
+		})
 	}
 
 	init({ event }: { event: EventEmitter }) {
@@ -70,7 +85,7 @@ export default class WarmupScene extends Phaser.Scene {
 				descriptionY,
 				'warmup_exhale',
 				undefined,
-				{ wordWrap: { width: width / 2 }, fontSize: '32px' },
+				{ wordWrap: { width: width / 2 }, fontSize: LARGE_FONT_SIZE },
 			)
 			.setOrigin(0.5, 0.5)
 
@@ -81,7 +96,7 @@ export default class WarmupScene extends Phaser.Scene {
 				continueY,
 				'warmup_continue',
 				undefined,
-				{ wordWrap: { width: width / 2 }, fontSize: '32px' },
+				{ wordWrap: { width: width / 2 }, fontSize: LARGE_FONT_SIZE },
 			)
 			.setOrigin(0.5, 0.5)
 		this.tweens.add({
@@ -91,14 +106,14 @@ export default class WarmupScene extends Phaser.Scene {
 			repeat: -1,
 			duration: 300,
 		})
-		
+
 		continueText.setVisible(false)
-		
+
 		const countText = this.add
-					.text(width / 2, continueY, `${this.exhaleCount}`, {
-						fontSize: '160px',
-					})
-					.setOrigin(0.5, 0.5)
+			.text(width / 2, continueY, `${this.exhaleCount}`, {
+				fontSize: '160px',
+			})
+			.setOrigin(0.5, 0.5)
 
 		continueText.setVisible(false)
 
@@ -132,10 +147,6 @@ export default class WarmupScene extends Phaser.Scene {
 		this.input.on(
 			'pointerup',
 			() => {
-				if (this.step === Step.EXHALE) {
-					
-				}
-
 				if (this.step === Step.RELEASE) {
 					continueText.setVisible(false)
 					dim.setVisible(false)

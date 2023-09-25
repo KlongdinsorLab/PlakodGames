@@ -56,6 +56,12 @@ export default class TitleScene extends Phaser.Scene {
 		const soundManager = new SoundManager(this)
 		soundManager.init()
 		soundManager.play(this.bgm)
+
+		const isSetup = localStorage.getItem('setup') ?? false
+		if (!isSetup) {
+			this.scene.pause()
+			this.scene.launch('setup')
+		}
 	}
 
 	update() {

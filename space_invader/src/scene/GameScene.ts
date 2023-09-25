@@ -71,32 +71,6 @@ export default class GameScene extends Phaser.Scene {
 		this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
-
-		this.load.spritesheet('exhale', 'assets/sprites/warmup/warmup_exhale.png', {
-			frameWidth: 1024,
-			frameHeight: 1024,
-		})
-		this.load.spritesheet('inhale', 'assets/sprites/warmup/warmup_inhale.png', {
-			frameWidth: 1024,
-			frameHeight: 1024,
-		})
-		this.load.spritesheet('release', 'assets/sprites/warmup/warmup_tube.png', {
-			frameWidth: 1024,
-			frameHeight: 1024,
-		})
-
-//		this.load.spritesheet('exhale', 'assets/sprites/warmup/exhale.png', {
-//			frameWidth: 665,
-//			frameHeight: 664,
-//		})
-//		this.load.spritesheet('inhale', 'assets/sprites/warmup/inhale.png', {
-//			frameWidth: 1056,
-//			frameHeight: 540,
-//		})
-//		this.load.spritesheet('release', 'assets/sprites/warmup/release.png', {
-//			frameWidth: 1324,
-//			frameHeight: 780,
-//		})
 	}
 
 	create() {

@@ -1,5 +1,5 @@
 import I18nSingleton from 'i18n/I18nSingleton'
-import { MARGIN } from 'config'
+import {LARGE_FONT_SIZE, MARGIN} from 'config'
 
 export default abstract class InhaleGauge {
 	protected scene: Phaser.Scene
@@ -35,7 +35,7 @@ export default abstract class InhaleGauge {
 				4 * MARGIN,
 				'release',
 				undefined,
-				{ fontSize: '32px' },
+				{ fontSize: LARGE_FONT_SIZE },
 				)
 			.setOrigin(0.5, 0)
 		scene.tweens.add({

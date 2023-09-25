@@ -6,7 +6,7 @@ export const PLAYER_SPEED = 480
 export const LASER_SPEED = 800
 export const TRIPLE_LASER_X_SPEED = 80
 export const LASER_FREQUENCY_MS = 500
-export const BULLET_COUNT = 20
+export const BULLET_COUNT = 30
 export const RELOAD_COUNT = 5
 export const HOLD_DURATION_MS = 3000
 export const HOLD_BAR_HEIGHT = 40
@@ -34,3 +34,6 @@ export const DESTROY_METEOR_SCORE = 400
 
 export const GAME_TIME_LIMIT_MS = 160000
 export const TUTORIAL_DELAY_MS = 3000
+export const MEDIUM_FONT_SIZE = '24px'
+export const LARGE_FONT_SIZE = '32px'
+

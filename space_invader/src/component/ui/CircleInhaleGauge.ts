@@ -14,6 +14,8 @@ import {
 	CIRCLE_OVER_GAUGE_RADUIS,
 	CIRCLE_GAUGE_SHAKE_X,
 	MARGIN,
+	MEDIUM_FONT_SIZE,
+	LARGE_FONT_SIZE,
 } from 'config'
 
 import InhaleGauge from './InhaleGauge'
@@ -52,7 +54,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 
 		I18nSingleton.getInstance()
 			.createTranslatedText(this.scene, x, y, 'inhale', undefined, {
-				fontSize: '32px',
+				fontSize: LARGE_FONT_SIZE,
 			})
 			.setOrigin(0.5, 0.5)
 
@@ -89,7 +91,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 				y,
 				'inhale+',
 				undefined,
-				{ fontSize: '22px' },
+				{ fontSize: MEDIUM_FONT_SIZE },
 			)
 			.setOrigin(0, 0.5)
 
@@ -100,7 +102,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 				y,
 				'inhale-',
 				undefined,
-				{ fontSize: '22px' },
+				{ fontSize: MEDIUM_FONT_SIZE },
 			)
 			.setOrigin(1, 0.5)
 	}

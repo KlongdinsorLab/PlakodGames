@@ -1,7 +1,13 @@
 import Phaser from 'phaser'
 import { Meteor } from 'component/enemy/Meteor'
 import Player from 'component/player/Player'
-import { DESTROY_METEOR_SCORE, HIT_METEOR_SCORE, MARGIN } from 'config'
+import {
+	DESTROY_METEOR_SCORE,
+	HIT_METEOR_SCORE,
+	LARGE_FONT_SIZE,
+	MARGIN,
+	MEDIUM_FONT_SIZE,
+} from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import SoundManager from 'component/sound/SoundManager'
 
@@ -50,7 +56,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				meteor.y - meteor.height / 2,
 				'tutorial_enemy_title',
 				undefined,
-				{ fontSize: '32px' },
+				{ fontSize: LARGE_FONT_SIZE },
 			)
 			.setOrigin(0, 0.5)
 		i18n
@@ -60,7 +66,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				meteor.y - meteor.height / 2 + MARGIN / 2,
 				'tutorial_enemy_description',
 				{ score: HIT_METEOR_SCORE },
-				{ wordWrap: { width: width / 2 }, fontSize: '22px' },
+				{ wordWrap: { width: width / 2 }, fontSize: MEDIUM_FONT_SIZE },
 			)
 			.setOrigin(0, 0)
 
@@ -81,7 +87,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				player.y - player.height / 2,
 				'tutorial_player_title',
 				undefined,
-				{ fontSize: '32px' },
+				{ fontSize: LARGE_FONT_SIZE },
 			)
 			.setOrigin(0, 0.5)
 		i18n
@@ -91,7 +97,10 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				player.y - player.height / 2 + MARGIN / 2,
 				'tutorial_player_description',
 				{ score: DESTROY_METEOR_SCORE },
-				{ wordWrap: { width: width / 2 - player.width }, fontSize: '22px' },
+				{
+					wordWrap: { width: width / 2 - player.width },
+					fontSize: MEDIUM_FONT_SIZE,
+				},
 			)
 			.setOrigin(0, 0)
 

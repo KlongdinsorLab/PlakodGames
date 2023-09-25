@@ -1,5 +1,10 @@
 import Phaser from 'phaser'
-import { MARGIN, PLAYER_START_MARGIN, TUTORIAL_DELAY_MS } from 'config'
+import {
+	LARGE_FONT_SIZE,
+	MARGIN,
+	PLAYER_START_MARGIN,
+	TUTORIAL_DELAY_MS,
+} from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import SoundManager from 'component/sound/SoundManager'
 
@@ -26,7 +31,7 @@ export default class TutorialControllerScene extends Phaser.Scene {
 				3 * MARGIN,
 				'tutorial_controller',
 				undefined,
-				{ fontSize: '22px' },
+				{ fontSize: LARGE_FONT_SIZE },
 			)
 			.setOrigin(0.5, 0)
 

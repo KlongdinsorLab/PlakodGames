@@ -4,8 +4,14 @@ import InhaleGauge from 'component/ui/InhaleGauge'
 import ReloadCount from 'component/ui/ReloadCount'
 import I18nSingleton from 'i18n/I18nSingleton'
 import Menu from 'component/ui/Menu'
-import { CIRCLE_GAUGE_RADUIS, HOLD_BAR_HEIGHT, MARGIN } from 'config'
-import SoundManager from "component/sound/SoundManager";
+import {
+	CIRCLE_GAUGE_RADUIS,
+	HOLD_BAR_HEIGHT,
+	LARGE_FONT_SIZE,
+	MARGIN,
+	MEDIUM_FONT_SIZE,
+} from 'config'
+import SoundManager from 'component/sound/SoundManager'
 
 export type Hud = {
 	score: Score
@@ -59,7 +65,7 @@ export default class TutorialHudScene extends Phaser.Scene {
 				score.y + scoreHighlight.height,
 				'tutorial_score_title',
 				undefined,
-				{ fontSize: '22px' },
+				{ fontSize: MEDIUM_FONT_SIZE },
 			)
 			.setOrigin(0, 0)
 
@@ -82,7 +88,10 @@ export default class TutorialHudScene extends Phaser.Scene {
 				score.y + scoreHighlight.height,
 				'tutorial_reload_title',
 				undefined,
-				{ wordWrap: { width: reloadHighlight.width }, fontSize: '22px' },
+				{
+					wordWrap: { width: reloadHighlight.width },
+					fontSize: MEDIUM_FONT_SIZE,
+				},
 			)
 			.setOrigin(0, 0)
 
@@ -105,7 +114,7 @@ export default class TutorialHudScene extends Phaser.Scene {
 				score.y + scoreHighlight.height,
 				'tutorial_menu_title',
 				undefined,
-				{ wordWrap: { width: menu.width / 2 }, fontSize: '22px' },
+				{ wordWrap: { width: menu.width / 2 }, fontSize: MEDIUM_FONT_SIZE },
 			)
 			.setOrigin(1, 0)
 
@@ -129,7 +138,7 @@ export default class TutorialHudScene extends Phaser.Scene {
 				gaugeHighlight.y - gaugeHighlight.height - MARGIN,
 				'tutorial_gauge_description',
 				undefined,
-				{ wordWrap: { width: width / 2 }, fontSize: '22px' },
+				{ wordWrap: { width: width / 2 }, fontSize: MEDIUM_FONT_SIZE },
 			)
 			.setOrigin(0.5, 1)
 
@@ -140,7 +149,7 @@ export default class TutorialHudScene extends Phaser.Scene {
 				gaugeDescription.y - gaugeDescription.height - MARGIN / 2,
 				'tutorial_gauge_title',
 				undefined,
-				{ wordWrap: { width: width / 2 }, fontSize: '32px' },
+				{ wordWrap: { width: width / 2 }, fontSize: LARGE_FONT_SIZE },
 			)
 			.setOrigin(0.5, 1)
 
