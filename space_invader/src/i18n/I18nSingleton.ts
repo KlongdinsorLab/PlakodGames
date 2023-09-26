@@ -69,7 +69,11 @@ export default class I18nSingleton {
 		options?: any,
 		style?: Phaser.Types.GameObjects.Text.TextStyle,
 	): Phaser.GameObjects.Text {
-		const text = scene.add.text(x, y, i18next.t(key, options), style)
+		const text = scene.add
+			.text(x, y, i18next.t(key, options), style)
+			.setFontFamily('sarabun')
+			.setLineSpacing(8)
+			.setPadding(8)
 		this.emitter.on('setText', () => this.setTextByKey(text, key, options))
 		return text
 	}
