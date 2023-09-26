@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import { HOLD_BAR_IDLE_COLOR, MARGIN } from 'config'
 
 export default class SetupScene extends Phaser.Scene {
-	private TOTAL_STEPS = 4
+	private TOTAL_STEPS = 5
 	private step = 1
 
 	constructor() {
@@ -10,10 +10,9 @@ export default class SetupScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('setup1', 'assets/icon/setup/setup1.png')
-		this.load.image('setup2', 'assets/icon/setup/setup2.png')
-		this.load.image('setup3', 'assets/icon/setup/setup3.png')
-		this.load.image('setup4', 'assets/icon/setup/setup4.png')
+		for (let i = 1; i <= this.TOTAL_STEPS; i++) {
+			this.load.image(`setup${i}`, `assets/icon/setup/setup${i}.png`)
+		}
 
 		this.load.svg('next', 'assets/icon/next.svg')
 	}

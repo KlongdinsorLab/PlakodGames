@@ -3,6 +3,7 @@ import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from '../i18n/I18nSingleton'
+//import { LARGE_FONT_SIZE } from '../config'
 
 export default class TitleScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -10,6 +11,9 @@ export default class TitleScene extends Phaser.Scene {
 	private controller1?: InputPlayer | any
 	private player?: Player
 	private bgm?: Phaser.Sound.BaseSound
+	private hasController = false
+	//	private startText!: Phaser.GameObjects.Text
+	//	private noControllerText!: Phaser.GameObjects.Text
 
 	constructor() {
 		super('title')
@@ -26,7 +30,12 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	create() {
+		const queryString = window.location.search
+		const urlParams = new URLSearchParams(queryString)
+		this.hasController = urlParams.get('controller') === 'true'
+
 		const { width, height } = this.scale
+		//		const i18n = I18nSingleton.getInstance()
 		this.background = this.add
 			.tileSprite(0, 0, width, height, 'background')
 			.setOrigin(0)
@@ -62,20 +71,28 @@ export default class TitleScene extends Phaser.Scene {
 			this.scene.pause()
 			this.scene.launch('setup')
 		}
+
+		if (!this.hasController && this.input.gamepad.total === 0) {
+			this.input.gamepad.once(
+				'connected',
+				() => {
+					this.startGame()
+				},
+				this,
+			)
+		}
 	}
 
 	update() {
 		this.background.tilePositionY -= 1
 
 		if (
-			this.controller1?.direction.LEFT ||
-			this.controller1?.direction.RIGHT ||
-			this.controller1?.buttons.B0 > 0
+			this.hasController &&
+			(this.controller1?.direction.LEFT ||
+				this.controller1?.direction.RIGHT ||
+				this.controller1?.buttons.B0 > 0 ||
+				this.input.pointer1.isDown)
 		) {
-			this.startGame()
-		}
-
-		if (this.input.pointer1.isDown) {
 			this.startGame()
 		}
 	}

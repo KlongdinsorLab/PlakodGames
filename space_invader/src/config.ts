@@ -36,4 +36,3 @@ export const GAME_TIME_LIMIT_MS = 160000
 export const TUTORIAL_DELAY_MS = 3000
 export const MEDIUM_FONT_SIZE = '24px'
 export const LARGE_FONT_SIZE = '32px'
-
