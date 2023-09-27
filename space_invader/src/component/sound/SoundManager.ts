@@ -46,12 +46,12 @@ export default class SoundManager {
 	createSoundToggle(
 		x: number,
 		y: number,
-		): Phaser.GameObjects.Image | Phaser.GameObjects.Text {
+	): Phaser.GameObjects.Image | Phaser.GameObjects.Text {
 		const button = this.scene.add.image(
 			x,
 			y,
 			this.scene?.sound.mute ? 'mute' : 'unmute',
-			)
+		)
 		button.scale = 0.5
 
 		button.setInteractive()

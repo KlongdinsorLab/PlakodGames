@@ -32,7 +32,6 @@ export default class GameScene extends Phaser.Scene {
 	private mergedInput?: MergedInput
 	private controller1!: PlayerInput | undefined | any
 	//    private timerText!: Phaser.GameObjects.Text;
-	private gameover?: Phaser.GameObjects.Image
 
 	private singleLaserFactory!: SingleLaserFactory
 	private meteorFactory!: MeteorFactory
@@ -58,7 +57,6 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
 		this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
 		this.load.image('explosion', 'assets/effect/explosionYellow.png')
-		this.load.image('gameover', 'assets/logo/gameover.png')
 		this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
 		this.load.svg('pause', 'assets/icon/pause.svg')
@@ -115,11 +113,6 @@ export default class GameScene extends Phaser.Scene {
 
 		this.score = new Score(this)
 		// this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
-
-		this.gameover = this.add
-			.image(width / 2, height / 2, 'gameover')
-			.setOrigin(0.5, 1)
-		this.gameover.visible = false
 
 		this.meteorFactory = new MeteorFactory()
 		this.singleLaserFactory = new SingleLaserFactory()
@@ -267,7 +260,7 @@ export default class GameScene extends Phaser.Scene {
 			if (this.reloadCount.isDepleted()) {
 				setTimeout(() => {
 					this.scene.pause()
-					this.gameover!.visible = true
+					this.scene.launch('end game', { score: this.score.getScore() })
 				}, LASER_FREQUENCY_MS * BULLET_COUNT)
 			}
 		}

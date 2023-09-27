@@ -10,6 +10,8 @@
     "inhale": "ดูด",
     "inhale-": "ดูดแรงขึ้น !",
     "inhale+": "ผ่อนลมหายใจ !",
+    "my_score": "คะแนน",
+    "high_score": "คะแนนสูงสุด",
     "tutorial_enemy_title": "อุกาบาต",
     "tutorial_enemy_description": "• หลบหลีกอุกาบาต\n• {{score, number}}แต้มเมื่อโดน",
     "tutorial_player_title": "ผู้เล่น",

@@ -23,7 +23,11 @@ export default class Score {
 		})
 	}
 
-	getBody() {
+	getBody(): Phaser.GameObjects.Text {
 		return this.scoreText
+	}
+
+	getScore(): number {
+		return this.score
 	}
 }

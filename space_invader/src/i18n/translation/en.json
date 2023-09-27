@@ -10,6 +10,8 @@
     "inhale": "Inhale",
     "inhale-": "Harder !",
     "inhale+": "Relax !",
+    "my_score": "My Score",
+    "high_score": "High Score",
     "tutorial_enemy_title": "Meteor",
     "tutorial_enemy_description": "•Dodge falling meteors\n•Hit {{score, number}} points",
     "tutorial_player_title": "Jet (player)",

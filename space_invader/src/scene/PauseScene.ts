@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { MARGIN } from 'config'
+import { MARGIN, MODAL_BACKGROUND_COLOR } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 
 export type Menu = {
@@ -38,7 +38,7 @@ export default class PauseScene extends Phaser.Scene {
 				height / 2,
 				width - 4 * MARGIN,
 				height / 2,
-				0x473d4d,
+				MODAL_BACKGROUND_COLOR,
 				0.8,
 			)
 			.setOrigin(0.5, 0.5)

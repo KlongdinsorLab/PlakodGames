@@ -16,6 +16,7 @@ export const HOLD_BAR_IDLE_COLOR = 0x603f8b
 export const HOLD_BAR_CHARGING_COLOR = 0xefc53f
 export const HOLD_BAR_CHARGED_COLOR = 0x00b1b0
 export const HOLD_BAR_EMPTY_COLOR = 0xff8370
+export const MODAL_BACKGROUND_COLOR = 0x473d4d
 export const HOLDBAR_REDUCING_RATIO = 0.5
 export const CIRCLE_GAUGE_MARGIN = 68
 export const CIRCLE_GAUGE_RADUIS = 56
