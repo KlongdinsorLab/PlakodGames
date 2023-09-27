@@ -34,9 +34,8 @@ export default abstract class InhaleGauge {
 				this.scene.scale.width / 2,
 				4 * MARGIN,
 				'release',
-				undefined,
-				{ fontSize: LARGE_FONT_SIZE },
 			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0.5, 0)
 		scene.tweens.add({
 			targets: this.releaseText,

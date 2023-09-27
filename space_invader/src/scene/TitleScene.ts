@@ -2,8 +2,8 @@ import Phaser from 'phaser'
 import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
 import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
-import I18nSingleton from '../i18n/I18nSingleton'
-//import { LARGE_FONT_SIZE } from '../config'
+import I18nSingleton from 'i18n/I18nSingleton'
+import { MEDIUM_FONT_SIZE } from 'config'
 
 export default class TitleScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -12,8 +12,6 @@ export default class TitleScene extends Phaser.Scene {
 	private player?: Player
 	private bgm?: Phaser.Sound.BaseSound
 	private hasController = false
-	//	private startText!: Phaser.GameObjects.Text
-	//	private noControllerText!: Phaser.GameObjects.Text
 
 	constructor() {
 		super('title')
@@ -42,14 +40,8 @@ export default class TitleScene extends Phaser.Scene {
 			.setScrollFactor(0, 0)
 		this.add.image(width / 2, height / 2, 'logo').setOrigin(0.5, 1)
 		I18nSingleton.getInstance()
-			.createTranslatedText(
-				this,
-				width / 2,
-				height / 2,
-				'start text',
-				undefined,
-				{ fontSize: '24px' },
-			)
+			.createTranslatedText(this, width / 2, height / 2, 'start text')
+			.setFontSize(MEDIUM_FONT_SIZE)
 			.setOrigin(0.5, 0)
 
 		this.controller1 = this.mergedInput?.addPlayer(0)
@@ -72,7 +64,7 @@ export default class TitleScene extends Phaser.Scene {
 			this.scene.launch('setup')
 		}
 
-		if (!this.hasController && this.input.gamepad.total === 0) {
+		if (!this.hasController && this.input?.gamepad?.total === 0) {
 			this.input.gamepad.once(
 				'connected',
 				() => {
