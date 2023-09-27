@@ -119,13 +119,13 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	charge(delta: number) {
 		//        this.gauge.setFillStyle(HOLD_BAR_CHARGING_COLOR, 1)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
-		(<Phaser.GameObjects.Arc>this.gauge).radius +=
+		;(<Phaser.GameObjects.Arc>this.gauge).radius +=
 			this.getHoldWithIncrement(delta)
 		this.soundManager.play(this.chargingSound!)
 	}
 
 	release(delta: number) {
-		(<Phaser.GameObjects.Arc>this.gauge).radius -=
+		;(<Phaser.GameObjects.Arc>this.gauge).radius -=
 			this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
 		this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
 		this.soundManager.pause(this.chargingSound!)
