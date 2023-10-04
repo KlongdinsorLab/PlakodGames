@@ -5,7 +5,12 @@ name: Deploy to Firebase Hosting on merge
 'on':
   push:
     branches:
-      - main
+      - develop
+
+defaults:
+  run:
+    working-directory: space_invader
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -16,5 +21,5 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PLAKOD_GAME }}'
-          channelId: live
+          channelId: development
           projectId: plakod-game

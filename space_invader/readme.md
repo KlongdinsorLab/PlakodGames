@@ -118,6 +118,16 @@ Change 8000 to whatever you want.
 CI/CD will be setup to Google Firebase hosting. Project name [plakod-game[(https://console.firebase.google.com/project/plakod-game/overview)
 There are 2 branches develop and production. Develop branch will be deployed on [plakod-development.firebaseapp.com](plakod-development.firebaseapp.com) while Production will be deployed on [plakod.firebaseapp.com](plakod.firebaseapp.com)
 
+Create new Firebase hosting channel
+```sh
+$ npm exec -- firebase hosting:channel:create CHANNEL_ID
+```
+
+list all Firebase hosting channel
+```sh
+$ npm exec -- firebase hosting:channel:list
+```
+
 ## Special Thanks
 - [Kenney](www.kenney.nl) for most of the [graphics](https://www.kenney.nl/assets/space-shooter-redux)
 - [Phaser](https://phaser.io/) for the game library
