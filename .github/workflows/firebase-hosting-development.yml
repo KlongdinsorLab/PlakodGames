@@ -24,6 +24,6 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PLAKOD_GAME }}'
-          channelId: live
+          channelId: development
           projectId: plakod-game
           entrypoint: space_invader
