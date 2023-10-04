@@ -113,6 +113,15 @@ You can change the dev server's port number by modifying the `vite.config.ts` fi
 
 Change 8000 to whatever you want.
 
+## Test
+
+Run
+```sh
+$ npm run test
+```
+
+[source](https://dev.to/davidmorais/testing-phaser-games-with-vitest-3kon)
+
 ## Special Thanks
 - [Kenney](www.kenney.nl) for most of the [graphics](https://www.kenney.nl/assets/space-shooter-redux)
 - [Phaser](https://phaser.io/) for the game library
