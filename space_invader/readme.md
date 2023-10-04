@@ -128,6 +128,27 @@ list all Firebase hosting channel
 $ npm exec -- firebase hosting:channel:list
 ```
 
+### Deploying with another site ID
+
+Currently we use plakod-game.web.app but we can have multple xxx.web.app
+
+Create new site ID
+```sh
+$ npm exec -- firebase hosting:sites:create SITE_ID
+```
+
+Delete site ID
+```sh
+$ npm exec -- firebase hosting:sites:delete SITE_ID
+```
+
+Deploy
+```sh
+$ firebase deploy --only hosting:TARGET_NAME
+```
+
+[see more](https://firebase.google.com/docs/hosting/multisites)
+
 ## Special Thanks
 - [Kenney](www.kenney.nl) for most of the [graphics](https://www.kenney.nl/assets/space-shooter-redux)
 - [Phaser](https://phaser.io/) for the game library
