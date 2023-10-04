@@ -26,3 +26,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PLAKOD_GAME }}'
           channelId: development
           projectId: plakod-game
+          entrypoint: space_invader
