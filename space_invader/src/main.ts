@@ -10,6 +10,8 @@ import PauseScene from './scene/PauseScene'
 import WarmupScene from './scene/warmup/WarmupScene'
 import SetupScene from './scene/setup/SetupScene'
 import EndGameScene from './scene/EndGameScene'
+import LoginScene from "./scene/auth/LoginScene";
+import OtpScene from "./scene/auth/OtpScene";
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -32,6 +34,8 @@ const config: Phaser.Types.Core.GameConfig = {
 	},
 	scene: [
 		TitleScene,
+		LoginScene,
+		OtpScene,
 		SetupScene,
 		GameScene,
 		EndGameScene,
