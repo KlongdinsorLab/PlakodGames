@@ -55,7 +55,7 @@ export default class DifficultyScene extends Phaser.Scene {
 		hardButton.textContent = i18next.t('difficulty_hard')
 		
 		element.addListener('click')
-		element.on('click', (event: DOMEvent<HTMLInputElement>) => {
+		element.on('click', (_: DOMEvent<HTMLInputElement>) => {
 //			if(event?.target?.id === '')
 //			event.preventDefault()
 			this.scene.stop()

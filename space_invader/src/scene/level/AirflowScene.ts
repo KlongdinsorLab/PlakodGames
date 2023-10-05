@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
-import i18next from 'i18next'
+//import i18next from 'i18next'
 
 interface DOMEvent<T extends EventTarget> extends Event {
     readonly target: T
@@ -47,7 +47,7 @@ export default class AirflowScene extends Phaser.Scene {
 			.setScale(1.5)
 
         element.addListener('click')
-        element.on('click', (event: DOMEvent<HTMLInputElement>) => {
+        element.on('click', (_: DOMEvent<HTMLInputElement>) => {
             //			event.preventDefault()
             this.scene.stop()
             this.scene.launch('game')
