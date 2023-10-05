@@ -42,7 +42,7 @@ export default class OtpScene extends Phaser.Scene {
 			.setOrigin(0.5, 0)
 
 		const element = this.add
-			.dom(480, height / 2)
+			.dom(560, height / 2)
 			.createFromCache('otpForm')
 			.setScale(1.5)
 
@@ -57,6 +57,8 @@ export default class OtpScene extends Phaser.Scene {
 				}
 
 				console.log(input)
+				this.scene.stop()
+				this.scene.launch('register')
 				// TODO
 			}
 		})

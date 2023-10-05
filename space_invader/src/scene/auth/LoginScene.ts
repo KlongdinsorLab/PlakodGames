@@ -54,6 +54,7 @@ export default class LoginScene extends Phaser.Scene {
 				// TODO call API
 				console.log(phoneInput.value)
 
+				this.scene.stop()
 				this.scene.launch('otp')
 			}
 		})

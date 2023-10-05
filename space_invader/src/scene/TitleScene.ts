@@ -74,7 +74,6 @@ export default class TitleScene extends Phaser.Scene {
 			)
 		}
 
-		// TODO this.scene.launch('otp')
 	}
 
 	update() {

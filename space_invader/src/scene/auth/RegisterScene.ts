@@ -41,7 +41,7 @@ export default class RegisterScene extends Phaser.Scene {
 			.setOrigin(0.5, 0)
 
 		const element = this.add
-			.dom(520, height / 2)
+			.dom(width/2, height / 2)
 			.createFromCache('registerForm')
 			.setScale(1.5)
 
@@ -50,6 +50,8 @@ export default class RegisterScene extends Phaser.Scene {
 			event.preventDefault()
 			if (event?.target?.id === 'submit-form') {
 				// TODO
+				this.scene.stop()
+				this.scene.launch('difficulty')
 			}
 		})
 	}

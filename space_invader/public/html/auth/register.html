@@ -1,0 +1,29 @@
+<form class="flex flex-col items-center" id="submit-form">
+    <div class="grid grid-cols-2 gap-4 max-w-sm">
+        <div>
+            <label class="label mb-1 text-white" for="birthday">birthday</label>
+            <input class="input input-ghost text-white" type="date" id="birthday" required/>
+        </div>
+        <div>
+            <label class="label mb-1 text-white" for="gender">gender</label>
+            <select id="gender" class="select input-ghost text-white" required>
+                <option disabled selected>Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Non-binary</option>
+            </select>
+        </div>
+        <div class="col-span-2">
+            <label class="label mb-1 text-white" for="disease">disease</label>
+            <select id="disease" class="select input-ghost text-white" required>
+                <option disabled selected>Disease</option>
+                <option>Spinal Muscular Atrophy (SMA)</option>
+                <option>Congenital Myasthenic Syndromes (CMS)</option>
+                <option>Charcot-Marie-Tooth (CMT)</option>
+                <option>Duchenne Muscular Dysthrophy (DMD)</option>
+            </select>
+        </div>
+    </div>
+
+    <button class="btn btn-outline btn-wide mt-16" data-theme="dark" id="button">Submit</button>
+</form>
