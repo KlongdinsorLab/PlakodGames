@@ -1,11 +1,11 @@
 <form class="flex flex-col items-center" id="submit-form">
     <div class="grid grid-cols-2 gap-4 max-w-sm">
         <div>
-            <label class="label mb-1 text-white" for="birthday">birthday</label>
-            <input class="input input-ghost text-white" type="date" id="birthday" required/>
+            <label class="label mb-1 text-white" for="birthday" id="label-birthday">birthday</label>
+            <input class="input input-ghost text-white" type="date" id="birthday" value="2015-01-01" required/>
         </div>
         <div>
-            <label class="label mb-1 text-white" for="gender">gender</label>
+            <label class="label mb-1 text-white" for="gender" id="label-gender">gender</label>
             <select id="gender" class="select input-ghost text-white" required>
                 <option disabled selected>Gender</option>
                 <option>Male</option>
@@ -14,7 +14,7 @@
             </select>
         </div>
         <div class="col-span-2">
-            <label class="label mb-1 text-white" for="disease">disease</label>
+            <label class="label mb-1 text-white" for="disease" id="label-disease">disease</label>
             <select id="disease" class="select input-ghost text-white" required>
                 <option disabled selected>Disease</option>
                 <option>Spinal Muscular Atrophy (SMA)</option>

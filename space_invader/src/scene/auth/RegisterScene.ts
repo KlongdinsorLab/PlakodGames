@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
+import i18next from "i18next";
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
@@ -54,6 +55,15 @@ export default class RegisterScene extends Phaser.Scene {
 				this.scene.launch('difficulty')
 			}
 		})
+
+		const birthday = <Element>element.getChildByID('label-birthday')
+		birthday.textContent = i18next.t('register_birthday_title')
+
+		const gender = <Element>element.getChildByID('label-gender')
+		gender.textContent = i18next.t('register_gender_title')
+
+		const disease = <Element>element.getChildByID('label-disease')
+		disease.textContent = i18next.t('register_disease_title')
 	}
 
 	update() {
