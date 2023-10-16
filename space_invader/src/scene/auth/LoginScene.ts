@@ -3,6 +3,17 @@ import I18nSingleton from 'i18n/I18nSingleton'
 import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import i18next from 'i18next'
 
+import {
+	getAuth,
+	signInWithPhoneNumber,
+	RecaptchaVerifier,
+	ConfirmationResult,
+	browserLocalPersistence,
+	setPersistence,
+	browserSessionPersistence,
+} from 'firebase/auth'
+
+
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
 }
@@ -47,15 +58,13 @@ export default class LoginScene extends Phaser.Scene {
 			.setScale(1.5)
 
 		element.addListener('submit')
-		element.on('submit', (event: DOMEvent<HTMLInputElement>) => {
+
+		element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'submit-form') {
 				const phoneInput = <HTMLInputElement>element.getChildByID('phone')
-				// TODO call API
-				console.log(phoneInput.value)
-
-				this.scene.stop()
-				this.scene.launch('otp')
+				const phoneNumber = this.getPhoneNumber(phoneInput.value)
+				this.signIn(phoneNumber)
 			}
 		})
 
@@ -68,5 +77,34 @@ export default class LoginScene extends Phaser.Scene {
 
 	update() {
 		this.background.tilePositionY -= 1
+	}
+
+	getPhoneNumber(phoneNumber: string): string {
+		if(!phoneNumber.startsWith('0')) return `+66${phoneNumber}`
+		return `+66${phoneNumber.substring(1,phoneNumber.length)}`
+	}
+
+	async signIn(phoneNumber: string): Promise<void> {
+		const auth = getAuth();
+		const recaptchaVerifier = new RecaptchaVerifier(auth, 'button', {
+			'size': 'invisible'
+		});
+		try {
+			await setPersistence(auth, browserSessionPersistence)
+		} catch (e) {
+			console.log(e)
+			// TODO
+		}
+
+		try {
+			const confirmationResult: ConfirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier)
+			this.scene.stop()
+			this.scene.launch('otp', {confirmationResult})
+		} catch (e) {
+			// TODO handle ERROR Message
+			// reset recaptcha
+			console.log(e)
+		}
+
 	}
 }

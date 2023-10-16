@@ -22,6 +22,12 @@ nvm use node
 
 Replace 'node' with 'latest' for `nvm-windows`.
 
+Set .env for Firebase
+```.env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_PROJECT_ID=
+```
+
 Install dependencies
 ```bash
 npm install

@@ -37,3 +37,7 @@ export const GAME_TIME_LIMIT_MS = 160000
 export const TUTORIAL_DELAY_MS = 3000
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
+
+const env = await import.meta.env;
+export const FIREBASE_API_KEY = (env.VITE_FIREBASE_API_KEY);
+export const FIREBASE_PROJECT_ID = (env.VITE_FIREBASE_PROJECT_ID);

@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import i18next from "i18next";
+import { getAuth, updateProfile } from 'firebase/auth'
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
@@ -50,9 +51,7 @@ export default class RegisterScene extends Phaser.Scene {
 		element.on('submit', (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'submit-form') {
-				// TODO
-				this.scene.stop()
-				this.scene.launch('difficulty')
+				this.updateProfile()
 			}
 		})
 
@@ -68,5 +67,15 @@ export default class RegisterScene extends Phaser.Scene {
 
 	update() {
 		this.background.tilePositionY -= 1
+	}
+
+	async updateProfile() {
+		const auth = getAuth()
+		const user = auth.currentUser;
+		await updateProfile(user!, {
+			displayName: "Test User"
+		})
+		this.scene.stop()
+		this.scene.launch('difficulty')
 	}
 }

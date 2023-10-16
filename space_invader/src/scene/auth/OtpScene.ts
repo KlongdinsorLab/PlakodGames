@@ -2,15 +2,21 @@ import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { LARGE_FONT_SIZE, MARGIN, MEDIUM_FONT_SIZE } from 'config'
 import i18next from 'i18next'
+import { ConfirmationResult } from 'firebase/auth'
 
 interface DOMEvent<T extends EventTarget> extends Event {
 	readonly target: T
 }
 export default class OtpScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
+	private confirmationResult!: ConfirmationResult
 
 	constructor() {
 		super('otp')
+	}
+
+	init({confirmationResult}: {confirmationResult:ConfirmationResult}) {
+		this.confirmationResult = confirmationResult
 	}
 
 	preload() {
@@ -47,7 +53,7 @@ export default class OtpScene extends Phaser.Scene {
 			.setScale(1.5)
 
 		element.addListener('submit')
-		element.on('submit', (event: DOMEvent<HTMLInputElement>) => {
+		element.on('submit', async (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
 			if (event?.target?.id === 'submit-form') {
 				let input = ''
@@ -55,11 +61,7 @@ export default class OtpScene extends Phaser.Scene {
 					const inputElement = <HTMLInputElement>element.getChildByID(`otp${i}`)
 					input = input + inputElement.value
 				}
-
-				console.log(input)
-				this.scene.stop()
-				this.scene.launch('register')
-				// TODO
+				this.verify(input)
 			}
 		})
 
@@ -96,5 +98,16 @@ export default class OtpScene extends Phaser.Scene {
 
 	update() {
 		this.background.tilePositionY -= 1
+	}
+
+	async verify(code: string): Promise<void> {
+		try {
+			await this.confirmationResult.confirm(code)
+			this.scene.stop()
+			this.scene.launch('register')
+		} catch (e){
+			//TODO handle error
+			console.log(e)
+		}
 	}
 }

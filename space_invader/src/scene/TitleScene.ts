@@ -4,6 +4,11 @@ import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { MEDIUM_FONT_SIZE } from 'config'
+import {
+	browserSessionPersistence,
+	getAuth,
+	setPersistence,
+} from 'firebase/auth'
 
 export default class TitleScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -63,6 +68,24 @@ export default class TitleScene extends Phaser.Scene {
 			this.scene.pause()
 			this.scene.launch('setup')
 		}
+
+		const auth = getAuth()
+		setPersistence(auth, browserSessionPersistence).then(()=>{
+			const user = auth.currentUser;
+			console.log(user)
+
+			if (user !== null) {
+				user.providerData.forEach((profile) => {
+					console.log("Sign-in provider: " + profile.providerId);
+					console.log("  Provider-specific UID: " + profile.uid);
+					console.log("  Name: " + profile.displayName);
+					console.log("  Email: " + profile.email);
+					console.log("  Photo URL: " + profile.photoURL);
+				});
+			}
+
+		})
+
 
 		if (!this.hasController && this.input?.gamepad?.total === 0) {
 			this.input.gamepad.once(

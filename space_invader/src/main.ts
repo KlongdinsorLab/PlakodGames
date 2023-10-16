@@ -15,6 +15,17 @@ import OtpScene from './scene/auth/OtpScene'
 import RegisterScene from './scene/auth/RegisterScene'
 import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
+import { initializeApp } from "firebase/app";
+import {FIREBASE_API_KEY, FIREBASE_PROJECT_ID} from "./config";
+
+const firebaseConfig = {
+	apiKey: FIREBASE_API_KEY,
+	authDomain: `${FIREBASE_PROJECT_ID}.firebaseapp.com`,
+//	databaseURL: "https://DATABASE_NAME.firebaseio.com",
+	projectId: FIREBASE_PROJECT_ID,
+};
+
+initializeApp(firebaseConfig);
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
