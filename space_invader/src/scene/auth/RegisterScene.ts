@@ -48,11 +48,29 @@ export default class RegisterScene extends Phaser.Scene {
 			.setScale(1.5)
 
 		element.addListener('submit')
+
 		element.on('submit', (event: DOMEvent<HTMLInputElement>) => {
 			event.preventDefault()
-			if (event?.target?.id === 'submit-form') {
-				this.updateProfile()
+			if (event?.target?.id !== 'submit-form') return
+			const birthdayElement = <HTMLInputElement>element.getChildByID('birthday')
+			const birthday = birthdayElement.value
+			birthdayElement.classList.remove("input-error");
+
+			const genderElement = <HTMLInputElement>element.getChildByID('gender')
+			const gender = genderElement.value
+
+			const diseaseElement = <HTMLInputElement>element.getChildByID('disease')
+			const disease = diseaseElement.value
+
+			const birthdayRegex = /^((?:19|20)[0-9]{2})-[0-1][0-2]-[0-3][0-9]?$/
+			if(!birthdayRegex.test(birthday)) {
+				birthdayElement.classList.add("input-error");
+				// TODO
+				console.log('Please select your birthday')
+				return
 			}
+
+			this.updateProfile(birthday, gender, disease)
 		})
 
 		const birthday = <Element>element.getChildByID('label-birthday')
@@ -69,12 +87,13 @@ export default class RegisterScene extends Phaser.Scene {
 		this.background.tilePositionY -= 1
 	}
 
-	async updateProfile() {
+	async updateProfile(birthday: string, gender: string, disease: string) {
+// 		TODO add database
 		const auth = getAuth()
 		const user = auth.currentUser;
-		await updateProfile(user!, {
-			displayName: "Test User"
-		})
+//		await updateProfile(user!, {
+//			displayName: "Test User"
+//		})
 		this.scene.stop()
 		this.scene.launch('difficulty')
 	}

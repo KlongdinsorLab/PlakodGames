@@ -67,25 +67,23 @@ export default class TitleScene extends Phaser.Scene {
 		if (!isSetup) {
 			this.scene.pause()
 			this.scene.launch('setup')
+			return
 		}
 
-		const auth = getAuth()
-		setPersistence(auth, browserSessionPersistence).then(()=>{
-			const user = auth.currentUser;
-			console.log(user)
-
-			if (user !== null) {
-				user.providerData.forEach((profile) => {
-					console.log("Sign-in provider: " + profile.providerId);
-					console.log("  Provider-specific UID: " + profile.uid);
-					console.log("  Name: " + profile.displayName);
-					console.log("  Email: " + profile.email);
-					console.log("  Photo URL: " + profile.photoURL);
-				});
+		const auth = getAuth();
+		(async ()=> {
+			await setPersistence(auth, browserSessionPersistence)
+			const user = auth.currentUser
+			if (user === null) {
+				this.scene.pause()
+				this.scene.launch('login')
+				return
 			}
 
-		})
-
+			// TODO check user data
+			this.scene.pause()
+			this.scene.launch('register')
+		})()
 
 		if (!this.hasController && this.input?.gamepad?.total === 0) {
 			this.input.gamepad.once(
