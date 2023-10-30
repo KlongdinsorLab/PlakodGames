@@ -6,7 +6,7 @@ export default abstract class InhaleGauge {
 	protected division: number
 	protected holdButtonDuration = 0
 	protected isHoldbarReducing = false
-	protected gauge!: Phaser.GameObjects.Shape
+	protected gauge!: Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics
 
 	protected up!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
 	protected down!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
@@ -75,7 +75,7 @@ export default abstract class InhaleGauge {
 
 	abstract hideDown(): void
 
-	getBody(): Phaser.GameObjects.Shape {
+	getBody(): Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics {
 		return this.gauge
 	}
 
