@@ -109,20 +109,20 @@ export default class BarInhaleGauge extends InhaleGauge {
 	}
 
 	charge(delta: number) {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR)
-		this.gauge.width += this.getHoldWithIncrement(delta)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).width += this.getHoldWithIncrement(delta)
 		this.soundManager.play(this.chargingSound!)
 	}
 
 	release(delta: number) {
-		this.gauge.width -=
+		;(<Phaser.GameObjects.Shape>this.gauge).width -=
 			this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
 		this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
 		this.soundManager.pause(this.chargingSound!)
 	}
 
 	setFullCharge() {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR)
 		this.soundManager.play(this.chargedSound!)
 	}
 
@@ -133,7 +133,7 @@ export default class BarInhaleGauge extends InhaleGauge {
 			duration: LASER_FREQUENCY_MS * BULLET_COUNT,
 			ease: 'sine.inout',
 		})
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
 		this.holdButtonDuration = 0
 		setTimeout(
 			() => (this.holdButtonDuration = 0),
@@ -142,16 +142,16 @@ export default class BarInhaleGauge extends InhaleGauge {
 	}
 
 	resetting() {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
 		this.isHoldbarReducing = true
 	}
 
 	deplete() {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR)
 	}
 
 	isReducing(): boolean {
-		return this.isHoldbarReducing && this.gauge.width > 0
+		return this.isHoldbarReducing && (<Phaser.GameObjects.Shape>this.gauge).width > 0
 	}
 
 	showUp(): void {
