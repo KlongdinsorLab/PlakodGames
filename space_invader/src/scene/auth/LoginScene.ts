@@ -86,6 +86,7 @@ export default class LoginScene extends Phaser.Scene {
 
 	async signIn(phoneNumber: string): Promise<void> {
 		const auth = getAuth();
+		auth.useDeviceLanguage();
 		const recaptchaVerifier = new RecaptchaVerifier(auth, 'button', {
 			'size': 'invisible'
 		});

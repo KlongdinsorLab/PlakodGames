@@ -63,10 +63,32 @@ export default class RegisterScene extends Phaser.Scene {
 			const disease = diseaseElement.value
 
 			const birthdayRegex = /^((?:19|20)[0-9]{2})-[0-1][0-2]-[0-3][0-9]?$/
+			
 			if(!birthdayRegex.test(birthday)) {
 				birthdayElement.classList.add("input-error");
-				// TODO
-				console.log('Please select your birthday')
+				// TODO add translate
+				birthdayElement.setCustomValidity("Please select your birthday");
+				birthdayElement.reportValidity();
+				return
+			}
+
+//			console.log(gender)
+
+			if(gender === 'Gender') {
+				genderElement.classList.add("input-error");
+				// TODO add translate
+				genderElement.setCustomValidity("Please select your gender");
+				genderElement.reportValidity();
+				return
+			}
+
+//			console.log(disease)
+
+			if(disease === 'Disease') {
+				diseaseElement.classList.add("input-error");
+				// TODO add translate
+				diseaseElement.setCustomValidity("Please select your disease");
+				diseaseElement.reportValidity();
 				return
 			}
 
