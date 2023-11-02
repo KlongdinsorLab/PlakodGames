@@ -193,4 +193,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 		this.downText?.setVisible(false)
 		;(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
 	}
+
+	setStepVisible(): void {
+	}
 }

@@ -19,6 +19,8 @@ export default abstract class InhaleGauge {
 
 	protected releaseText!: Phaser.GameObjects.Text
 
+	protected steps!: Phaser.GameObjects.Shape[]
+
 	protected constructor(scene: Phaser.Scene, division: number, index: number) {
 		this.scene = scene
 		this.division = division
@@ -67,13 +69,15 @@ export default abstract class InhaleGauge {
 
 	abstract isReducing(): boolean
 
-	abstract showUp(): void
+//	abstract showUp(): void
+//
+//	abstract hideUp(): void
+//
+//	abstract showDown(): void
+//
+//	abstract hideDown(): void
 
-	abstract hideUp(): void
-
-	abstract showDown(): void
-
-	abstract hideDown(): void
+	abstract setStepVisible(step: number, visible: boolean): void
 
 	getBody(): Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics {
 		return this.gauge

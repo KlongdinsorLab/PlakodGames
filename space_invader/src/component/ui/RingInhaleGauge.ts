@@ -2,18 +2,13 @@ import {
 	BULLET_COUNT,
 	CIRCLE_GAUGE_MARGIN,
 	CIRCLE_GAUGE_RADUIS,
-	CIRCLE_OVER_GAUGE_RADUIS,
-	HOLD_BAR_COLOR,
 	HOLD_BAR_IDLE_COLOR,
 	HOLD_DURATION_MS,
 	LASER_FREQUENCY_MS,
-	MARGIN,
-	MEDIUM_FONT_SIZE,
 } from 'config'
 
 import InhaleGauge from './InhaleGauge'
 import SoundManager from 'component/sound/SoundManager'
-import I18nSingleton from 'i18n/I18nSingleton'
 
 let isReloading = false
 export default class RingInhaleGauge extends InhaleGauge {
@@ -32,10 +27,15 @@ export default class RingInhaleGauge extends InhaleGauge {
 //			ease: 'sine.inout',
 //		})
 //		this.shake.pause()
+		const { width, height } = this.scene.scale
+		const x = width / 2
+		const y = height - CIRCLE_GAUGE_MARGIN
+
+		this.scene.add.image(x, y, 'ring').setScale(0.65)
 		this.soundManager = new SoundManager(scene)
 	}
 	
-	drawArc(index: number, gauge: Phaser.GameObjects.Graphics, startDegree:number, endDegree:number): Phaser.GameObjects.Graphics {
+	drawArc(index: number, gauge: Phaser.GameObjects.Graphics, startDegree:number, endDegree:number, color: number = HOLD_BAR_IDLE_COLOR): Phaser.GameObjects.Graphics {
 		const { width, height } = this.scene.scale
 		const x =
 			width / (this.division + 1) +
@@ -43,10 +43,11 @@ export default class RingInhaleGauge extends InhaleGauge {
 			(this.division !== 1 ? CIRCLE_GAUGE_RADUIS : 0)
 		const y = height - CIRCLE_GAUGE_MARGIN
 		
-		gauge.lineStyle(16, HOLD_BAR_IDLE_COLOR, 1);
+		gauge.lineStyle(16, color, 1);
 		gauge.beginPath();
 		gauge.arc(x, y, CIRCLE_GAUGE_RADUIS, Phaser.Math.DegToRad(startDegree), Phaser.Math.DegToRad(endDegree), true);
 		gauge.strokePath();
+		gauge.setDepth(1)
 		return gauge
 	}
 
@@ -57,37 +58,64 @@ export default class RingInhaleGauge extends InhaleGauge {
 
 	createUpDownGauge(): void {
 		const { width, height } = this.scene.scale
+		const x = width/2
 		const y = height - CIRCLE_GAUGE_MARGIN
-		const downX = width / 2 - 2 * CIRCLE_GAUGE_RADUIS - 8
-		this.down = this.scene.add
-			.circle(downX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
-			.setOrigin(0.5, 0.5)
 
-		const upX = width / 2 + 2 * CIRCLE_GAUGE_RADUIS + 8
-		this.up = this.scene.add
-			.circle(upX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
-			.setOrigin(0.5, 0.5)
-		const i18n = I18nSingleton.getInstance()
+//		this.up = this.scene.add.arc(x, y, 20, 0, 360, false);
+//		this.up.setStrokeStyle(8, 0xEBCCA9);
+//		this.up.setVisible(false)
+//
+//		this.down = this.scene.add.arc(x, y, 65, 0, 360, false);
+//		this.down.setStrokeStyle(8, 0x1a65ac);
+//		this.down.setVisible(false)
 
-		this.upText = i18n
-			.createTranslatedText(
-				this.scene,
-				upX + this.up.width / 2 + MARGIN / 2,
-				y,
-				'inhale+',
-			)
-			.setFontSize(MEDIUM_FONT_SIZE)
-			.setOrigin(0, 0.5)
+		const createCircle = (radius: number, color: number) => {
+			const circle = this.scene.add.arc(x, y, radius, 0, 360, false);
+			circle.setStrokeStyle(8, color);
+			circle.setVisible(false)
+			return circle
+		}
 
-		this.downText = i18n
-			.createTranslatedText(
-				this.scene,
-				downX - this.down.width / 2 - MARGIN / 2,
-				y,
-				'inhale-',
-			)
-			.setFontSize(MEDIUM_FONT_SIZE)
-			.setOrigin(1, 0.5)
+		const steps = [
+			{radius: 20, color: 0xEBCCA9},
+			{radius: 40, color: 0xEBCCA9},
+			{radius: 70, color: 0xCDC5C6},
+			{radius: 80, color: 0xCDC5C6}
+		]
+
+		this.steps = steps.map(({radius, color})=> createCircle(radius, color))
+//		const { width, height } = this.scene.scale
+//		const y = height - CIRCLE_GAUGE_MARGIN
+//		const downX = width / 2 - 2 * CIRCLE_GAUGE_RADUIS - 8
+//		this.down = this.scene.add
+//			.circle(downX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
+//			.setOrigin(0.5, 0.5)
+//
+//		const upX = width / 2 + 2 * CIRCLE_GAUGE_RADUIS + 8
+//		this.up = this.scene.add
+//			.circle(upX, y, CIRCLE_OVER_GAUGE_RADUIS, HOLD_BAR_IDLE_COLOR)
+//			.setOrigin(0.5, 0.5)
+//		const i18n = I18nSingleton.getInstance()
+//
+//		this.upText = i18n
+//			.createTranslatedText(
+//				this.scene,
+//				upX + this.up.width / 2 + MARGIN / 2,
+//				y,
+//				'inhale+',
+//			)
+//			.setFontSize(MEDIUM_FONT_SIZE)
+//			.setOrigin(0, 0.5)
+//
+//		this.downText = i18n
+//			.createTranslatedText(
+//				this.scene,
+//				downX - this.down.width / 2 - MARGIN / 2,
+//				y,
+//				'inhale-',
+//			)
+//			.setFontSize(MEDIUM_FONT_SIZE)
+//			.setOrigin(1, 0.5)
 	}
 	
 	getHoldDegree(duration: number): number {
@@ -167,23 +195,7 @@ export default class RingInhaleGauge extends InhaleGauge {
 		return this.isHoldbarReducing && this.holdButtonDuration >= 0
 	}
 
-	showUp(): void {
-		this.upText?.setVisible(true)
-		;(<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_COLOR, 1)
-	}
-
-	hideUp(): void {
-		this.upText?.setVisible(false)
-		;(<Phaser.GameObjects.Arc>this.up).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
-	}
-
-	showDown(): void {
-		this.downText?.setVisible(true)
-		;(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_COLOR, 1)
-	}
-
-	hideDown(): void {
-		this.downText?.setVisible(false)
-		;(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
+	setStepVisible(step: number, visible: boolean): void {
+		this.steps[step].setVisible(visible)
 	}
 }

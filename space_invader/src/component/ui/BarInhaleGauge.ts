@@ -169,4 +169,7 @@ export default class BarInhaleGauge extends InhaleGauge {
 	hideDown(): void {
 		this.down.setVisible(false)
 	}
+
+	setStepVisible(): void {
+	}
 }
