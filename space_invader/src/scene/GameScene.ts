@@ -88,9 +88,9 @@ export default class GameScene extends Phaser.Scene {
 		// https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
 		// XBOX controller B0=A, B1=B, B2=X, B3=Y
 		this.mergedInput
-			?.defineKey(0, 'LEFT', 'LEFT')
-			.defineKey(0, 'RIGHT', 'RIGHT')
-			.defineKey(0, 'B2', 'SPACE') // A
+//			?.defineKey(0, 'LEFT', 'LEFT')
+//			.defineKey(0, 'RIGHT', 'RIGHT')
+			?.defineKey(0, 'B2', 'SPACE') // A
 			//            .defineKey(0, 'B1', 'CTRL')
 			//            .defineKey(0, 'B2', 'ALT')
 			.defineKey(0, 'B6', 'ONE')
@@ -190,13 +190,13 @@ export default class GameScene extends Phaser.Scene {
 		// TODO move to controller class
 		if (!this.controller1) return
 
-		if (this.controller1?.direction.LEFT) {
-			this.player.moveLeft(delta)
-		}
-
-		if (this.controller1?.direction.RIGHT) {
-			this.player.moveRight(delta)
-		}
+//		if (this.controller1?.direction.LEFT) {
+//			this.player.moveLeft(delta)
+//		}
+//
+//		if (this.controller1?.direction.RIGHT) {
+//			this.player.moveRight(delta)
+//		}
 
 //		if (this.controller1?.buttons.B12 > 0) {
 //			gauge.showUp()
