@@ -55,9 +55,8 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				meteor.x + meteor.width / 2 + MARGIN / 2,
 				meteor.y - meteor.height / 2,
 				'tutorial_enemy_title',
-				undefined,
-				{ fontSize: LARGE_FONT_SIZE },
 			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0, 0.5)
 		i18n
 			.createTranslatedText(
@@ -86,9 +85,8 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 				player.x + player.width / 2 + MARGIN / 2,
 				player.y - player.height / 2,
 				'tutorial_player_title',
-				undefined,
-				{ fontSize: LARGE_FONT_SIZE },
 			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0, 0.5)
 		i18n
 			.createTranslatedText(
