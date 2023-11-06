@@ -215,25 +215,25 @@ export default class GameScene extends Phaser.Scene {
 		if (this.controller1?.buttons.B6 > 0 && !(this.controller1?.buttons.B2 > 0)) {
 			gauge.setStepVisible(0, true)
 		} else {
-			gauge.setStepVisible(0, false)
+//			gauge.setStepVisible(0, false)
 		}
 
 		if (this.controller1?.buttons.B3 > 0 && !(this.controller1?.buttons.B2 > 0)) {
 			gauge.setStepVisible(1, true)
 		} else {
-			gauge.setStepVisible(1, false)
+//			gauge.setStepVisible(1, false)
 		}
 
 		if (this.controller1?.buttons.B13 > 0 && !(this.controller1?.buttons.B2 > 0)) {
 			gauge.setStepVisible(2, true)
 		} else {
-			gauge.setStepVisible(2, false)
+//			gauge.setStepVisible(2, false)
 		}
 
 		if (this.controller1?.buttons.B15 > 0 && !(this.controller1?.buttons.B2 > 0)) {
 			gauge.setStepVisible(3, true)
 		} else {
-			gauge.setStepVisible(3, false)
+//			gauge.setStepVisible(3, false)
 		}
 
 		if (this.controller1?.buttons.B2 > 0) {
