@@ -36,22 +36,15 @@ export default class EndGameScene extends Phaser.Scene {
 				width / 2,
 				menu.y - menu.height / 2 + MARGIN,
 				'my_score',
-				undefined,
-				{ fontSize: LARGE_FONT_SIZE },
 			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 		i18n
-			.createTranslatedText(
-				this,
-				width / 2,
-				title.y + MARGIN,
-				'score',
-				{
-					score: this.score,
-				},
-				{ fontSize: LARGE_FONT_SIZE },
-			)
+			.createTranslatedText(this, width / 2, title.y + MARGIN, 'score', {
+				score: this.score,
+			})
+			.setFontSize(LARGE_FONT_SIZE)
 			.setAlign('center')
 			.setOrigin(0.5, 0)
 	}
