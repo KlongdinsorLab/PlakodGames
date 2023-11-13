@@ -1,4 +1,4 @@
-import { MARGIN } from 'config'
+import { LARGE_FONT_SIZE, MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 
 export default class Score {
@@ -6,14 +6,11 @@ export default class Score {
 	private scoreText!: Phaser.GameObjects.Text
 
 	constructor(scene: Phaser.Scene) {
-		this.scoreText = I18nSingleton.getInstance().createTranslatedText(
-			scene,
-			MARGIN,
-			MARGIN,
-			'score',
-			{ score: this.score },
-			{ fontSize: '42px' },
-		)
+		this.scoreText = I18nSingleton.getInstance()
+			.createTranslatedText(scene, MARGIN, MARGIN, 'score', {
+				score: this.score,
+			})
+			.setFontSize(LARGE_FONT_SIZE)
 	}
 
 	add(added_score: number) {

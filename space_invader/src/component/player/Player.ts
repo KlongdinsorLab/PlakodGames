@@ -36,19 +36,17 @@ export default class Player {
 	}
 
 	addJetEngine() {
-		const jetEngine = this.scene.add.particles('fire')
-		const jetEngineEmitter = jetEngine.createEmitter({
+		const jetEngine = this.scene.add.particles(0, 0, 'fire', {
 			gravityY: 200,
 			speed: 100,
 			scale: { start: 1, end: 0 },
 			blendMode: Phaser.BlendModes.ADD,
 		})
-		jetEngineEmitter.startFollow(this.player, 0, MARGIN)
+		jetEngine.startFollow(this.player, 0, MARGIN)
 	}
 
 	addChargeParticle() {
-		const charge = this.scene.add.particles('charge')
-		this.chargeEmitter = charge.createEmitter({
+		this.chargeEmitter = this.scene.add.particles(0, 0, 'charge', {
 			speed: 64,
 			scale: 0.1,
 			blendMode: Phaser.BlendModes.ADD,
@@ -76,13 +74,13 @@ export default class Player {
 	}
 
 	damaged(): void {
-		this.playerHitTweens.restart()
-		this.playerHitTweens.play()
+		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
 	}
 
 	recovered(): void {
 		this.player.alpha = 1
+		this.playerHitTweens.restart()
 		this.playerHitTweens.pause()
 	}
 
