@@ -1,5 +1,6 @@
 //import CircleInhaleGauge from './CircleInhaleGauge'
-import RingInhaleGauge from './RingInhaleGauge'
+import CenterBarInhaleGauge from './CenterBarInhaleGauge'
+//import RingInhaleGauge from './RingInhaleGauge'
 //import BarInhaleGauge from './BarInhaleGauge'
 import InhaleGauge from './InhaleGauge'
 export default class InhaleGaugeRegistry {
@@ -12,7 +13,7 @@ export default class InhaleGaugeRegistry {
 
 	createbyDivision(division: number) {
 		this.holdbars = [...Array(division)].map(
-			(_, index: number) => new RingInhaleGauge(this.scene, division, index),
+			(_, index: number) => new CenterBarInhaleGauge(this.scene, division, index),
 		)
 	}
 
