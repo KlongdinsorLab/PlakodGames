@@ -59,6 +59,8 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('explosion', 'assets/effect/explosionYellow.png')
 		this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
+		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
+
 		this.load.svg('pause', 'assets/icon/pause.svg')
 		this.load.svg('resume', 'assets/icon/resume.svg')
 		this.load.svg('finger press', 'assets/icon/finger-press.svg')
@@ -86,13 +88,15 @@ export default class GameScene extends Phaser.Scene {
 		// https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
 		// XBOX controller B0=A, B1=B, B2=X, B3=Y
 		this.mergedInput
-			?.defineKey(0, 'LEFT', 'LEFT')
-			.defineKey(0, 'RIGHT', 'RIGHT')
-			.defineKey(0, 'B0', 'SPACE') // A
+//			?.defineKey(0, 'LEFT', 'LEFT')
+//			.defineKey(0, 'RIGHT', 'RIGHT')
+			?.defineKey(0, 'B2', 'SPACE') // A
 			//            .defineKey(0, 'B1', 'CTRL')
 			//            .defineKey(0, 'B2', 'ALT')
-			.defineKey(0, 'B12', 'UP')
-			.defineKey(0, 'B13', 'DOWN')
+			.defineKey(0, 'B6', 'ONE')
+			.defineKey(0, 'B3', 'TWO')
+			.defineKey(0, 'B13', 'THREE')
+			.defineKey(0, 'B15', 'FOUR')
 
 		this.player = new Player(this)
 		this.player.addJetEngine()
@@ -186,28 +190,38 @@ export default class GameScene extends Phaser.Scene {
 		// TODO move to controller class
 		if (!this.controller1) return
 
-		if (this.controller1?.direction.LEFT) {
-			this.player.moveLeft(delta)
-		}
+//		if (this.controller1?.direction.LEFT) {
+//			this.player.moveLeft(delta)
+//		}
+//
+//		if (this.controller1?.direction.RIGHT) {
+//			this.player.moveRight(delta)
+//		}
 
-		if (this.controller1?.direction.RIGHT) {
-			this.player.moveRight(delta)
-		}
+//		if (this.controller1?.buttons.B12 > 0) {
+//			gauge.showUp()
+//		} else {
+//			gauge.hideUp()
+//		}
+//
+//		if (this.controller1?.buttons.B13 > 0) {
+//			gauge.showDown()
+//		} else {
+//			gauge.hideDown()
+//		}
 
-		if (this.controller1?.buttons.B12 > 0) {
-			gauge.showUp()
-		} else {
-			gauge.hideUp()
-		}
-
-		if (this.controller1?.buttons.B13 > 0) {
-			gauge.showDown()
-		} else {
-			gauge.hideDown()
-		}
-
-		if (this.controller1?.buttons.B0 > 0) {
+		if (this.controller1?.buttons.B2 > 0) {
 			gauge.hold(delta)
+		} else if (this.controller1?.buttons.B6 > 0) {
+			gauge.setStep(0)
+		} else if (this.controller1?.buttons.B3 > 0) {
+			gauge.setStep(1)
+		} else if (this.controller1?.buttons.B13 > 0) {
+			gauge.setStep(2)
+		} else if (this.controller1?.buttons.B15 > 0) {
+			gauge.setStep(3)
+		} else {
+			gauge.setVisible(false)
 		}
 
 		if (this.input.pointer1.isDown) {
@@ -237,7 +251,7 @@ export default class GameScene extends Phaser.Scene {
 
 		if (
 			gauge.getDuratation() > HOLD_DURATION_MS &&
-			this.controller1?.buttons.B0 > 0
+			this.controller1?.buttons.B2 > 0
 		) {
 			this.player.startReload()
 			gauge.setFullCharge()
@@ -245,13 +259,13 @@ export default class GameScene extends Phaser.Scene {
 		} else if (
 			gauge.getDuratation() <= HOLD_DURATION_MS &&
 			gauge.getDuratation() !== 0 &&
-			this.controller1?.buttons.B0 > 0
+			this.controller1?.buttons.B2 > 0
 		) {
 			this.player.charge()
 			gauge.charge(delta)
 		}
 
-		if (this.player.getIsReload() && !(this.controller1?.buttons.B0 > 0)) {
+		if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
 			this.singleLaserFactory.reset()
 			this.player.reloadReset()
 			gauge.reset()
@@ -265,7 +279,7 @@ export default class GameScene extends Phaser.Scene {
 			}
 		}
 
-		if (this.player.getIsReloading() && !(this.controller1?.buttons.B0 > 0)) {
+		if (this.player.getIsReloading() && !(this.controller1?.buttons.B2 > 0)) {
 			this.player.reloadResetting()
 			gauge.resetting()
 		}
