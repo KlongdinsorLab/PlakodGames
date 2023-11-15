@@ -132,7 +132,10 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	setFullCharge() {
 		this.releaseText.setVisible(true)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(HOLD_BAR_CHARGED_COLOR, 1)
+		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(
+			HOLD_BAR_CHARGED_COLOR,
+			1,
+		)
 		if (!this.shake.isPlaying()) {
 			this.shake.resume()
 		}
@@ -164,7 +167,10 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	}
 
 	deplete() {
-		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(HOLD_BAR_EMPTY_COLOR, 1)
+		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(
+			HOLD_BAR_EMPTY_COLOR,
+			1,
+		)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
 	}
 
@@ -194,6 +200,11 @@ export default class CircleInhaleGauge extends InhaleGauge {
 		;(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
 	}
 
-	setStepVisible(): void {
+	setStep(): void {
+		// TODO
+	}
+
+	setVisible(_: boolean) {
+		// TODO
 	}
 }

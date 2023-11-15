@@ -170,6 +170,11 @@ export default class BarInhaleGauge extends InhaleGauge {
 		this.down.setVisible(false)
 	}
 
-	setStepVisible(): void {
+	setStep(_:number): void {
+		// TODO
+	}
+
+	setVisible(_:boolean): void {
+		// TODO
 	}
 }

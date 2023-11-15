@@ -195,8 +195,12 @@ export default class RingInhaleGauge extends InhaleGauge {
 		return this.isHoldbarReducing && this.holdButtonDuration >= 0
 	}
 
-	setStepVisible(step: number, visible: boolean): void {
+	setStep(step: number): void {
 		this.steps.map((s) => s.setVisible(false))
-		this.steps[step].setVisible(visible)
+		this.steps[step].setVisible(true)
+	}
+
+	setVisible(visible: boolean) {
+		this.steps.map((s) => s.setVisible(visible))
 	}
 }

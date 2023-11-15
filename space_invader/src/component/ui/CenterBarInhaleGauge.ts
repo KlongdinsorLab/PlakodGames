@@ -166,7 +166,7 @@ export default class CenterBarInhaleGauge extends InhaleGauge {
         return this.isHoldbarReducing && this.holdButtonDuration >= 0
     }
 
-    setStepVisible(step: number, _: boolean): void {
+    setStep(step: number): void {
         if(step >= 2) {
             step++
         }
@@ -176,5 +176,9 @@ export default class CenterBarInhaleGauge extends InhaleGauge {
             duration: 20,
             ease: 'sine.inout',
         })
+    }
+
+    setVisible(_: boolean) {
+        // TODO
     }
 }

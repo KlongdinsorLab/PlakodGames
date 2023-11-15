@@ -77,7 +77,9 @@ export default abstract class InhaleGauge {
 //
 //	abstract hideDown(): void
 
-	abstract setStepVisible(step: number, visible: boolean): void
+	abstract setStep(step: number): void
+
+	abstract setVisible(visible: boolean): void
 
 	getBody(): Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics {
 		return this.gauge

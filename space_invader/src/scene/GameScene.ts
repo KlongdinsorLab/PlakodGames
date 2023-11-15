@@ -210,34 +210,18 @@ export default class GameScene extends Phaser.Scene {
 //			gauge.hideDown()
 //		}
 
-		// TODO
-
-		if (this.controller1?.buttons.B6 > 0 && !(this.controller1?.buttons.B2 > 0)) {
-			gauge.setStepVisible(0, true)
-		} else {
-//			gauge.setStepVisible(0, false)
-		}
-
-		if (this.controller1?.buttons.B3 > 0 && !(this.controller1?.buttons.B2 > 0)) {
-			gauge.setStepVisible(1, true)
-		} else {
-//			gauge.setStepVisible(1, false)
-		}
-
-		if (this.controller1?.buttons.B13 > 0 && !(this.controller1?.buttons.B2 > 0)) {
-			gauge.setStepVisible(2, true)
-		} else {
-//			gauge.setStepVisible(2, false)
-		}
-
-		if (this.controller1?.buttons.B15 > 0 && !(this.controller1?.buttons.B2 > 0)) {
-			gauge.setStepVisible(3, true)
-		} else {
-//			gauge.setStepVisible(3, false)
-		}
-
 		if (this.controller1?.buttons.B2 > 0) {
 			gauge.hold(delta)
+		} else if (this.controller1?.buttons.B6 > 0) {
+			gauge.setStep(0)
+		} else if (this.controller1?.buttons.B3 > 0) {
+			gauge.setStep(1)
+		} else if (this.controller1?.buttons.B13 > 0) {
+			gauge.setStep(2)
+		} else if (this.controller1?.buttons.B15 > 0) {
+			gauge.setStep(3)
+		} else {
+			gauge.setVisible(false)
 		}
 
 		if (this.input.pointer1.isDown) {

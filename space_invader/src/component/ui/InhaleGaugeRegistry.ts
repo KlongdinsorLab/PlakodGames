@@ -1,7 +1,10 @@
 //import CircleInhaleGauge from './CircleInhaleGauge'
-import CenterCircleInhaleGauge from './CenterCircleInhaleGauge'
+//import CenterCircleInhaleGauge from './CenterCircleInhaleGauge'
 //import RingInhaleGauge from './RingInhaleGauge'
 //import BarInhaleGauge from './BarInhaleGauge'
+//import StackInhaleGauge from './StackInhaleGauge'
+import OverlapInhaleGauge from './OverlapInhaleGauge'
+
 import InhaleGauge from './InhaleGauge'
 export default class InhaleGaugeRegistry {
 	private scene: Phaser.Scene
@@ -13,7 +16,7 @@ export default class InhaleGaugeRegistry {
 
 	createbyDivision(division: number) {
 		this.holdbars = [...Array(division)].map(
-			(_, index: number) => new CenterCircleInhaleGauge(this.scene, division, index),
+			(_, index: number) => new OverlapInhaleGauge(this.scene, division, index),
 		)
 	}
 
