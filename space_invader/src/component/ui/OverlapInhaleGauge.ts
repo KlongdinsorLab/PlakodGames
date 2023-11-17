@@ -91,6 +91,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         if(isReloading) return
         const gauge = <Phaser.GameObjects.Rectangle>this.gauge
         gauge.setVisible(true)
+        this.gauge.setAlpha(1)
         stepBar.setVisible(false)
         gauge.setFillStyle(HOLD_BAR_CHARGING_COLOR)
         gauge.setScale(this.getScaleX(), 1)
@@ -168,6 +169,8 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         return this.isHoldbarReducing && this.holdButtonDuration >= 0
     }
 
+    stepColors = [0xFFC824, 0xFF9243,0, 0x7FCF01, 0xFF2C34]
+
     setStep(step: number): void {
         if(isReloading) {
             stepBar.setVisible(false)
@@ -183,12 +186,12 @@ export default class OverlapInhaleGauge extends InhaleGauge {
             duration: 20,
             ease: 'sine.inout',
         })
-        this.gauge.setVisible(false)
+        stepBar.setFillStyle(this.stepColors[step])
+        this.gauge.setAlpha(0.2)
     }
     
     setVisible(visible:boolean): void {
         if(isReloading) return
         stepBar.setVisible(visible)
-        this.gauge.setVisible(false)
     }
 }
