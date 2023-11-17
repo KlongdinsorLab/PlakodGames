@@ -1,18 +1,13 @@
-import { RELOAD_COUNT } from '../../config'
+import { LARGE_FONT_SIZE, RELOAD_COUNT } from '../../config'
 
 export default class ReloadCount {
 	private reloadCount = RELOAD_COUNT
 	private body: Phaser.GameObjects.Text
 
 	constructor(scene: Phaser.Scene, x: number, y: number) {
-		this.body = scene.add.text(
-			x,
-			y,
-			`${RELOAD_COUNT - this.reloadCount}/${RELOAD_COUNT}`,
-			{
-				fontSize: '42px',
-			},
-		)
+		this.body = scene.add
+			.text(x, y, `${RELOAD_COUNT - this.reloadCount}/${RELOAD_COUNT}`)
+			.setFontSize(LARGE_FONT_SIZE)
 	}
 
 	getBody(): Phaser.GameObjects.Text {
