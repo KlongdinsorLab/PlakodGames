@@ -91,6 +91,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         if(isReloading) return
         const gauge = <Phaser.GameObjects.Rectangle>this.gauge
         gauge.setVisible(true)
+        stepBar.setVisible(false)
         gauge.setFillStyle(HOLD_BAR_CHARGING_COLOR)
         gauge.setScale(this.getScaleX(), 1)
         this.soundManager.play(this.chargingSound!)
@@ -182,10 +183,12 @@ export default class OverlapInhaleGauge extends InhaleGauge {
             duration: 20,
             ease: 'sine.inout',
         })
+        this.gauge.setVisible(false)
     }
     
     setVisible(visible:boolean): void {
         if(isReloading) return
         stepBar.setVisible(visible)
+        this.gauge.setVisible(false)
     }
 }
