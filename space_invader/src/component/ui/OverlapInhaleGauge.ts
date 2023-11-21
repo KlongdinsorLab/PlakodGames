@@ -53,10 +53,9 @@ export default class OverlapInhaleGauge extends InhaleGauge {
     createBar (index: number): Phaser.GameObjects.Rectangle {
         const barWidth = this.getBarWidth()
         const x = this.getX(index)
-        const bar = this.scene.add.rectangle(x, this.getY(), barWidth, HOLD_BAR_HEIGHT).setOrigin(0, 1)
+        return this.scene.add.rectangle(x, this.getY(), barWidth, HOLD_BAR_HEIGHT).setOrigin(0, 1)
 
 //        bar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
-        return bar
     }
 
     getY(): number {

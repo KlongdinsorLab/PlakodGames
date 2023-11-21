@@ -353,10 +353,13 @@ export default class GameScene extends Phaser.Scene {
 		if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
 			this.singleLaserFactory.reset()
 			this.player.reloadReset()
-			gauge.reset()
 			this.reloadCount.decrementCount()
 
 			this.isBossTextShown = this.reloadCount.isBossShown()
+
+			if(!this.isBossTextShown) {
+				gauge.reset()
+			}
 
 			if (this.reloadCount.isDepleted()) {
 				setTimeout(() => {
