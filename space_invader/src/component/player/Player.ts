@@ -158,6 +158,10 @@ export default class Player {
 		)
 	}
 
+	attack(): void {
+		this.player.play('attack', true)
+	}
+
 	reloadResetting(): void {
 		this.player.play('run', true)
 		this.isReloading = false

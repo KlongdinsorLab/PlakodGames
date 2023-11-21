@@ -65,7 +65,7 @@ export default class GameScene extends Phaser.Scene {
 		);
 
 		this.load.image('fire', 'assets/effect/fire03.png')
-		this.load.image('laser', 'assets/effect/laserBlue02.png')
+		this.load.image('laser', 'assets/effect/02.1_MCBullet.png')
 		this.load.image('charge', 'assets/effect/chargeBlue.png')
 		this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
 		this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
@@ -352,13 +352,15 @@ export default class GameScene extends Phaser.Scene {
 
 		if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
 			this.singleLaserFactory.reset()
-			this.player.reloadReset()
 			this.reloadCount.decrementCount()
 
 			this.isBossTextShown = this.reloadCount.isBossShown()
 
 			if(!this.isBossTextShown) {
+				this.player.reloadReset()
 				gauge.reset()
+			} else {
+				this.player.attack()
 			}
 
 			if (this.reloadCount.isDepleted()) {
