@@ -20,7 +20,7 @@ export default class TitleScene extends Phaser.Scene {
 	preload() {
 		this.load.image('titleBackground', 'assets/background/title-background.jpg')
 		this.load.image('logo', 'assets/logo/logo_1-01.png')
-		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
+//		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
 		this.load.image('fire', 'assets/effect/fire03.png')
 		this.load.audio('bgm', 'sound/hofman-138068.mp3')
 
@@ -34,10 +34,10 @@ export default class TitleScene extends Phaser.Scene {
 
 		const { width, height } = this.scale
 		//		const i18n = I18nSingleton.getInstance()
-//		this.background = this.add
-//			.tileSprite(0, 0, width, height, 'titleBackground')
-//			.setOrigin(0)
-//			.setScrollFactor(0, 0)
+		//		this.background = this.add
+		//			.tileSprite(0, 0, width, height, 'titleBackground')
+		//			.setOrigin(0)
+		//			.setScrollFactor(0, 0)
 
 		this.add
 			.tileSprite(0, 0, width, height, 'titleBackground')

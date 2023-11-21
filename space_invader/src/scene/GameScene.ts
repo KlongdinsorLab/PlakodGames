@@ -2,7 +2,6 @@ import Phaser from 'phaser'
 import {
     BOSS_TIME_MS,
     BULLET_COUNT,
-    HOLD_BAR_HEIGHT,
     HOLD_DURATION_MS, LARGE_FONT_SIZE,
     LASER_FREQUENCY_MS,
     MARGIN
@@ -57,7 +56,14 @@ export default class GameScene extends Phaser.Scene {
 
 	preload() {
 		this.load.image('background', 'assets/background/background.jpg')
-		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
+//		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
+
+		this.load.atlas(
+			'player',
+			'assets/character/player/MC_CompactSpriteSheet.png',
+			'assets/character/player/MC_CompactSpriteSheet.json',
+		);
+
 		this.load.image('fire', 'assets/effect/fire03.png')
 		this.load.image('laser', 'assets/effect/laserBlue02.png')
 		this.load.image('charge', 'assets/effect/chargeBlue.png')
@@ -67,6 +73,13 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
 		this.load.image('explosion', 'assets/effect/explosionYellow.png')
 		this.load.image('chevron', 'assets/icon/chevron-down.svg')
+
+		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
+		this.load.image('sensor_1', 'assets/ui/sensor_1.png')
+		this.load.image('sensor_2', 'assets/ui/sensor_2.png')
+		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
+		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
+		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
 
 		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
 
@@ -80,7 +93,7 @@ export default class GameScene extends Phaser.Scene {
 			'bossHit',
 			'assets/character/enemy/Enemy_Hit-0.png',
 			'assets/character/enemy/Enemy_Hit.json',
-			);
+		);
 
 		this.load.svg('pause', 'assets/icon/pause.svg')
 		this.load.svg('resume', 'assets/icon/resume.svg')
@@ -126,10 +139,10 @@ export default class GameScene extends Phaser.Scene {
 		this.player.addChargeParticle()
 
 		// TODO Move to UI
-		this.add
-			.rectangle(0, height, width, HOLD_BAR_HEIGHT + MARGIN * 2, 0x000000)
-			.setOrigin(0, 1)
-			.setAlpha(0.25)
+		//	this.add
+		//		.rectangle(0, height, width, HOLD_BAR_HEIGHT + MARGIN * 2, 0x000000)
+		//		.setOrigin(0, 1)
+		//		.setAlpha(0.25)
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
 		this.gaugeRegistry.createbyDivision(1)

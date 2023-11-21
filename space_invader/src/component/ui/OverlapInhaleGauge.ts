@@ -1,14 +1,11 @@
 import {
     BULLET_COUNT,
-    HOLD_BAR_IDLE_COLOR,
     HOLD_DURATION_MS,
     LASER_FREQUENCY_MS,
     MARGIN,
     HOLD_BAR_BORDER,
     HOLD_BAR_HEIGHT,
-    HOLD_BAR_CHARGING_COLOR,
-    HOLD_BAR_CHARGED_COLOR,
-    HOLD_BAR_EMPTY_COLOR, LARGE_FONT_SIZE, HOLD_BAR_COLOR
+    LARGE_FONT_SIZE,
 } from 'config'
 
 import InhaleGauge from './InhaleGauge'
@@ -19,6 +16,7 @@ let rectanglesBackground: Phaser.GameObjects.Rectangle[] = []
 let stepBar!: Phaser.GameObjects.Rectangle
 let bulletText: Phaser.GameObjects.Text
 const sections = 5
+let progressBar: Phaser.GameObjects.Image
 
 export default class OverlapInhaleGauge extends InhaleGauge {
     private soundManager: SoundManager
@@ -29,16 +27,21 @@ export default class OverlapInhaleGauge extends InhaleGauge {
     }
     createGauge(_: number): void {
         const { width } = this.scene.scale
+
+        progressBar = this.scene.add
+            .image(width/2, this.getY() + 16, 'progress_bar')
+            .setOrigin(0.5, 1)
+
         rectanglesBackground = [...Array(sections).keys()].map((arrayIndex) => this.createBar(arrayIndex));
         
         this.gauge = this.scene.add
             .rectangle(width/2, this.getY(), this.getBarWidth(), HOLD_BAR_HEIGHT)
             .setOrigin(0.5, 1)
             .setDepth(100)
-            .setFillStyle(HOLD_BAR_COLOR)
+            .setFillStyle(0x7FCF01)
             .setVisible(false)
         
-        stepBar = this.createBar(0).setFillStyle(HOLD_BAR_IDLE_COLOR).setOrigin(0.5, 1).setDepth(200)
+        stepBar = this.createBar(0).setFillStyle(0x7FCF01).setOrigin(0.5, 1).setDepth(200)
         
         bulletText = this.scene.add
                     .text(width /2 , this.getY(), `⚡️: `)
@@ -52,7 +55,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         const x = this.getX(index)
         const bar = this.scene.add.rectangle(x, this.getY(), barWidth, HOLD_BAR_HEIGHT).setOrigin(0, 1)
 
-        bar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
+//        bar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
         return bar
     }
 
@@ -62,12 +65,15 @@ export default class OverlapInhaleGauge extends InhaleGauge {
     }
 
     getX(index: number): number {
-        return 5 * MARGIN + (this.getBarWidth() * index)
+        const { width } = this.scene.scale
+        return (width - (this.getBarWidth() * 5))/2 + (this.getBarWidth() * index)
+//        return 5 * MARGIN + (this.getBarWidth() * index)
     }
 
     getBarWidth(): number {
-        const { width } = this.scene.scale
-        return (width - (10 * MARGIN)) / sections
+//        const { width } = this.scene.scale
+//        return (width - (10 * MARGIN)) / sections
+        return 80
     }
 
     createUpDownGauge(): void {
@@ -93,7 +99,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         gauge.setVisible(true)
         this.gauge.setAlpha(1)
         stepBar.setVisible(false)
-        gauge.setFillStyle(HOLD_BAR_CHARGING_COLOR)
+        gauge.setFillStyle(0x7FCF01)
         gauge.setScale(this.getScaleX(), 1)
         this.soundManager.play(this.chargingSound!)
     }
@@ -104,13 +110,13 @@ export default class OverlapInhaleGauge extends InhaleGauge {
             gauge.setVisible(false)
         }
         gauge.setScale(this.getScaleX(), 1)
-        gauge.setFillStyle(HOLD_BAR_COLOR)
+        gauge.setFillStyle(0x7FCF01)
         this.holdButtonDuration -= delta *  HOLD_DURATION_MS / (LASER_FREQUENCY_MS * BULLET_COUNT)
         this.soundManager.pause(this.chargingSound!)
     }
 
     setFullCharge() {
-        (<Phaser.GameObjects.Rectangle>this.gauge).setFillStyle(HOLD_BAR_CHARGED_COLOR, 1)
+        (<Phaser.GameObjects.Rectangle>this.gauge).setFillStyle(0x7FCF01, 1)
         this.holdButtonDuration = HOLD_DURATION_MS
         this.soundManager.play(this.chargedSound!)
     }
@@ -121,10 +127,12 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         this.isHoldbarReducing = true
         bulletText.setVisible(true)
         bulletText.setText(`⚡️: ${currentBulletCount}`)
+        progressBar.setVisible(false)
         this.gauge.setVisible(false)
         rectanglesBackground.map(r => r.setVisible(false))
         setTimeout(
             () => {
+                progressBar.setVisible(true)
                 rectanglesBackground.map(r => r.setVisible(true))
                 bulletText.setVisible(false)
                 this.holdButtonDuration = 0
@@ -162,14 +170,15 @@ export default class OverlapInhaleGauge extends InhaleGauge {
 
     deplete() {
         const gauge = <Phaser.GameObjects.Rectangle>this.gauge
-        gauge.setFillStyle(HOLD_BAR_EMPTY_COLOR, 1)
-        gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
+        gauge.setFillStyle(0x7FCF01, 1)
+//        gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
     }
+
     isReducing(): boolean {
         return this.isHoldbarReducing && this.holdButtonDuration >= 0
     }
 
-    stepColors = [0xFFC824, 0xFF9243,0, 0x7FCF01, 0xFF2C34]
+    stepColors = [0xFFC824, 0xFF9243,0x7FCF01, 0xFF9243, 0xFF2C34]
 
     setStep(step: number): void {
         if(isReloading) {
