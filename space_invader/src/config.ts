@@ -8,6 +8,14 @@ export const TRIPLE_LASER_X_SPEED = 80
 export const LASER_FREQUENCY_MS = 500
 export const BULLET_COUNT = 30
 export const RELOAD_COUNT = 10
+export const BOSS_MULTIPLE_COUNT = 5
+export const BOSS_TIME_MS = 120_000
+
+//export const BULLET_COUNT = 5
+//export const RELOAD_COUNT = 4
+//export const BOSS_MULTIPLE_COUNT = 2
+//export const BOSS_TIME_MS = 5000
+export const BOSS_HIT_DELAY_MS = 500
 export const HOLD_DURATION_MS = 1000
 export const HOLD_BAR_HEIGHT = 40
 export const HOLD_BAR_BORDER = 8
@@ -25,7 +33,6 @@ export const CIRCLE_GAUGE_SHAKE_X = 8
 export const SPACE_BETWEEN_MARGIN_SCALE = 0.5
 export const FULLCHARGE_SCALE = 1.12
 export const FULLCHARGE_ANIMATION_MS = 300
-
 export const METEOR_FREQUENCY_MS = 2500
 export const METEOR_SPEED = 300
 export const METEOR_SPIN_SPEED = 100

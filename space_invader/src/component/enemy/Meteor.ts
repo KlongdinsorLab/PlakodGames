@@ -95,6 +95,10 @@ export class Meteor extends Enemy {
 		//        })
 	}
 
+	hit(): void {
+		this.destroy()
+	}
+
 	destroy(): void {
 		this.explosionEmitter.startFollow(this.enemy)
 		this.explosionEmitter.active = true

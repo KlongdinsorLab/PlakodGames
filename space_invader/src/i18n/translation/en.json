@@ -47,5 +47,6 @@
     "warmup_exhale": "Exhale...",
     "warmup_release": "Hold the tube with your mouth",
     "warmup_inhale": "Deeply inhale until the tube expands",
-    "warmup_continue": "Touch to continue"
+    "warmup_continue": "Touch to continue",
+    "boss_attack": "Boss Attack!"
 }

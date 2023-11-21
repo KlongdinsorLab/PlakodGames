@@ -18,8 +18,8 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('background', 'assets/background/purple.png')
-		this.load.image('logo', 'assets/logo/logo.png')
+		this.load.image('titleBackground', 'assets/background/title-background.jpg')
+		this.load.image('logo', 'assets/logo/logo_1-01.png')
 		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
 		this.load.image('fire', 'assets/effect/fire03.png')
 		this.load.audio('bgm', 'sound/hofman-138068.mp3')
@@ -35,7 +35,7 @@ export default class TitleScene extends Phaser.Scene {
 		const { width, height } = this.scale
 		//		const i18n = I18nSingleton.getInstance()
 		this.background = this.add
-			.tileSprite(0, 0, width, height, 'background')
+			.tileSprite(0, 0, width, height, 'titleBackground')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 		this.add.image(width / 2, height / 2, 'logo').setOrigin(0.5, 1)
@@ -50,19 +50,21 @@ export default class TitleScene extends Phaser.Scene {
 			.defineKey(0, 'RIGHT', 'RIGHT')
 			.defineKey(0, 'B0', 'SPACE')
 
-		this.player = new Player(this)
-		this.player.addJetEngine()
+//		this.player = new Player(this)
+//		this.player.addJetEngine()
 
 		this.bgm = this.sound.add('bgm')
 		const soundManager = new SoundManager(this)
 		soundManager.init()
 		soundManager.play(this.bgm)
 
+		/* TODO comment just for testing
 		const isSetup = localStorage.getItem('setup') ?? false
 		if (!isSetup) {
 			this.scene.pause()
 			this.scene.launch('setup')
 		}
+		*/
 
 		if (!this.hasController && this.input?.gamepad?.total === 0) {
 			this.input.gamepad.once(
@@ -77,8 +79,6 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	update() {
-		this.background.tilePositionY -= 1
-
 		if (
 			this.hasController &&
 			(this.controller1?.direction.LEFT ||

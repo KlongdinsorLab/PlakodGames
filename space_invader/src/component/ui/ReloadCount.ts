@@ -1,4 +1,4 @@
-import { LARGE_FONT_SIZE, RELOAD_COUNT } from '../../config'
+import { BOSS_MULTIPLE_COUNT, LARGE_FONT_SIZE, RELOAD_COUNT } from '../../config'
 
 export default class ReloadCount {
 	private reloadCount = RELOAD_COUNT
@@ -30,5 +30,12 @@ export default class ReloadCount {
 
 	isDepleted(): boolean {
 		return this.reloadCount <= 0
+	}
+
+	isBossShown(): boolean {
+		const count = RELOAD_COUNT - this.reloadCount
+		if(count === 0)
+			return false
+		return count % BOSS_MULTIPLE_COUNT === 0
 	}
 }
