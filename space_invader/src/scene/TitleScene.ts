@@ -1,15 +1,15 @@
 import Phaser from 'phaser'
 import MergedInput, { Player as InputPlayer } from 'phaser3-merged-input'
-import Player from 'component/player/Player'
+//import Player from 'component/player/Player'
 import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
 import { MEDIUM_FONT_SIZE } from 'config'
 
 export default class TitleScene extends Phaser.Scene {
-	private background!: Phaser.GameObjects.TileSprite
+//	private background!: Phaser.GameObjects.TileSprite
 	private mergedInput?: MergedInput
 	private controller1?: InputPlayer | any
-	private player?: Player
+//	private player?: Player
 	private bgm?: Phaser.Sound.BaseSound
 	private hasController = false
 
@@ -34,10 +34,16 @@ export default class TitleScene extends Phaser.Scene {
 
 		const { width, height } = this.scale
 		//		const i18n = I18nSingleton.getInstance()
-		this.background = this.add
+//		this.background = this.add
+//			.tileSprite(0, 0, width, height, 'titleBackground')
+//			.setOrigin(0)
+//			.setScrollFactor(0, 0)
+
+		this.add
 			.tileSprite(0, 0, width, height, 'titleBackground')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
+
 		this.add.image(width / 2, height / 2, 'logo').setOrigin(0.5, 1)
 		I18nSingleton.getInstance()
 			.createTranslatedText(this, width / 2, height / 2, 'start text')

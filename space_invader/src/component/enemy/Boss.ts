@@ -15,7 +15,7 @@ export class Boss extends Enemy {
 
 	constructor(scene: Phaser.Scene, player: Player, score: Score) {
 		super(scene, player, score)
-		this.move()
+//		this.move()
 		this.attack()
 		this.soundManager = new SoundManager(scene)
 	}
@@ -36,7 +36,7 @@ export class Boss extends Enemy {
 			repeat: -1
 		});
 		
-		this.enemy = this.scene.add.follower(path, width / 2, -40, 'bossMove').setOrigin(0.5)
+		this.enemy = this.scene.add.follower(path, width / 2, -140, 'bossMove').setOrigin(0.5)
 		this.enemy.play('boss-move')
 		
 		this.scene.physics.world.enable(this.enemy)
@@ -45,7 +45,7 @@ export class Boss extends Enemy {
 
 	move(): void {
         const { width } = this.scene.scale
-		const randomVector = [...Array(5).keys()].map((i: number) => {
+		const randomVector = [...Array(5)].map(_ => {
 			return new Phaser.Math.Vector2(Math.floor(Math.random() * width), Math.floor(Math.random() * width))
 		})
 		const path = new Phaser.Curves.Path(this.enemy.x, this.enemy.y)
@@ -105,7 +105,7 @@ export class Boss extends Enemy {
 
 	remove(): void {
 		const { width } = this.scene.scale
-        const path = new Phaser.Curves.Path(this.enemy.x, this.enemy.y).lineTo(width/2, -40)
+        const path = new Phaser.Curves.Path(this.enemy.x, this.enemy.y).lineTo(width/2, -140)
 		this.enemy.setPath(path).startFollow({duration: 200})
 	}
 }
