@@ -1,6 +1,11 @@
 import Phaser from 'phaser'
 import I18nSingleton from 'i18n/I18nSingleton'
-import { MARGIN, MODAL_BACKGROUND_COLOR } from 'config'
+import {
+	LARGE_FONT_SIZE,
+	MARGIN,
+	MEDIUM_FONT_SIZE,
+	MODAL_BACKGROUND_COLOR,
+} from 'config'
 import SoundManager from 'component/sound/SoundManager'
 
 export type Menu = {
@@ -49,9 +54,8 @@ export default class PauseScene extends Phaser.Scene {
 				width / 2,
 				menu.y - menu.height / 2 - MARGIN,
 				'pause',
-				undefined,
-				{ fontSize: '42px' },
 			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0.5, 1)
 
 		const sound = new SoundManager(this).createSoundToggle(
@@ -59,14 +63,14 @@ export default class PauseScene extends Phaser.Scene {
 			menu.y - menu.height / 2 + 1.5 * MARGIN,
 		)
 
-		const language = i18n.createTranslatedText(
-			this,
-			width / 2 + MARGIN,
-			sound.y - MARGIN / 2,
-			'language_flag',
-			undefined,
-			{ fontSize: '80px' },
-		)
+		const language = i18n
+			.createTranslatedText(
+				this,
+				width / 2 + MARGIN,
+				sound.y - MARGIN / 2,
+				'language_flag',
+			)
+			.setFontSize('80px')
 
 		language.setInteractive()
 		language.on('pointerup', () => {
@@ -83,9 +87,8 @@ export default class PauseScene extends Phaser.Scene {
 			)
 			.setOrigin(0.5, 0.5)
 		i18n
-			.createTranslatedText(this, resume.x, resume.y, 'resume', undefined, {
-				fontSize: '42px',
-			})
+			.createTranslatedText(this, resume.x, resume.y, 'resume')
+			.setFontSize(MEDIUM_FONT_SIZE)
 			.setOrigin(0.5, 0.5)
 		resume.setInteractive()
 		resume.on('pointerup', () => {
@@ -105,9 +108,8 @@ export default class PauseScene extends Phaser.Scene {
 			)
 			.setOrigin(0.5, 0.5)
 		i18n
-			.createTranslatedText(this, restart.x, restart.y, 'restart', undefined, {
-				fontSize: '42px',
-			})
+			.createTranslatedText(this, restart.x, restart.y, 'restart')
+			.setFontSize(MEDIUM_FONT_SIZE)
 			.setOrigin(0.5, 0.5)
 		restart.setInteractive()
 		restart.on('pointerup', () => {
@@ -127,9 +129,8 @@ export default class PauseScene extends Phaser.Scene {
 			)
 			.setOrigin(0.5, 0.5)
 		i18n
-			.createTranslatedText(this, home.x, home.y, 'home', undefined, {
-				fontSize: '42px',
-			})
+			.createTranslatedText(this, home.x, home.y, 'home')
+			.setFontSize(MEDIUM_FONT_SIZE)
 			.setOrigin(0.5, 0.5)
 		home.setInteractive()
 		home.on('pointerup', () => {

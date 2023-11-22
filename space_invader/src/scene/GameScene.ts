@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 import {
-	BULLET_COUNT,
-	HOLD_BAR_HEIGHT,
-	HOLD_DURATION_MS,
-	LASER_FREQUENCY_MS,
-	MARGIN,
+    BOSS_TIME_MS,
+    BULLET_COUNT,
+    HOLD_DURATION_MS, LARGE_FONT_SIZE,
+    LASER_FREQUENCY_MS,
+    MARGIN
 } from 'config'
 import Player from 'component/player/Player'
 import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
@@ -18,6 +18,8 @@ import { Meteor } from 'component/enemy/Meteor'
 import ReloadCount from 'component/ui/ReloadCount'
 import Menu from 'component/ui/Menu'
 import EventEmitter = Phaser.Events.EventEmitter
+import I18nSingleton from '../i18n/I18nSingleton'
+import { Boss } from '../component/enemy/Boss'
 
 export default class GameScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -40,6 +42,12 @@ export default class GameScene extends Phaser.Scene {
 	private isCompleteWarmup = false
 	private menu!: Menu
 
+	// TODO move to boss class
+	private boss!: Boss
+	private bossText!: Phaser.GameObjects.Text
+	private isBossTextShown!: boolean
+	private isBossShown!: boolean
+
 	private event!: EventEmitter
 
 	constructor() {
@@ -47,10 +55,17 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('background', 'assets/background/purple.png')
-		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
+		this.load.image('background', 'assets/background/background.jpg')
+//		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
+
+		this.load.atlas(
+			'player',
+			'assets/character/player/MC_CompactSpriteSheet.png',
+			'assets/character/player/MC_CompactSpriteSheet.json',
+		);
+
 		this.load.image('fire', 'assets/effect/fire03.png')
-		this.load.image('laser', 'assets/effect/laserBlue02.png')
+		this.load.image('laser', 'assets/effect/02.1_MCBullet.png')
 		this.load.image('charge', 'assets/effect/chargeBlue.png')
 		this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
 		this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
@@ -58,6 +73,27 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
 		this.load.image('explosion', 'assets/effect/explosionYellow.png')
 		this.load.image('chevron', 'assets/icon/chevron-down.svg')
+
+		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
+		this.load.image('sensor_1', 'assets/ui/sensor_1.png')
+		this.load.image('sensor_2', 'assets/ui/sensor_2.png')
+		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
+		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
+		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
+
+		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
+
+		this.load.atlas(
+			'bossMove',
+			'assets/character/enemy/Enemy-Normal-0.png',
+			'assets/character/enemy/Enemy-Normal.json',
+		);
+
+		this.load.atlas(
+			'bossHit',
+			'assets/character/enemy/Enemy_Hit-0.png',
+			'assets/character/enemy/Enemy_Hit.json',
+		);
 
 		this.load.svg('pause', 'assets/icon/pause.svg')
 		this.load.svg('resume', 'assets/icon/resume.svg')
@@ -86,24 +122,27 @@ export default class GameScene extends Phaser.Scene {
 		// https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
 		// XBOX controller B0=A, B1=B, B2=X, B3=Y
 		this.mergedInput
-			?.defineKey(0, 'LEFT', 'LEFT')
-			.defineKey(0, 'RIGHT', 'RIGHT')
-			.defineKey(0, 'B0', 'SPACE') // A
+//			?.defineKey(0, 'LEFT', 'LEFT')
+//			.defineKey(0, 'RIGHT', 'RIGHT')
+			?.defineKey(0, 'B2', 'SPACE') // A
 			//            .defineKey(0, 'B1', 'CTRL')
 			//            .defineKey(0, 'B2', 'ALT')
-			.defineKey(0, 'B12', 'UP')
-			.defineKey(0, 'B13', 'DOWN')
+			.defineKey(0, 'B6', 'ONE')
+			.defineKey(0, 'B3', 'TWO')
+			.defineKey(0, 'B13', 'THREE')
+			.defineKey(0, 'B15', 'FOUR')
 
 		this.player = new Player(this)
-		this.player.addJetEngine()
+		// TODO comment just for testing
+		// this.player.addJetEngine()
 
 		this.player.addChargeParticle()
 
 		// TODO Move to UI
-		this.add
-			.rectangle(0, height, width, HOLD_BAR_HEIGHT + MARGIN * 2, 0x000000)
-			.setOrigin(0, 1)
-			.setAlpha(0.25)
+		//	this.add
+		//		.rectangle(0, height, width, HOLD_BAR_HEIGHT + MARGIN * 2, 0x000000)
+		//		.setOrigin(0, 1)
+		//		.setAlpha(0.25)
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
 		this.gaugeRegistry.createbyDivision(1)
@@ -129,11 +168,33 @@ export default class GameScene extends Phaser.Scene {
 			)
 		}
 
-		this.isCompleteWarmup = false
+		// TODO comment just for testing
+//		this.isCompleteWarmup = false
+		this.isCompleteWarmup = true
 		this.event = new EventEmitter()
+
+		// TODO add to boss class
+		this.bossText = I18nSingleton
+			.getInstance()
+			.createTranslatedText(this, width/2, height/2, 'boss_attack')
+			.setOrigin(0.5 , 1)
+			.setFontSize(LARGE_FONT_SIZE)
+		this.tweens.add({
+			targets: this.bossText,
+			scale: 1.25,
+			duration: 500,
+			yoyo: true,
+			repeat: -1,
+		})
+		this.bossText.setVisible(false)
+
+		this.boss = new Boss(this, this.player, this.score)
 	}
 
-	isCompleteTutorial = () => localStorage.getItem('tutorial') || false
+	// TODO comment just for testing
+	isCompleteTutorial = () => true
+
+//	isCompleteTutorial = () => localStorage.getItem('tutorial') || false
 	isCompleteControlerTutorial = () =>
 		this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
@@ -179,35 +240,46 @@ export default class GameScene extends Phaser.Scene {
 			this.scene.launch('warmup', { event: this.event })
 		}
 
-		if (this.isCompleteTutorial() && this.isCompleteWarmup) {
+		// TODO add to boss class
+		if (this.isCompleteTutorial() && this.isCompleteWarmup && !this.isBossShown && !this.isBossTextShown) {
 			this.meteorFactory.createByTime(this, this.player, this.score, delta)
 		}
 
 		// TODO move to controller class
 		if (!this.controller1) return
 
-		if (this.controller1?.direction.LEFT) {
-			this.player.moveLeft(delta)
-		}
+//		if (this.controller1?.direction.LEFT) {
+//			this.player.moveLeft(delta)
+//		}
+//
+//		if (this.controller1?.direction.RIGHT) {
+//			this.player.moveRight(delta)
+//		}
 
-		if (this.controller1?.direction.RIGHT) {
-			this.player.moveRight(delta)
-		}
+//		if (this.controller1?.buttons.B12 > 0) {
+//			gauge.showUp()
+//		} else {
+//			gauge.hideUp()
+//		}
+//
+//		if (this.controller1?.buttons.B13 > 0) {
+//			gauge.showDown()
+//		} else {
+//			gauge.hideDown()
+//		}
 
-		if (this.controller1?.buttons.B12 > 0) {
-			gauge.showUp()
-		} else {
-			gauge.hideUp()
-		}
-
-		if (this.controller1?.buttons.B13 > 0) {
-			gauge.showDown()
-		} else {
-			gauge.hideDown()
-		}
-
-		if (this.controller1?.buttons.B0 > 0) {
+		if (this.controller1?.buttons.B2 > 0) {
 			gauge.hold(delta)
+		} else if (this.controller1?.buttons.B6 > 0) {
+			gauge.setStep(0)
+		} else if (this.controller1?.buttons.B3 > 0) {
+			gauge.setStep(1)
+		} else if (this.controller1?.buttons.B13 > 0) {
+			gauge.setStep(2)
+		} else if (this.controller1?.buttons.B15 > 0) {
+			gauge.setStep(3)
+		} else {
+			gauge.setVisible(false)
 		}
 
 		if (this.input.pointer1.isDown) {
@@ -221,12 +293,12 @@ export default class GameScene extends Phaser.Scene {
 		}
 
 		// scroll the background
-		this.background.tilePositionY -= 1
+		this.background.tilePositionY += 1.5
 
 		this.singleLaserFactory.createByTime(
 			this,
 			this.player,
-			this.meteorFactory.getMeteors(),
+			[...this.meteorFactory.getMeteors(), this.boss],
 			delta,
 		)
 
@@ -235,9 +307,36 @@ export default class GameScene extends Phaser.Scene {
 			return
 		}
 
+		// TODO move to boss class
+		if(this.isBossTextShown || this.isBossShown) {
+			this.bossText.setVisible(this.isBossTextShown)
+
+			// Boss text finish
+			if(this.isBossTextShown) {
+				setTimeout(() => {
+					if(!this.isBossTextShown) return
+					this.bossText.setVisible(false)
+					this.isBossTextShown = false
+					this.isBossShown = true
+					this.boss.move()
+				}, 5000)
+			}
+
+			// Start shooting Boss
+			if(this.isBossShown){
+				this.singleLaserFactory.reset()
+				setTimeout(() => {
+					if(!this.isBossShown) return
+					this.isBossShown = false
+					this.boss.remove()
+				}, BOSS_TIME_MS)
+			}
+			return
+		}
+
 		if (
 			gauge.getDuratation() > HOLD_DURATION_MS &&
-			this.controller1?.buttons.B0 > 0
+			this.controller1?.buttons.B2 > 0
 		) {
 			this.player.startReload()
 			gauge.setFullCharge()
@@ -245,17 +344,24 @@ export default class GameScene extends Phaser.Scene {
 		} else if (
 			gauge.getDuratation() <= HOLD_DURATION_MS &&
 			gauge.getDuratation() !== 0 &&
-			this.controller1?.buttons.B0 > 0
+			this.controller1?.buttons.B2 > 0
 		) {
 			this.player.charge()
 			gauge.charge(delta)
 		}
 
-		if (this.player.getIsReload() && !(this.controller1?.buttons.B0 > 0)) {
+		if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
 			this.singleLaserFactory.reset()
-			this.player.reloadReset()
-			gauge.reset()
 			this.reloadCount.decrementCount()
+
+			this.isBossTextShown = this.reloadCount.isBossShown()
+
+			if(!this.isBossTextShown) {
+				this.player.reloadReset()
+				gauge.reset()
+			} else {
+				this.player.attack()
+			}
 
 			if (this.reloadCount.isDepleted()) {
 				setTimeout(() => {
@@ -265,7 +371,7 @@ export default class GameScene extends Phaser.Scene {
 			}
 		}
 
-		if (this.player.getIsReloading() && !(this.controller1?.buttons.B0 > 0)) {
+		if (this.player.getIsReloading() && !(this.controller1?.buttons.B2 > 0)) {
 			this.player.reloadResetting()
 			gauge.resetting()
 		}

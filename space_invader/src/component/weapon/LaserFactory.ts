@@ -36,10 +36,10 @@ export abstract class LaserFactory {
 		enemies: Enemy[],
 	) {
 		if (!Array.isArray(enemies) || enemies.length === 0) return
-		enemies.forEach((enermy) => {
+		enemies.forEach((enemy) => {
 			lasers.forEach((laser) => {
-				scene.physics.add.overlap(laser, enermy.getBody(), () =>
-					enermy.destroy(),
+				scene.physics.add.overlap(laser, enemy.getBody(), () =>
+					enemy.hit()
 				)
 			})
 		})

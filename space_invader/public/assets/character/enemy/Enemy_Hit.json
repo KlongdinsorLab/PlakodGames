@@ -1,0 +1,1028 @@
+{
+	"textures": [
+		{
+			"image": "Enemy_Hit-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 3884,
+				"h": 1671
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Enemy Being hit_00009.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 13,
+						"w": 483,
+						"h": 274
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 483,
+						"h": 274
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00010.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 13,
+						"w": 483,
+						"h": 274
+					},
+					"frame": {
+						"x": 486,
+						"y": 1,
+						"w": 483,
+						"h": 274
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00000.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 971,
+						"y": 1,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00007.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 12,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 1457,
+						"y": 1,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00008.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 12,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 1943,
+						"y": 1,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00033.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 13,
+						"w": 482,
+						"h": 275
+					},
+					"frame": {
+						"x": 2429,
+						"y": 1,
+						"w": 482,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00034.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 13,
+						"w": 483,
+						"h": 275
+					},
+					"frame": {
+						"x": 2913,
+						"y": 1,
+						"w": 483,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00001.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 3398,
+						"y": 1,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00002.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1,
+						"y": 277,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00031.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 12,
+						"w": 482,
+						"h": 276
+					},
+					"frame": {
+						"x": 487,
+						"y": 277,
+						"w": 482,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00003.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 971,
+						"y": 278,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00004.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1457,
+						"y": 278,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00005.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1943,
+						"y": 278,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00006.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 2429,
+						"y": 278,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00011.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 12,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 2915,
+						"y": 279,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00012.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 12,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 3400,
+						"y": 279,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00032.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 12,
+						"w": 482,
+						"h": 276
+					},
+					"frame": {
+						"x": 1,
+						"y": 555,
+						"w": 482,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00035.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 12,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 485,
+						"y": 555,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00036.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 12,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 970,
+						"y": 556,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00038.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 11,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 1455,
+						"y": 556,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00039.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 11,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 1940,
+						"y": 556,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00040.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 2425,
+						"y": 556,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00041.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 2911,
+						"y": 557,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00042.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 3397,
+						"y": 557,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00043.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1,
+						"y": 833,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00044.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 487,
+						"y": 834,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00045.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 973,
+						"y": 834,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00046.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1459,
+						"y": 834,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00047.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 11,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1945,
+						"y": 834,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00013.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 11,
+						"w": 483,
+						"h": 277
+					},
+					"frame": {
+						"x": 2431,
+						"y": 835,
+						"w": 483,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00014.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 11,
+						"w": 483,
+						"h": 277
+					},
+					"frame": {
+						"x": 2916,
+						"y": 835,
+						"w": 483,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00015.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 3401,
+						"y": 835,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00016.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1,
+						"y": 1111,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00017.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 485,
+						"y": 1112,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00018.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 969,
+						"y": 1112,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00019.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1453,
+						"y": 1112,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00020.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1937,
+						"y": 1112,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00021.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 2421,
+						"y": 1114,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00022.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 2905,
+						"y": 1114,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00023.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 3389,
+						"y": 1114,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00024.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1,
+						"y": 1390,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00025.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 485,
+						"y": 1391,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00026.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 969,
+						"y": 1391,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00027.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1453,
+						"y": 1391,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00028.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1937,
+						"y": 1391,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00029.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 2421,
+						"y": 1393,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00030.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 11,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 2905,
+						"y": 1393,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Being hit_00037.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 11,
+						"w": 483,
+						"h": 277
+					},
+					"frame": {
+						"x": 3389,
+						"y": 1393,
+						"w": 483,
+						"h": 277
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:d047df220e7d5192c04dfaab4bfe638f:f75d074d0def414d69665ea5f3c6e377:8f0f4426ed9080631c36498d018546d6$"
+	}
+}

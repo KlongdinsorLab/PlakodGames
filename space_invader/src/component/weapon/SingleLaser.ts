@@ -19,6 +19,7 @@ export class SingleLaser extends Laser {
 		const { x, y } = this.player.getLaserLocation()
 		this.laser = this.scene.physics.add.image(x, y, 'laser')
 		this.laser.setVelocityY(-1 * LASER_SPEED)
+		this.laser.setAngularVelocity(LASER_SPEED / Math.floor(Math.random() * 8))
 		new SoundManager(this.scene).play(this.shootSound!)
 		return [this.laser]
 	}

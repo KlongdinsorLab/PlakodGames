@@ -45,8 +45,9 @@ export default class SetupScene extends Phaser.Scene {
 		next.on('pointerup', () => {
 			if (this.step >= this.TOTAL_STEPS) {
 				localStorage.setItem('setup', 'true')
-				this.scene.resume('title')
+//	TODO			this.scene.resume('title')
 				this.scene.stop()
+				this.scene.launch('login')
 				return
 			}
 			previous.setTint(HOLD_BAR_IDLE_COLOR)

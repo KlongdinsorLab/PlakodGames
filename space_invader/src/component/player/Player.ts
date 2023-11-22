@@ -1,14 +1,15 @@
 import {
-	FULLCHARGE_ANIMATION_MS,
-	FULLCHARGE_SCALE,
-	MARGIN,
-	PLAYER_SPEED,
-	PLAYER_START_MARGIN,
+    BULLET_COUNT,
+    FULLCHARGE_ANIMATION_MS,
+    FULLCHARGE_SCALE, LASER_FREQUENCY_MS,
+    MARGIN,
+    PLAYER_SPEED,
+    PLAYER_START_MARGIN
 } from 'config'
 
 export default class Player {
 	private scene: Phaser.Scene
-	private player!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
+	private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
 	private playerHitTweens!: any
 	private isHit = false
 	private isReload = false
@@ -18,11 +19,47 @@ export default class Player {
 	constructor(scene: Phaser.Scene) {
 		this.scene = scene
 		const { width, height } = this.scene.scale
-		this.player = this.scene.physics.add.image(
+//		this.player = this.scene.physics.add.image(
+//			width / 2,
+//			height - PLAYER_START_MARGIN,
+//			'player',
+//		)
+
+		this.player = this.scene.physics.add.sprite(
 			width / 2,
 			height - PLAYER_START_MARGIN,
 			'player',
-		)
+		);
+
+		this.scene.anims.create({
+			key: 'run',
+			frames: this.scene.anims.generateFrameNames('player', {
+				prefix: '01.2A_MC(N)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+			}),
+			frameRate: 24,
+			repeat: -1
+		});
+
+		this.scene.anims.create({
+			key: 'charge',
+			frames: this.scene.anims.generateFrameNames('player', {
+				prefix: '01.2B_MC(I)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+			}),
+			frameRate: 48,
+			repeat: -1
+		});
+
+		this.scene.anims.create({
+			key: 'attack',
+			frames: this.scene.anims.generateFrameNames('player', {
+				prefix: '01.2C_MC(A)_', suffix: '.png', start: 0, end: 23, zeroPad: 5
+			}),
+			frameRate: 24,
+			repeat: -1
+		});
+
+		this.player.play('run')
+
 		this.playerHitTweens = this.scene.tweens.add({
 			targets: this.player,
 			scale: FULLCHARGE_SCALE,
@@ -36,19 +73,17 @@ export default class Player {
 	}
 
 	addJetEngine() {
-		const jetEngine = this.scene.add.particles('fire')
-		const jetEngineEmitter = jetEngine.createEmitter({
+		const jetEngine = this.scene.add.particles(0, 0, 'fire', {
 			gravityY: 200,
 			speed: 100,
 			scale: { start: 1, end: 0 },
 			blendMode: Phaser.BlendModes.ADD,
 		})
-		jetEngineEmitter.startFollow(this.player, 0, MARGIN)
+		jetEngine.startFollow(this.player, 0, MARGIN)
 	}
 
 	addChargeParticle() {
-		const charge = this.scene.add.particles('charge')
-		this.chargeEmitter = charge.createEmitter({
+		this.chargeEmitter = this.scene.add.particles(0, 0, 'charge', {
 			speed: 64,
 			scale: 0.1,
 			blendMode: Phaser.BlendModes.ADD,
@@ -70,19 +105,20 @@ export default class Player {
 	}
 
 	charge(): void {
+		this.player.play('charge', true)
 		this.isReloading = true
 		this.chargeEmitter.active = true
 		this.chargeEmitter.start()
 	}
 
 	damaged(): void {
-		this.playerHitTweens.restart()
-		this.playerHitTweens.play()
+		this.playerHitTweens.resume()
 		this.player.alpha = 0.8
 	}
 
 	recovered(): void {
 		this.player.alpha = 1
+		this.playerHitTweens.restart()
 		this.playerHitTweens.pause()
 	}
 
@@ -113,11 +149,21 @@ export default class Player {
 	}
 
 	reloadReset(): void {
+		this.player.play('attack', true)
 		this.isReload = false
 		this.chargeEmitter.stop()
+		setTimeout(
+			()=> this.player.play('run', true),
+			LASER_FREQUENCY_MS * BULLET_COUNT
+		)
+	}
+
+	attack(): void {
+		this.player.play('attack', true)
 	}
 
 	reloadResetting(): void {
+		this.player.play('run', true)
 		this.isReloading = false
 		this.chargeEmitter.stop()
 	}
