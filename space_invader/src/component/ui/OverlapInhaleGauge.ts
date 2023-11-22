@@ -177,7 +177,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         return this.isHoldbarReducing && this.holdButtonDuration >= 0
     }
 
-    stepColors = [0xFFC824, 0xFF9243,0x7FCF01, 0xFF9243, 0xFF2C34]
+    stepColors = [0xFF2C34, 0xFF9243,0x7FCF01, 0xFF9243, 0xFF2C34]
 
     setStep(step: number): void {
         if(isReloading) {
