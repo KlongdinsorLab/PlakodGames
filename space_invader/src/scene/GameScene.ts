@@ -74,12 +74,16 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('explosion', 'assets/effect/explosionYellow.png')
 		this.load.image('chevron', 'assets/icon/chevron-down.svg')
 
-		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
-		this.load.image('sensor_1', 'assets/ui/sensor_1.png')
-		this.load.image('sensor_2', 'assets/ui/sensor_2.png')
-		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
-		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
-		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
+//		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
+//		this.load.image('sensor_1', 'assets/ui/sensor_1.png')
+//		this.load.image('sensor_2', 'assets/ui/sensor_2.png')
+//		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
+//		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
+//		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
+
+		this.load.image('gauge_highlight', 'assets/ui/gauge-highlight.png')
+		this.load.image('gauge_background', 'assets/ui/gauge-background.png')
+
 
 		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
 
