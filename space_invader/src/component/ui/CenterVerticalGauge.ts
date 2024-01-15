@@ -5,7 +5,6 @@ import {
 	//    HOLD_BAR_CHARGING_COLOR,
 	HOLD_BAR_COLOR,
 	HOLD_BAR_EMPTY_COLOR,
-	HOLD_BAR_IDLE_COLOR,
     HOLD_DURATION_MS,
     HOLDBAR_REDUCING_RATIO,
     LASER_FREQUENCY_MS,
@@ -16,7 +15,6 @@ import {
 import InhaleGauge from './InhaleGauge'
 import SoundManager from 'component/sound/SoundManager'
 
-let progressBar: Phaser.GameObjects.Image
 let extraGauge: Phaser.GameObjects.Image
 export default class CenterVerticalGauge extends InhaleGauge {
     //    private shake: Phaser.Tweens.Tween
@@ -50,7 +48,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
 			.setOrigin(0.5, 0.5) 
         //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
 
-        progressBar = this.scene.add
+        this.scene.add
             .image(width/2, height/2 - CIRCLE_GAUGE_MARGIN, 'gauge_background')
             .setOrigin(0.5, 0.5)
 
