@@ -4,7 +4,8 @@
 //import BarInhaleGauge from './BarInhaleGauge'
 //import StackInhaleGauge from './StackInhaleGauge'
 //import OverlapInhaleGauge from './OverlapInhaleGauge'
-import CenterVerticalGauge from './CenterVerticalGauge'
+//import CenterVerticalGauge from './CenterVerticalGauge'
+import RightVerticalGauge from './RightVerticalGauge'
 
 import InhaleGauge from './InhaleGauge'
 export default class InhaleGaugeRegistry {
@@ -17,7 +18,7 @@ export default class InhaleGaugeRegistry {
 
 	createbyDivision(division: number) {
 		this.holdbars = [...Array(division)].map(
-			(_, index: number) => new CenterVerticalGauge(this.scene, division, index),
+			(_, index: number) => new RightVerticalGauge(this.scene, division, index),
 		)
 	}
 
