@@ -87,6 +87,7 @@ export default class CenterVerticalGauge extends InhaleGauge {
         //        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR);
         (<Phaser.GameObjects.Arc>this.gauge).radius +=
 			this.getHoldWithIncrement(delta)
+        extraGauge.setVisible(false)
         this.soundManager.play(this.chargingSound!)
     }
 
