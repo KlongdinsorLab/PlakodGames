@@ -167,7 +167,6 @@ export default class RightVerticalGauge extends InhaleGauge {
                 this.holdButtonDuration = 0
                 isReloading = false
                 this.isHoldbarReducing = false
-                console.log('here')
             },
             LASER_FREQUENCY_MS * BULLET_COUNT,
         )
