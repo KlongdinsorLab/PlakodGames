@@ -1,0 +1,13 @@
+<label class="label mb-1" for="phone">
+    <span class="label-text text-white" id="label">Phone number</span>
+</label>
+<form class="flex flex-col items-center" id="submit-form">
+    <div class="join">
+        <button class="btn btn-ghost text-white join-item">+66</button>
+        <input class="input input-ghost text-white join-item w-full max-w-xs" placeholder="0812345678" id="phone"
+               type="tel"
+               pattern="[0-9]{10}"
+               required/>
+    </div>
+    <button class="btn btn-outline btn-wide mt-16" data-theme="dark" id="button">Login</button>
+</form>

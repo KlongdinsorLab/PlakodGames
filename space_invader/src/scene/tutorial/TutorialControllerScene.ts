@@ -25,14 +25,8 @@ export default class TutorialControllerScene extends Phaser.Scene {
 
 		const i18n = I18nSingleton.getInstance()
 		const controlInstruction = i18n
-			.createTranslatedText(
-				this,
-				width / 2,
-				3 * MARGIN,
-				'tutorial_controller',
-				undefined,
-				{ fontSize: LARGE_FONT_SIZE },
-			)
+			.createTranslatedText(this, width / 2, 3 * MARGIN, 'tutorial_controller')
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0.5, 0)
 
 		const line = new Phaser.Geom.Line(
@@ -91,16 +85,19 @@ export default class TutorialControllerScene extends Phaser.Scene {
 			duration: 500,
 			ease: 'sine.inout',
 			yoyo: true,
-			onComplete: () => {
+			loop: -1,
+			onLoop: () => {
+				fingerAnimation.pause()
 				const moveToX =
 					finger.x === width / 4 ? width / 2 + width / 4 : width / 4
 				this.tweens.add({
 					targets: finger,
 					x: moveToX,
 					duration: 1000,
+					loopDelay: 500,
 					ease: 'sine.inout',
 					onComplete: () => {
-						fingerAnimation.play()
+						fingerAnimation.resume()
 					},
 				})
 			},
