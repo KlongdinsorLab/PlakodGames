@@ -1,0 +1,1028 @@
+{
+	"textures": [
+		{
+			"image": "Enemy-Normal-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1943,
+				"h": 3333
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Enemy Normal_00040.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00041.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 276
+					},
+					"frame": {
+						"x": 1,
+						"y": 279,
+						"w": 484,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00000.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 487,
+						"y": 1,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00001.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 1,
+						"y": 557,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00002.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 487,
+						"y": 278,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00003.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 973,
+						"y": 1,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00013.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 10,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 1459,
+						"y": 1,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00004.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 973,
+						"y": 278,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00014.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 10,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 1459,
+						"y": 279,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00005.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 1,
+						"y": 834,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00006.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 487,
+						"y": 555,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00007.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 11,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 973,
+						"y": 555,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00037.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 10,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 1459,
+						"y": 557,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00008.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 11,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 1,
+						"y": 1111,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00042.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 487,
+						"y": 832,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00043.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 973,
+						"y": 832,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00038.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 10,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 1459,
+						"y": 835,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00044.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 1,
+						"y": 1388,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00045.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 487,
+						"y": 1109,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00046.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 973,
+						"y": 1109,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00039.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 10,
+						"w": 483,
+						"h": 276
+					},
+					"frame": {
+						"x": 1459,
+						"y": 1113,
+						"w": 483,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00047.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 10,
+						"w": 484,
+						"h": 275
+					},
+					"frame": {
+						"x": 1,
+						"y": 1665,
+						"w": 484,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00016.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 487,
+						"y": 1386,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00017.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1,
+						"y": 1942,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00018.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 971,
+						"y": 1386,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00019.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1,
+						"y": 2221,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00020.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1,
+						"y": 2500,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00021.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1,
+						"y": 2779,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00009.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 12,
+						"w": 483,
+						"h": 274
+					},
+					"frame": {
+						"x": 1,
+						"y": 3058,
+						"w": 483,
+						"h": 274
+					}
+				},
+				{
+					"filename": "Enemy Normal_00011.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 11,
+						"w": 483,
+						"h": 275
+					},
+					"frame": {
+						"x": 487,
+						"y": 1665,
+						"w": 483,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00022.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 485,
+						"y": 1942,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00023.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 485,
+						"y": 2221,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00024.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 485,
+						"y": 2500,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00025.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 485,
+						"y": 2779,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00010.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 12,
+						"w": 483,
+						"h": 274
+					},
+					"frame": {
+						"x": 486,
+						"y": 3058,
+						"w": 483,
+						"h": 274
+					}
+				},
+				{
+					"filename": "Enemy Normal_00012.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 11,
+						"w": 483,
+						"h": 275
+					},
+					"frame": {
+						"x": 972,
+						"y": 1665,
+						"w": 483,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00026.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 969,
+						"y": 1942,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00027.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 969,
+						"y": 2221,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00028.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 969,
+						"y": 2500,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00029.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 969,
+						"y": 2779,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00034.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 12,
+						"w": 483,
+						"h": 274
+					},
+					"frame": {
+						"x": 971,
+						"y": 3058,
+						"w": 483,
+						"h": 274
+					}
+				},
+				{
+					"filename": "Enemy Normal_00030.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 277
+					},
+					"frame": {
+						"x": 1457,
+						"y": 1391,
+						"w": 482,
+						"h": 277
+					}
+				},
+				{
+					"filename": "Enemy Normal_00033.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 12,
+						"w": 482,
+						"h": 274
+					},
+					"frame": {
+						"x": 1457,
+						"y": 1670,
+						"w": 482,
+						"h": 274
+					}
+				},
+				{
+					"filename": "Enemy Normal_00035.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 11,
+						"w": 483,
+						"h": 275
+					},
+					"frame": {
+						"x": 1453,
+						"y": 1946,
+						"w": 483,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00036.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 11,
+						"w": 483,
+						"h": 275
+					},
+					"frame": {
+						"x": 1453,
+						"y": 2223,
+						"w": 483,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Enemy Normal_00015.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 10,
+						"w": 482,
+						"h": 276
+					},
+					"frame": {
+						"x": 1453,
+						"y": 2500,
+						"w": 482,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00031.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 11,
+						"w": 482,
+						"h": 276
+					},
+					"frame": {
+						"x": 1453,
+						"y": 2778,
+						"w": 482,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Enemy Normal_00032.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 520,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 11,
+						"w": 482,
+						"h": 276
+					},
+					"frame": {
+						"x": 1456,
+						"y": 3056,
+						"w": 482,
+						"h": 276
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:b00567093678348ddb1bebf566b2ed02:645cf9391a982fac9269d1fee2052ced:81de591e9f33444c6b4a8c0fee99601a$"
+	}
+}

@@ -9,8 +9,8 @@ import {
 	METEOR_SPEED,
 	METEOR_SPIN_SPEED,
 	PLAYER_HIT_DELAY_MS,
-} from '../../config'
-import SoundManager from '../sound/SoundManager'
+} from 'config'
+import SoundManager from 'component/sound/SoundManager'
 
 export class Meteor extends Enemy {
 	private soundManager: SoundManager
@@ -26,8 +26,7 @@ export class Meteor extends Enemy {
 		this.move()
 		this.attack()
 		this.soundManager = new SoundManager(scene)
-		const explosion = scene.add.particles('explosion')
-		this.explosionEmitter = explosion.createEmitter({
+		this.explosionEmitter = scene.add.particles(0, 0, 'explosion', {
 			speed: 80,
 			scale: 0.6,
 			blendMode: Phaser.BlendModes.ADD,
@@ -94,6 +93,10 @@ export class Meteor extends Enemy {
 		//        this.scene.time.delayedCall(5000, () => {
 		//            this.enemy.destroy()
 		//        })
+	}
+
+	hit(): void {
+		this.destroy()
 	}
 
 	destroy(): void {

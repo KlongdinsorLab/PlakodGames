@@ -64,9 +64,8 @@ export default class TutorialHudScene extends Phaser.Scene {
 				scoreHighlight.x - scoreHighlight.width / 2,
 				score.y + scoreHighlight.height,
 				'tutorial_score_title',
-				undefined,
-				{ fontSize: MEDIUM_FONT_SIZE },
 			)
+			.setFontSize(MEDIUM_FONT_SIZE)
 			.setOrigin(0, 0)
 
 		// reload
