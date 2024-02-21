@@ -50,19 +50,22 @@ export default class GameScene extends Phaser.Scene {
 
 	private event!: EventEmitter
 
+	private gameLayer: Phaser.GameObjects.Layer
+
 	constructor() {
 		super({ key: 'game' })
 	}
 
 	preload() {
 		this.load.image('background', 'assets/background/background.jpg')
-//		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
 
 		this.load.atlas(
 			'player',
-			'assets/character/player/MC_CompactSpriteSheet.png',
-			'assets/character/player/MC_CompactSpriteSheet.json',
+			'assets/character/player/mc_spritesheet.png',
+			'assets/character/player/mc_spritesheet.json',
 		);
+
+		this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
 
 		this.load.image('fire', 'assets/effect/fire03.png')
 		this.load.image('laser', 'assets/effect/02.1_MCBullet.png')
@@ -108,6 +111,7 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	create() {
+
 		const { width, height } = this.scale
 		// const queryString = window.location.search;
 		// const urlParams = new URLSearchParams(queryString);
@@ -132,7 +136,8 @@ export default class GameScene extends Phaser.Scene {
 			.defineKey(0, 'B13', 'THREE')
 			.defineKey(0, 'B15', 'FOUR')
 
-		this.player = new Player(this)
+		this.gameLayer = this.add.layer();
+		this.player = new Player(this, this.gameLayer)
 		// TODO comment just for testing
 		// this.player.addJetEngine()
 
@@ -166,11 +171,10 @@ export default class GameScene extends Phaser.Scene {
 				this.score,
 				true,
 			)
+			this.gameLayer.add(this.tutorialMeteor.getBody())
 		}
 
-		// TODO comment just for testing
-//		this.isCompleteWarmup = false
-		this.isCompleteWarmup = true
+		this.isCompleteWarmup = false
 		this.event = new EventEmitter()
 
 		// TODO add to boss class
@@ -191,10 +195,7 @@ export default class GameScene extends Phaser.Scene {
 		this.boss = new Boss(this, this.player, this.score)
 	}
 
-	// TODO comment just for testing
-	isCompleteTutorial = () => true
-
-//	isCompleteTutorial = () => localStorage.getItem('tutorial') || false
+	isCompleteTutorial = () => localStorage.getItem('tutorial') || false
 	isCompleteControlerTutorial = () =>
 		this.tutorial.getStep() > Step.CONTROLLER || this.isCompleteTutorial()
 
@@ -222,6 +223,7 @@ export default class GameScene extends Phaser.Scene {
 			this.tutorial.launchTutorial(Step.CHARACTER, delta, {
 				meteor: this.tutorialMeteor,
 				player: this.player,
+				gameLayer: this.gameLayer,
 			})
 
 			this.tutorial.launchTutorial(Step.HUD, delta, {
@@ -268,12 +270,13 @@ export default class GameScene extends Phaser.Scene {
 //			gauge.hideDown()
 //		}
 
+		// Must be in this order if B3 press with B6, B3
 		if (this.controller1?.buttons.B2 > 0) {
 			gauge.hold(delta)
-		} else if (this.controller1?.buttons.B6 > 0) {
-			gauge.setStep(0)
 		} else if (this.controller1?.buttons.B3 > 0) {
 			gauge.setStep(1)
+		} else if (this.controller1?.buttons.B6 > 0) {
+			gauge.setStep(0)
 		} else if (this.controller1?.buttons.B13 > 0) {
 			gauge.setStep(2)
 		} else if (this.controller1?.buttons.B15 > 0) {

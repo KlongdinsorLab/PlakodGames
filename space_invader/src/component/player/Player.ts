@@ -16,7 +16,7 @@ export default class Player {
 	private isReloading = false
 	private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
 
-	constructor(scene: Phaser.Scene) {
+	constructor(scene: Phaser.Scene, gameLayer:Phaser.GameObjects.Layer) {
 		this.scene = scene
 		const { width, height } = this.scene.scale
 //		this.player = this.scene.physics.add.image(
@@ -31,10 +31,38 @@ export default class Player {
 			'player',
 		);
 
+		gameLayer.add(this.player)
+
+//		this.scene.anims.create({
+//			key: 'run',
+//			frames: this.scene.anims.generateFrameNames('player', {
+//				prefix: '01.2A_MC(N)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+//			}),
+//			frameRate: 24,
+//			repeat: -1
+//		});
+//
+//		this.scene.anims.create({
+//			key: 'charge',
+//			frames: this.scene.anims.generateFrameNames('player', {
+//				prefix: '01.2B_MC(I)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+//			}),
+//			frameRate: 48,
+//			repeat: -1
+//		});
+//
+//		this.scene.anims.create({
+//			key: 'attack',
+//			frames: this.scene.anims.generateFrameNames('player', {
+//				prefix: '01.2C_MC(A)_', suffix: '.png', start: 0, end: 23, zeroPad: 5
+//			}),
+//			frameRate: 24,
+//			repeat: -1
+//		});
 		this.scene.anims.create({
 			key: 'run',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: '01.2A_MC(N)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+				prefix: 'mc_normal_', suffix: '.png', start: 0, end: 19, zeroPad: 5
 			}),
 			frameRate: 24,
 			repeat: -1
@@ -43,20 +71,21 @@ export default class Player {
 		this.scene.anims.create({
 			key: 'charge',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: '01.2B_MC(I)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+				prefix: 'mc_inhale_', suffix: '.png', start: 0, end: 22, zeroPad: 5
 			}),
-			frameRate: 48,
+			frameRate: 24,
 			repeat: -1
 		});
 
 		this.scene.anims.create({
 			key: 'attack',
 			frames: this.scene.anims.generateFrameNames('player', {
-				prefix: '01.2C_MC(A)_', suffix: '.png', start: 0, end: 23, zeroPad: 5
+				prefix: 'mc_attack_', suffix: '.png', start: 0, end: 19, zeroPad: 5
 			}),
 			frameRate: 24,
 			repeat: -1
 		});
+
 
 		this.player.play('run')
 

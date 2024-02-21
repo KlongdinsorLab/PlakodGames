@@ -14,19 +14,22 @@ import SoundManager from 'component/sound/SoundManager'
 export type Character = {
 	meteor: Meteor
 	player: Player
+	gameLayer: Phaser.GameObjects.Layer
 }
 
 export default class TutorialCharacterScene extends Phaser.Scene {
 	private meteor!: Meteor
 	private player!: Player
+	private gameLayer!: Phaser.GameObjects.Layer
 
 	constructor() {
 		super('tutorial character')
 	}
 
-	init({ meteor, player }: Character) {
+	init({ meteor, player, gameLayer }: Character) {
 		this.meteor = meteor
 		this.player = player
+		this.gameLayer = gameLayer
 	}
 
 	create() {
@@ -36,19 +39,22 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 
 		const { width, height } = this.scale
 		this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
+		const tutorialLayer = this.add.layer();
 
 		const i18n = I18nSingleton.getInstance()
 
 		const meteor = this.meteor.getBody()
-		const meterHighlight = this.add
-			.rectangle(
-				meteor.x,
-				meteor.y,
-				meteor.width + MARGIN / 2,
-				meteor.height + MARGIN,
-			)
-			.setOrigin(0.5, 0.5)
-		meterHighlight.setStrokeStyle(4, 0xffffff)
+		tutorialLayer.add(meteor)
+
+//		const meterHighlight = this.add
+//			.rectangle(
+//				meteor.x,
+//				meteor.y,
+//				meteor.width + MARGIN / 2,
+//				meteor.height + MARGIN,
+//			)
+//			.setOrigin(0.5, 0.5)
+//		meterHighlight.setStrokeStyle(4, 0xffffff)
 		i18n
 			.createTranslatedText(
 				this,
@@ -70,15 +76,17 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 			.setOrigin(0, 0)
 
 		const player = this.player.getBody()
-		const playerHighlight = this.add
-			.rectangle(
-				player.x,
-				player.y,
-				player.width + MARGIN / 2,
-				player.height + MARGIN,
-			)
-			.setOrigin(0.5, 0.5)
-		playerHighlight.setStrokeStyle(4, 0xffffff)
+		tutorialLayer.add(player)
+
+//		const playerHighlight = this.add
+//			.rectangle(
+//				player.x,
+//				player.y,
+//				player.width + MARGIN / 2,
+//				player.height + MARGIN,
+//			)
+//			.setOrigin(0.5, 0.5)
+//		playerHighlight.setStrokeStyle(4, 0xffffff)
 		i18n
 			.createTranslatedText(
 				this,
@@ -105,6 +113,8 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 		this.input.once(
 			'pointerdown',
 			() => {
+				this.gameLayer.add(player)
+				this.gameLayer.add(meteor)
 				this.scene.resume('game')
 				isMute ? soundManager.mute() : soundManager.unmute()
 				i18n.removeAllListeners(this)
