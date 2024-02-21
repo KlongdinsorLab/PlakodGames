@@ -272,12 +272,13 @@ export default class GameScene extends Phaser.Scene {
 //			gauge.hideDown()
 //		}
 
+		// Must be in this order if B3 press with B6, B3 shows up
 		if (this.controller1?.buttons.B2 > 0) {
 			gauge.hold(delta)
-		} else if (this.controller1?.buttons.B6 > 0) {
-			gauge.setStep(0)
 		} else if (this.controller1?.buttons.B3 > 0) {
 			gauge.setStep(1)
+		} else if (this.controller1?.buttons.B6 > 0) {
+			gauge.setStep(0)
 		} else if (this.controller1?.buttons.B13 > 0) {
 			gauge.setStep(2)
 		} else if (this.controller1?.buttons.B15 > 0) {
