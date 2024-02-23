@@ -46,3 +46,5 @@ export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
 export const DARK_BROWN = 0x57453B
+export const DARK_PURPLE = 0x583E7C
+export const DARK_ORANGE = 0xD35E24

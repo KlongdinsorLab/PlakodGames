@@ -200,13 +200,11 @@ export default class GameScene extends Phaser.Scene {
         families: ['Jua']
       },
       active: function() {
-        self.score.getBody().setStyle({
+        const menuUiStyle = {
           fontFamily: 'Jua', color: `#${DARK_BROWN.toString(16)}`
-        })
-
-        self.reloadCount.getBody().setStyle({
-          fontFamily: 'Jua', color: `#${DARK_BROWN.toString(16)}`
-        })
+        }
+        self.score.getBody().setStyle(menuUiStyle)
+        self.reloadCount.getBody().setStyle(menuUiStyle)
       }
     });
   }
