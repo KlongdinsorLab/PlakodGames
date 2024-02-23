@@ -24,8 +24,10 @@
 		"vite-tsconfig-paths": "^4.2.1"
 	},
 	"dependencies": {
+		"@types/webfontloader": "^1.6.38",
 		"i18next": "^23.5.1",
 		"phaser": "^3.60.0",
-		"phaser3-merged-input": "^1.6.1"
+		"phaser3-merged-input": "^1.6.1",
+		"webfontloader": "^1.6.28"
 	}
 }

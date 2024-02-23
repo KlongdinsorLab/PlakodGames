@@ -2,7 +2,7 @@
 
 {
 	"filename": "arrow.png",
-	"frame": {"x":0,"y":585,"w":117,"h":379},
+	"frame": {"x":253,"y":572,"w":117,"h":379},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":117,"h":379},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "bullet bar.png",
-	"frame": {"x":0,"y":964,"w":420,"h":93},
+	"frame": {"x":0,"y":89,"w":420,"h":93},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":420,"h":93},
@@ -18,79 +18,63 @@
 },
 {
 	"filename": "drag.png",
-	"frame": {"x":117,"y":585,"w":253,"h":253},
+	"frame": {"x":0,"y":572,"w":253,"h":253},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":253,"h":253},
 	"sourceSize": {"w":253,"h":253}
 },
 {
-	"filename": "fireball.png",
-	"frame": {"x":324,"y":276,"w":159,"h":309},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":159,"h":309},
-	"sourceSize": {"w":159,"h":309}
-},
-{
 	"filename": "lap.png",
-	"frame": {"x":223,"y":0,"w":208,"h":77},
+	"frame": {"x":0,"y":0,"w":99,"h":89},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":208,"h":77},
-	"sourceSize": {"w":208,"h":77}
+	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":89},
+	"sourceSize": {"w":99,"h":89}
 },
 {
-	"filename": "orange middle bubble.png",
-	"frame": {"x":0,"y":1316,"w":491,"h":147},
+	"filename": "orange bubble.png",
+	"frame": {"x":0,"y":402,"w":157,"h":136},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":491,"h":147},
-	"sourceSize": {"w":491,"h":147}
-},
-{
-	"filename": "orange side bubble.png",
-	"frame": {"x":0,"y":1170,"w":491,"h":146},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":491,"h":146},
-	"sourceSize": {"w":491,"h":146}
+	"spriteSourceSize": {"x":0,"y":0,"w":157,"h":136},
+	"sourceSize": {"w":157,"h":136}
 },
 {
 	"filename": "pause.png",
-	"frame": {"x":0,"y":0,"w":68,"h":68},
+	"frame": {"x":99,"y":0,"w":89,"h":89},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
-	"sourceSize": {"w":68,"h":68}
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":89},
+	"sourceSize": {"w":89,"h":89}
 },
 {
-	"filename": "player.png",
-	"frame": {"x":0,"y":276,"w":176,"h":176},
+	"filename": "play.png",
+	"frame": {"x":188,"y":0,"w":89,"h":89},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":176},
-	"sourceSize": {"w":176,"h":176}
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":89},
+	"sourceSize": {"w":89,"h":89}
 },
 {
 	"filename": "purple bubble.png",
-	"frame": {"x":68,"y":0,"w":155,"h":106},
+	"frame": {"x":0,"y":182,"w":157,"h":107},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":155,"h":106},
-	"sourceSize": {"w":155,"h":106}
+	"spriteSourceSize": {"x":0,"y":0,"w":157,"h":107},
+	"sourceSize": {"w":157,"h":107}
 },
 {
 	"filename": "score.png",
-	"frame": {"x":0,"y":106,"w":242,"h":97},
+	"frame": {"x":277,"y":0,"w":99,"h":89},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":242,"h":97},
-	"sourceSize": {"w":242,"h":97}
+	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":89},
+	"sourceSize": {"w":99,"h":89}
 },
 {
 	"filename": "sensor bar.png",
-	"frame": {"x":0,"y":1057,"w":419,"h":113},
+	"frame": {"x":0,"y":289,"w":419,"h":113},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":419,"h":113},
@@ -98,15 +82,15 @@
 },
 {
 	"filename": "side purple bubble.png",
-	"frame": {"x":176,"y":276,"w":148,"h":225},
+	"frame": {"x":157,"y":402,"w":136,"h":157},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":225},
-	"sourceSize": {"w":148,"h":225}
+	"spriteSourceSize": {"x":0,"y":0,"w":136,"h":157},
+	"sourceSize": {"w":136,"h":157}
 },
 {
 	"filename": "touch.png",
-	"frame": {"x":242,"y":106,"w":170,"h":170},
+	"frame": {"x":293,"y":402,"w":170,"h":170},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":170},
@@ -117,8 +101,8 @@
 	"version": "1.0",
 	"image": "asset_warmup.png",
 	"format": "RGBA8888",
-	"size": {"w":491,"h":1463},
+	"size": {"w":463,"h":951},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:24a9d1081aec7e1e4cea777a5074293c:865d7d1d2df4da7cfaf0ec50a6164566:08603f16a074971dda508ad9148526fe$"
+	"smartupdate": "$TexturePacker:SmartUpdate:8790de9cfa16ea43a441d4e0e3ac2968:dd83621cad54fb2c062ce24c128c727b:08603f16a074971dda508ad9148526fe$"
 }
 }
