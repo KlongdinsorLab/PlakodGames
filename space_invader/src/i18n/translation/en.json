@@ -10,6 +10,7 @@
   "inhale": "Inhale",
   "inhale-": "Harder !",
   "inhale+": "Relax !",
+  "exhale": "Exhale",
   "my_score": "My Score",
   "high_score": "High Score",
   "login_title": "Login",
@@ -45,9 +46,9 @@
   "tutorial_gauge_description": "Player breathe in using Cliniflo to charge the laser",
   "tutorial_controller": "Touch the screen to move",
   "tutorial_continue": "Touch the screen to continue",
-  "warmup_exhale": "Exhale...",
-  "warmup_release": "Hold the tube with your mouth",
-  "warmup_inhale": "Deeply inhale until the tube expands",
+  "warmup_hold": "Hold the straw",
+  "warmup_exhale": "Exhale!",
+  "warmup_inhale": "Inhale",
   "warmup_continue": "Touch to continue",
   "boss_attack": "Boss Attack!"
 }

@@ -18,6 +18,8 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+
     this.load.image('titleBackground', 'assets/background/title-background.jpg')
     this.load.image('logo', 'assets/logo/logo_1-01.png')
     //		this.load.image('player', 'assets/character/player/playerShip1_blue.png')

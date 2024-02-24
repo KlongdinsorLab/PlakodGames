@@ -10,6 +10,7 @@
   "inhale": "ดูด",
   "inhale-": "ดูดแรงขึ้น !",
   "inhale+": "ผ่อนลมหายใจ !",
+  "exhale": "เป่า",
   "my_score": "คะแนน",
   "high_score": "คะแนนสูงสุด",
   "login_title": "เข้าสู่ระบบ",
@@ -45,9 +46,9 @@
   "tutorial_gauge_description": "ดูดเครื่องบริหารปอดค้างไว้ เพื่อชาร์จกระสุน",
   "tutorial_controller": "กดค้างเพื่อ\nควบคุมทิศทาง",
   "tutorial_continue": "แตะหน้าจอเพื่อไปต่อ",
-  "warmup_exhale": "หายใจออก...",
-  "warmup_release": "อมปลายท่อให้สนิทและคาบไว้",
-  "warmup_inhale": "สูดหายใจเข้าลึกๆ จนกว่าวงกลมด้านล่าง จะขยายเต็มหลอด",
+  "warmup_hold": "คาบท่อไว้",
+  "warmup_exhale": "เป่าลมออกจากปาก ให้หมด",
+  "warmup_inhale": "ดูด",
   "warmup_continue": "แตะจอเพื่อไปต่อ",
   "boss_attack": "บอสโจมตี!"
 }

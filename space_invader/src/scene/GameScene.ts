@@ -359,7 +359,7 @@ export default class GameScene extends Phaser.Scene {
     ) {
       this.player.startReload()
       gauge.setFullCharge()
-      this.event.emit('inhale')
+      this.event.emit('fullInhale')
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&
@@ -367,6 +367,7 @@ export default class GameScene extends Phaser.Scene {
     ) {
       this.player.charge()
       gauge.charge(delta)
+      this.event.emit('inhale')
     }
 
     if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
