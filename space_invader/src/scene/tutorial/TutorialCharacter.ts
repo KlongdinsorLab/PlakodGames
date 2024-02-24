@@ -169,7 +169,6 @@ export default class TutorialCharacterScene extends Phaser.Scene {
       }
     });
 
-
     const self = this
     setTimeout(() => {
       pressAnim.play()

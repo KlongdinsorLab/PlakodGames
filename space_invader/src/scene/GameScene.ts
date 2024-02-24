@@ -247,7 +247,9 @@ export default class GameScene extends Phaser.Scene {
         reloadCount: this.reloadCount,
       })
 
-      this.tutorial.launchTutorial(Step.CONTROLLER, delta)
+      this.tutorial.launchTutorial(Step.CONTROLLER, delta, {
+        player: this.player,
+      })
     }
 
     if (!this.isCompleteWarmup && this.isCompleteTutorial()) {

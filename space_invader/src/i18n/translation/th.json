@@ -43,7 +43,7 @@
   "tutorial_menu_title": "หยุด",
   "tutorial_gauge_title": "หลอดชาร์จกระสุน",
   "tutorial_gauge_description": "ดูดเครื่องบริหารปอดค้างไว้ เพื่อชาร์จกระสุน",
-  "tutorial_controller": "กดค้างเพื่อควบคุมทิศทางการเคลื่อนที่",
+  "tutorial_controller": "กดค้างเพื่อ\nควบคุมทิศทาง",
   "tutorial_continue": "แตะหน้าจอเพื่อไปต่อ",
   "warmup_exhale": "หายใจออก...",
   "warmup_release": "อมปลายท่อให้สนิทและคาบไว้",

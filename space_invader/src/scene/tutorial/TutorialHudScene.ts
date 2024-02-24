@@ -167,19 +167,14 @@ export default class TutorialHudScene extends Phaser.Scene {
       repeat: -1,
     })
 
-    const exhale = this.physics.add.sprite(
+    this.physics.add.sprite(
       gaugeBox.x - 2 * MARGIN,
       gaugeBox.y - gaugeBox.height + 2 * MARGIN,
       'inhale',
     )
       .setScale(0.4)
       .setOrigin(1, 1)
-
-    exhale.play('inhale-animation')
-    // const exhaleSprite = this.add.sprite(200, 300, 'inhale')
-    // exhaleSprite.setScale(0.5)
-    // exhaleSprite.play('inhale-animation')
-    // exhaleSprite.setDepth(1)
+      .play('inhale-animation')
 
     const continueText = i18n
       .createTranslatedText(this, width / 2, height / 2, 'tutorial_continue')
@@ -253,15 +248,4 @@ export default class TutorialHudScene extends Phaser.Scene {
     }, 2000)
   }
 
-  // 		this.input.once(
-  // 			'pointerdown',
-  // 			() => {
-  // 				this.scene.resume('game')
-  // 				isMute ? soundManager.mute() : soundManager.unmute()
-  // 				i18n.removeAllListeners(this)
-  // 				this.scene.stop()
-  // 			},
-  // 			this,
-  // 		)
-  // 	}
 }
