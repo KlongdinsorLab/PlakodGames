@@ -49,8 +49,7 @@ export default class GameScene extends Phaser.Scene {
   private isBossShown!: boolean
 
   private event!: EventEmitter
-
-  private gameLayer: Phaser.GameObjects.Layer
+  private gameLayer!: Phaser.GameObjects.Layer
 
   constructor() {
     super({ key: 'game' })
