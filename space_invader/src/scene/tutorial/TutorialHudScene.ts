@@ -1,18 +1,18 @@
-import Phaser from 'phaser'
-import Score from 'component/ui/Score'
+import SoundManager from 'component/sound/SoundManager'
 import InhaleGauge from 'component/ui/InhaleGauge'
-import ReloadCount from 'component/ui/ReloadCount'
-import I18nSingleton from 'i18n/I18nSingleton'
 import Menu from 'component/ui/Menu'
+import ReloadCount from 'component/ui/ReloadCount'
+import Score from 'component/ui/Score'
 import {
-  CIRCLE_GAUGE_RADUIS,
-  HOLD_BAR_HEIGHT,
+  DARK_ORANGE,
+  DARK_PURPLE,
   LARGE_FONT_SIZE,
   MARGIN,
   MEDIUM_FONT_SIZE,
-  TUTORIAL_DELAY_MS,
+  TUTORIAL_DELAY_MS
 } from 'config'
-import SoundManager from 'component/sound/SoundManager'
+import I18nSingleton from 'i18n/I18nSingleton'
+import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
 export type Hud = {
@@ -30,6 +30,11 @@ export default class TutorialHudScene extends Phaser.Scene {
 
   constructor() {
     super('tutorial HUD')
+  }
+
+  preload() {
+    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+    this.load.atlas('warmup', 'assets/sprites/warmup/warmup_all.png', 'assets/sprites/warmup/warmup_all.json');
   }
 
   init({ score, gauge, menu, reloadCount }: Hud) {
@@ -56,14 +61,21 @@ export default class TutorialHudScene extends Phaser.Scene {
       layer => scoreLayer.add(layer)
     )
 
-    i18n
+    const scoreBackground = this.add.image(
+      score.x,
+      score.y + score.height + MARGIN / 2,
+      'ui',
+      'purple bubble.png'
+    ).setOrigin(0.5, 0)
+    const scoreTutorial = i18n
       .createTranslatedText(
         this,
-        score.x - score.width / 2,
-        score.y + score.height,
+        scoreBackground.x - MARGIN - 16,
+        scoreBackground.y + MARGIN - 8,
         'tutorial_score_title',
       )
       .setFontSize(MEDIUM_FONT_SIZE)
+      .setColor(`#${DARK_PURPLE.toString(16)}`)
       .setOrigin(0, 0)
 
     // reload
@@ -73,70 +85,101 @@ export default class TutorialHudScene extends Phaser.Scene {
       layer => reloadLayer.add(layer)
     )
 
-    i18n
+    const reloadBackground = this.add.image(
+      reloadCount.x,
+      reloadCount.y + score.height + MARGIN / 2,
+      'ui',
+      'purple bubble.png'
+    ).setOrigin(1, 0)
+    const reloadTutorial = i18n
       .createTranslatedText(
         this,
-        reloadCount.x - reloadCount.width / 2,
-        score.y + score.height,
+        reloadBackground.x - MARGIN / 2,
+        reloadBackground.y + MARGIN - 8,
         'tutorial_reload_title',
         undefined,
         {
           wordWrap: { width: reloadCount.width },
-          fontSize: MEDIUM_FONT_SIZE,
         },
       )
-      .setOrigin(0, 0)
+      .setFontSize(MEDIUM_FONT_SIZE)
+      .setColor(`#${DARK_PURPLE.toString(16)}`)
+      .setOrigin(1, 0)
 
     // menu
     const menu = this.menu.getBody()
     const tutorialLayer = this.add.layer();
     tutorialLayer.add(menu)
 
-    i18n
+    const menuBackground = this.add.image(menu.x, score.y + score.height + MARGIN / 2, 'ui', 'purple bubble.png')
+      .setOrigin(1, 0)
+
+    const menuTutorial = i18n
       .createTranslatedText(
         this,
-        menu.x,
-        score.y + score.height,
+        menuBackground.x - MARGIN / 2,
+        menuBackground.y + MARGIN - 8,
         'tutorial_menu_title',
         undefined,
-        { wordWrap: { width: menu.width / 2 }, fontSize: MEDIUM_FONT_SIZE },
+        { wordWrap: { width: menu.width / 2 } },
       )
+      .setFontSize(MEDIUM_FONT_SIZE)
+      .setColor(`#${DARK_PURPLE.toString(16)}`)
       .setOrigin(1, 0)
 
     // Gauge
     const gauge = this.gauge.getBody()
-    let gaugeWidth = width - MARGIN
-    let gaugeHeight = HOLD_BAR_HEIGHT
-    if (gauge instanceof Phaser.GameObjects.Arc) {
-      gaugeWidth = 2 * CIRCLE_GAUGE_RADUIS
-      gaugeHeight = 2 * CIRCLE_GAUGE_RADUIS
-    }
-    const gaugeHighlight = this.add
-      .rectangle(width / 2, gauge.y + gaugeHeight / 2, gaugeWidth, gaugeHeight)
-      .setOrigin(0.5, 1)
-    gaugeHighlight.setStrokeStyle(4, 0xffffff)
-
-    const gaugeDescription = i18n
+    const gaugeBox = this.add.nineslice(
+      gauge.x,
+      gauge.y - MARGIN,
+      'ui',
+      'orange bubble.png',
+      480, 240, 36, 112, 36, 56
+    ).setOrigin(0.5, 1)
+    const gaugeTitle = i18n
       .createTranslatedText(
         this,
-        gaugeHighlight.x,
-        gaugeHighlight.y - gaugeHighlight.height - MARGIN,
-        'tutorial_gauge_description',
-        undefined,
-        { wordWrap: { width: width / 2 }, fontSize: MEDIUM_FONT_SIZE },
+        gaugeBox.x,
+        gaugeBox.y - gaugeBox.height + MARGIN / 2,
+        'tutorial_gauge_title',
       )
-      .setOrigin(0.5, 1)
-
+      .setColor(`#${DARK_ORANGE.toString(16)}`)
+      .setFontSize(LARGE_FONT_SIZE)
+      .setOrigin(0.5, 0)
     i18n
       .createTranslatedText(
         this,
-        gaugeDescription.x,
-        gaugeDescription.y - gaugeDescription.height - MARGIN / 2,
-        'tutorial_gauge_title',
-        undefined,
-        { wordWrap: { width: width / 2 }, fontSize: LARGE_FONT_SIZE },
+        gaugeTitle.x,
+        gaugeTitle.y + gaugeTitle.height,
+        'tutorial_gauge_description',
       )
-      .setOrigin(0.5, 1)
+      .setWordWrapWidth(gaugeBox.width + MARGIN)
+      .setColor(`#${DARK_ORANGE.toString(16)}`)
+      .setFontSize(MEDIUM_FONT_SIZE)
+      .setOrigin(0.5, 0)
+
+    this.anims.create({
+      key: 'inhale-animation',
+      frames: this.anims.generateFrameNames('warmup', {
+        prefix: 'warmup_inhale_', suffix: '.png', start: 0, end: 30, zeroPad: 5
+      }),
+      frameRate: 24,
+      repeat: -1,
+    })
+
+    const exhale = this.physics.add.sprite(
+      gaugeBox.x - 2 * MARGIN,
+      gaugeBox.y - gaugeBox.height + 2 * MARGIN,
+      'inhale',
+    )
+      .setScale(0.4)
+      .setOrigin(1, 1)
+
+    exhale.play('inhale-animation')
+    // const exhaleSprite = this.add.sprite(200, 300, 'inhale')
+    // exhaleSprite.setScale(0.5)
+    // exhaleSprite.play('inhale-animation')
+    // exhaleSprite.setDepth(1)
 
     const continueText = i18n
       .createTranslatedText(this, width / 2, height / 2, 'tutorial_continue')
@@ -162,7 +205,7 @@ export default class TutorialHudScene extends Phaser.Scene {
       ease: 'sine.in',
     })
 
-    this.tweens.add({
+    const pressAnim = this.tweens.add({
       targets: continueImage,
       scale: 1.25,
       duration: 1000,
@@ -170,6 +213,7 @@ export default class TutorialHudScene extends Phaser.Scene {
       repeat: -1,
       ease: 'sine.inOut',
     })
+    pressAnim.pause()
 
     WebFont.load({
       google: {
@@ -179,16 +223,16 @@ export default class TutorialHudScene extends Phaser.Scene {
         const tutorialUiStyle = {
           fontFamily: 'Mali'
         }
-        // meteorTitle.setStyle(tutorialUiStyle)
-        // meteorDescription.setStyle(tutorialUiStyle)
-        // playerTitle.setStyle(tutorialUiStyle)
-        // playerDescription.setStyle(tutorialUiStyle)
+        scoreTutorial.setStyle(tutorialUiStyle)
+        reloadTutorial.setStyle(tutorialUiStyle)
+        menuTutorial.setStyle(tutorialUiStyle)
         continueText.setStyle(tutorialUiStyle)
       }
     });
 
     const self = this
     setTimeout(() => {
+      pressAnim.resume()
       self.input.once(
         'pointerdown',
         () => {

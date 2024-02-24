@@ -69,23 +69,21 @@ export default class TutorialCharacterScene extends Phaser.Scene {
         meteor.x + meteor.width + 2 * MARGIN,
         meteor.y - meteor.height / 2,
         'tutorial_enemy_title',
-        null,
-        { color: `#${DARK_PURPLE.toString(16)}` }
       )
+      .setColor(`#${DARK_PURPLE.toString(16)}`)
       .setFontSize(LARGE_FONT_SIZE)
       .setOrigin(0, 0.5)
     const meteorDescription = i18n
       .createTranslatedText(
         this,
-        meteor.x + meteor.width,
+        meteor.x + meteor.width - 4,
         meteor.y - meteor.height / 2 + MARGIN / 2,
         'tutorial_enemy_description',
         { score: HIT_METEOR_SCORE },
-        {
-          wordWrap: { width: width / 2 }, fontSize: MEDIUM_FONT_SIZE,
-          color: `#${DARK_PURPLE.toString(16)}`
-        },
       )
+      .setFontSize(MEDIUM_FONT_SIZE)
+      .setWordWrapWidth(width / 2)
+      .setColor(`#${DARK_PURPLE.toString(16)}`)
       .setOrigin(0, 0)
 
     const player = this.player.getBody()
@@ -104,9 +102,8 @@ export default class TutorialCharacterScene extends Phaser.Scene {
         playerBox.x,
         playerBox.y - playerBox.height + MARGIN / 2,
         'tutorial_player_title',
-        null,
-        { color: `#${DARK_ORANGE.toString(16)}` }
       )
+      .setColor(`#${DARK_ORANGE.toString(16)}`)
       .setFontSize(LARGE_FONT_SIZE)
       .setOrigin(0.5, 0)
     const playerDescription = i18n
@@ -116,11 +113,10 @@ export default class TutorialCharacterScene extends Phaser.Scene {
         playerTitle.y + playerTitle.height,
         'tutorial_player_description',
         { score: DESTROY_METEOR_SCORE },
-        {
-          wordWrap: { width: playerBox.width + MARGIN },
-          fontSize: MEDIUM_FONT_SIZE, color: `#${DARK_ORANGE.toString(16)}`
-        },
       )
+      .setWordWrapWidth(playerBox.width + MARGIN)
+      .setColor(`#${DARK_ORANGE.toString(16)}`)
+      .setFontSize(MEDIUM_FONT_SIZE)
       .setOrigin(0.5, 0)
 
     const continueText = i18n
@@ -147,7 +143,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
       ease: 'sine.in',
     })
 
-    this.tweens.add({
+    const pressAnim = this.tweens.add({
       targets: continueImage,
       scale: 1.25,
       duration: 1000,
@@ -155,6 +151,7 @@ export default class TutorialCharacterScene extends Phaser.Scene {
       repeat: -1,
       ease: 'sine.inOut',
     })
+    pressAnim.pause()
 
     WebFont.load({
       google: {
@@ -172,8 +169,10 @@ export default class TutorialCharacterScene extends Phaser.Scene {
       }
     });
 
+
     const self = this
     setTimeout(() => {
+      pressAnim.play()
       self.input.once(
         'pointerdown',
         () => {
