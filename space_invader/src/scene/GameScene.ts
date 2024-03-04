@@ -48,6 +48,13 @@ export default class GameScene extends Phaser.Scene {
 
 	preload() {
 		this.load.image('background', 'assets/background/purple.png')
+
+    this.load.atlas(
+      'sprite',
+      'assets/character/player/spritesheet.png',
+      'assets/character/player/spritesheet.json',
+    );
+
 		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
 		this.load.image('fire', 'assets/effect/fire03.png')
 		this.load.image('laser', 'assets/effect/laserBlue02.png')
@@ -76,11 +83,46 @@ export default class GameScene extends Phaser.Scene {
 		// const queryString = window.location.search;
 		// const urlParams = new URLSearchParams(queryString);
 		// this.controlType = <'tilt' | 'touch'>urlParams.get('control')
+		//
+		this.anims.create({
+      key: 'run',
+      frames: this.anims.generateFrameNames('sprite', {
+        prefix: 'mc_normal_', suffix: '.png', start: 0, end: 12, zeroPad: 5
+      }),
+      frameRate: 12,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'charge',
+      frames: this.anims.generateFrameNames('sprite', {
+        prefix: 'mc_inhale_', suffix: '.png', start: 0, end: 12, zeroPad: 5
+      }),
+      frameRate: 12,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'attack',
+      frames: this.anims.generateFrameNames('sprite', {
+        prefix: 'mc_attack_', suffix: '.png', start: 0, end: 12, zeroPad: 5
+      }),
+      frameRate: 12,
+      repeat: -1
+    });
 
 		this.background = this.add
 			.tileSprite(0, 0, width, height, 'background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
+
+		const spriteTest = this.physics.add.sprite(
+      width / 2,
+      800 ,
+      'sprite',
+    );
+
+    spriteTest.play('run')
 
 		this.controller1 = this.mergedInput?.addPlayer(0)
 		// https://github.com/photonstorm/phaser/blob/v3.51.0/src/input/keyboard/keys/KeyCodes.js#L7
