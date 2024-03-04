@@ -35,10 +35,10 @@ export class Boss extends Enemy {
 			frameRate: 24,
 			repeat: -1
 		});
-		
+
 		this.enemy = this.scene.add.follower(path, width / 2, -140, 'bossMove').setOrigin(0.5)
 		this.enemy.play('boss-move')
-		
+
 		this.scene.physics.world.enable(this.enemy)
 		return this.enemy
 	}
@@ -73,11 +73,11 @@ export class Boss extends Enemy {
 	hit(): void {
 		// this.enemy.destroy()
 		if (isHit) return
-		
+
 		this.enemy.stop()
 		this.enemy.setTexture('bossHit')
 		this.enemy.play('boss-hit')
-		
+
 		isHit = true
 		this.enemy.setAlpha(0.75)
 		setTimeout(() => {
@@ -88,7 +88,7 @@ export class Boss extends Enemy {
 			this.enemy.play('boss-move')
 		}, BOSS_HIT_DELAY_MS)
 		this.soundManager.play(this.enermyDestroyedSound!, true)
-		this.score.add(DESTROY_METEOR_SCORE)
+		// this.score.add(DESTROY_METEOR_SCORE)
 	}
 
 	destroy() {

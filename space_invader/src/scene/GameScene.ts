@@ -362,7 +362,8 @@ export default class GameScene extends Phaser.Scene {
     } else if (
       gauge.getDuratation() <= HOLD_DURATION_MS &&
       gauge.getDuratation() !== 0 &&
-      this.controller1?.buttons.B2 > 0
+      this.controller1?.buttons.B2 > 0 &&
+      !this.player.getIsAttacking()
     ) {
       this.player.charge()
       gauge.charge(delta)
@@ -371,8 +372,9 @@ export default class GameScene extends Phaser.Scene {
 
     if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
       this.singleLaserFactory.reset()
-      this.reloadCount.decrementCount()
-
+      setTimeout(() => {
+        this.reloadCount.decrementCount()
+      }, LASER_FREQUENCY_MS * BULLET_COUNT)
       this.isBossTextShown = this.reloadCount.isBossShown()
 
       if (!this.isBossTextShown) {

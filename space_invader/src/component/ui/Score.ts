@@ -10,7 +10,7 @@ export default class Score {
     const { width } = scene.scale
     this.layer = scene.add.layer()
     const backgroundGraphic = scene.add.graphics()
-    const backgroundWidth = (width - 3 * MARGIN) / 3
+    const backgroundWidth = (width - MARGIN) / 3
     backgroundGraphic.fillStyle(0xffffff, 0.5)
     backgroundGraphic.fillRoundedRect(
       MARGIN,
@@ -29,11 +29,12 @@ export default class Score {
     )
     this.layer.add(backgroundGraphic)
 
-    const scoreLogo = scene.add.image(backgroundGraphic.x + MARGIN / 2, backgroundGraphic.y + MARGIN / 2, 'ui', 'score.png').setOrigin(0, 0);
+    const scoreLogo = scene.add.image(backgroundGraphic.x + MARGIN / 4, backgroundGraphic.y + MARGIN / 2, 'ui', 'score.png').setOrigin(0, 0);
     this.layer.add(scoreLogo)
 
-    this.scoreText = scene.add.text(scoreLogo.x + scoreLogo.width, backgroundGraphic.y + MARGIN + 4, `${this.score}`, { fontFamily: 'Jua', color: `#${DARK_BROWN.toString(16)}` })
+    this.scoreText = scene.add.text(backgroundGraphic.x + backgroundWidth + (0.75 * MARGIN), backgroundGraphic.y + MARGIN + 4, `${this.score}`, { fontFamily: 'Jua', color: `#${DARK_BROWN.toString(16)}` })
       .setFontSize(MEDIUM_FONT_SIZE)
+      .setOrigin(1, 0)
     this.layer.add(this.scoreText)
   }
 

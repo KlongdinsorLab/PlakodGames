@@ -14,6 +14,7 @@ export default class Player {
   private isHit = false
   private isReload = false
   private isReloading = false
+  private isAttacking = false
   private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
 
   constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
@@ -179,10 +180,14 @@ export default class Player {
 
   reloadReset(): void {
     this.player.play('attack', true)
+    this.isAttacking = true
     this.isReload = false
     this.chargeEmitter.stop()
     setTimeout(
-      () => this.player.play('run', true),
+      () => {
+        this.isAttacking = false
+        this.player.play('run', true)
+      },
       LASER_FREQUENCY_MS * BULLET_COUNT
     )
   }
@@ -193,6 +198,7 @@ export default class Player {
 
   reloadResetting(): void {
     this.player.play('run', true)
+    this.isAttacking = false
     this.isReloading = false
     this.chargeEmitter.stop()
   }
@@ -203,6 +209,10 @@ export default class Player {
 
   getIsReloading(): boolean {
     return this.isReloading
+  }
+
+  getIsAttacking(): boolean {
+    return this.isAttacking
   }
 
   hide(): void {
