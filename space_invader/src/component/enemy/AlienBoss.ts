@@ -5,7 +5,6 @@ import {
 	DESTROY_METEOR_SCORE,
 	BOSS_HIT_DELAY_MS,
 	FIRST_STAGE_BOSS_TIME_MS,
-	SECOND_STAGE_BOSS_TIME_MS,
 	LARGE_FONT_SIZE,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'

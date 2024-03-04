@@ -3,11 +3,9 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 import {
-	BOSS_TIME_MS,
 	BULLET_COUNT,
 	DARK_BROWN,
 	HOLD_DURATION_MS,
-	LARGE_FONT_SIZE,
 	LASER_FREQUENCY_MS,
 	MARGIN,
 } from 'config'
@@ -19,7 +17,6 @@ import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { AlienBoss } from '../component/enemy/AlienBoss'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
 import { ShootPhase } from 'component/ui/InhaleGauge'
@@ -47,7 +44,6 @@ export default class GameScene extends Phaser.Scene {
 
 	private isBossTextShown!: boolean
 	private isBossShown!: boolean
-	private boss!: AlienBoss
 
 	private event!: EventEmitter
 	private gameLayer!: Phaser.GameObjects.Layer

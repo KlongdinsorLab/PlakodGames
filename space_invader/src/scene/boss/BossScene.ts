@@ -2,18 +2,15 @@ import Player from 'component/player/Player'
 import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
-import { DARK_BROWN, FIRST_STAGE_BOSS_TIME_MS } from 'config'
+import { DARK_BROWN } from 'config'
 import Phaser from 'phaser'
-import MergedInput, { Player as PlayerInput } from 'phaser3-merged-input'
+import MergedInput from 'phaser3-merged-input'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
-import { Meteor } from 'component/enemy/Meteor'
 import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
 import { AlienBoss } from '../../component/enemy/AlienBoss'
-import I18nSingleton from '../../i18n/I18nSingleton'
-import EventEmitter = Phaser.Events.EventEmitter
 import { ShootPhase } from 'component/ui/InhaleGauge'
 
 export default class BossScene extends Phaser.Scene {
@@ -26,13 +23,13 @@ export default class BossScene extends Phaser.Scene {
 
 	private singleLaserFactory!: SingleLaserFactory
 	private meteorFactory!: MeteorFactory
-	private menu!: Menu
+	// private menu!: Menu
 
 	// TODO move to boss class
 	private boss!: AlienBoss
 
-	private event!: EventEmitter
 	private bossLayer!: Phaser.GameObjects.Layer
+	private menu!: Menu
 
 	constructor() {
 		super({ key: 'alien boss scene' })
@@ -83,9 +80,9 @@ export default class BossScene extends Phaser.Scene {
 
 	init({
 		score,
-		menu,
 		player,
 		reloadCount,
+		menu,
 	}: {
 		score: Score
 		menu: Menu
@@ -93,9 +90,9 @@ export default class BossScene extends Phaser.Scene {
 		reloadCount: ReloadCount
 	}) {
 		this.score = score
-		this.menu = menu
 		this.player = player
 		this.reloadCount = reloadCount
+		this.menu = menu
 	}
 
 	create() {
@@ -108,7 +105,9 @@ export default class BossScene extends Phaser.Scene {
 
 		this.bossLayer = this.add.layer()
 
-		this.menu = new Menu(this)
+		const menu = this.menu.getBody()
+		this.bossLayer.add(menu)
+		// this.menu = new Menu(this)
 
 		this.score
 			.getLayer()
@@ -132,8 +131,6 @@ export default class BossScene extends Phaser.Scene {
 
 		this.meteorFactory = new MeteorFactory()
 		this.singleLaserFactory = new SingleLaserFactory()
-
-		this.event = new EventEmitter()
 
 		const self = this
 		WebFont.load({
