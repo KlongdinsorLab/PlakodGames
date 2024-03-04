@@ -1,12 +1,24 @@
 import I18nSingleton from 'i18n/I18nSingleton'
-import { LARGE_FONT_SIZE, MARGIN } from 'config'
+import {
+	BOSS1_BULLET_COUNT,
+	BOSS2_BULLET_COUNT,
+	BULLET_COUNT,
+	LARGE_FONT_SIZE,
+	MARGIN,
+} from 'config'
+
+export enum ShootPhase {
+	NORMAL = BULLET_COUNT,
+	BOSS_1 = BOSS1_BULLET_COUNT,
+	BOSS_2 = BOSS2_BULLET_COUNT,
+}
 
 export default abstract class InhaleGauge {
 	protected scene: Phaser.Scene
 	protected division: number
 	protected holdButtonDuration = 0
 	protected isHoldbarReducing = false
-	protected gauge!: Phaser.GameObjects.Shape
+	protected gauge!: Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics
 
 	protected up!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
 	protected down!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
@@ -18,6 +30,8 @@ export default abstract class InhaleGauge {
 	protected chargedSound?: Phaser.Sound.BaseSound
 
 	protected releaseText!: Phaser.GameObjects.Text
+
+	protected steps!: Phaser.GameObjects.Shape[]
 
 	protected constructor(scene: Phaser.Scene, division: number, index: number) {
 		this.scene = scene
@@ -34,9 +48,8 @@ export default abstract class InhaleGauge {
 				this.scene.scale.width / 2,
 				4 * MARGIN,
 				'release',
-				undefined,
-				{ fontSize: LARGE_FONT_SIZE },
 			)
+			.setFontSize(LARGE_FONT_SIZE)
 			.setOrigin(0.5, 0)
 		scene.tweens.add({
 			targets: this.releaseText,
@@ -60,7 +73,7 @@ export default abstract class InhaleGauge {
 
 	abstract setFullCharge(): void
 
-	abstract reset(): void
+	abstract reset(bulletCount: number): void
 
 	abstract resetting(): void
 
@@ -68,15 +81,19 @@ export default abstract class InhaleGauge {
 
 	abstract isReducing(): boolean
 
-	abstract showUp(): void
+	//	abstract showUp(): void
+	//
+	//	abstract hideUp(): void
+	//
+	//	abstract showDown(): void
+	//
+	//	abstract hideDown(): void
 
-	abstract hideUp(): void
+	abstract setStep(step: number): void
 
-	abstract showDown(): void
+	abstract setVisible(visible: boolean): void
 
-	abstract hideDown(): void
-
-	getBody(): Phaser.GameObjects.Shape {
+	getBody(): Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics {
 		return this.gauge
 	}
 

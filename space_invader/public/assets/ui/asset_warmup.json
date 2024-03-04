@@ -1,0 +1,108 @@
+{"frames": [
+
+{
+	"filename": "arrow.png",
+	"frame": {"x":253,"y":572,"w":117,"h":379},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":117,"h":379},
+	"sourceSize": {"w":117,"h":379}
+},
+{
+	"filename": "bullet bar.png",
+	"frame": {"x":0,"y":89,"w":420,"h":93},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":420,"h":93},
+	"sourceSize": {"w":420,"h":93}
+},
+{
+	"filename": "drag.png",
+	"frame": {"x":0,"y":572,"w":253,"h":253},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":253,"h":253},
+	"sourceSize": {"w":253,"h":253}
+},
+{
+	"filename": "lap.png",
+	"frame": {"x":0,"y":0,"w":99,"h":89},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":89},
+	"sourceSize": {"w":99,"h":89}
+},
+{
+	"filename": "orange bubble.png",
+	"frame": {"x":0,"y":402,"w":157,"h":136},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":157,"h":136},
+	"sourceSize": {"w":157,"h":136}
+},
+{
+	"filename": "pause.png",
+	"frame": {"x":99,"y":0,"w":89,"h":89},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":89},
+	"sourceSize": {"w":89,"h":89}
+},
+{
+	"filename": "play.png",
+	"frame": {"x":188,"y":0,"w":89,"h":89},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":89},
+	"sourceSize": {"w":89,"h":89}
+},
+{
+	"filename": "purple bubble.png",
+	"frame": {"x":0,"y":182,"w":157,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":157,"h":107},
+	"sourceSize": {"w":157,"h":107}
+},
+{
+	"filename": "score.png",
+	"frame": {"x":277,"y":0,"w":99,"h":89},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":89},
+	"sourceSize": {"w":99,"h":89}
+},
+{
+	"filename": "sensor bar.png",
+	"frame": {"x":0,"y":289,"w":419,"h":113},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":419,"h":113},
+	"sourceSize": {"w":419,"h":113}
+},
+{
+	"filename": "side purple bubble.png",
+	"frame": {"x":157,"y":402,"w":136,"h":157},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":136,"h":157},
+	"sourceSize": {"w":136,"h":157}
+},
+{
+	"filename": "touch.png",
+	"frame": {"x":293,"y":402,"w":170,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":170},
+	"sourceSize": {"w":170,"h":170}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "asset_warmup.png",
+	"format": "RGBA8888",
+	"size": {"w":463,"h":951},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:8790de9cfa16ea43a441d4e0e3ac2968:dd83621cad54fb2c062ce24c128c727b:08603f16a074971dda508ad9148526fe$"
+}
+}

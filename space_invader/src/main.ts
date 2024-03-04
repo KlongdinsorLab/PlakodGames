@@ -10,6 +10,12 @@ import PauseScene from './scene/PauseScene'
 import WarmupScene from './scene/warmup/WarmupScene'
 import SetupScene from './scene/setup/SetupScene'
 import EndGameScene from './scene/EndGameScene'
+import LoginScene from './scene/auth/LoginScene'
+import OtpScene from './scene/auth/OtpScene'
+import RegisterScene from './scene/auth/RegisterScene'
+import DifficultyScene from './scene/level/DifficultyScene'
+import AirflowScene from './scene/level/AirflowScene'
+import BossScene from 'scene/boss/BossScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -32,6 +38,11 @@ const config: Phaser.Types.Core.GameConfig = {
 	},
 	scene: [
 		TitleScene,
+		LoginScene,
+		OtpScene,
+		RegisterScene,
+		DifficultyScene,
+		AirflowScene,
 		SetupScene,
 		GameScene,
 		EndGameScene,
@@ -40,6 +51,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		TutorialControllerScene,
 		WarmupScene,
 		PauseScene,
+		BossScene,
 	],
 }
 
