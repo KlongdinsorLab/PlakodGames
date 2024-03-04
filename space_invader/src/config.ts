@@ -7,9 +7,13 @@ export const LASER_SPEED = 800
 export const TRIPLE_LASER_X_SPEED = 80
 export const LASER_FREQUENCY_MS = 500
 export const BULLET_COUNT = 30
+export const BOSS1_BULLET_COUNT = 60
+export const BOSS2_BULLET_COUNT = 90
 export const RELOAD_COUNT = 10
-export const BOSS_MULTIPLE_COUNT = 5
+export const BOSS_MULTIPLE_COUNT = 1
 export const BOSS_TIME_MS = 120_000
+export const FIRST_STAGE_BOSS_TIME_MS = 30_000
+export const SECOND_STAGE_BOSS_TIME_MS = 45_000
 
 //export const BULLET_COUNT = 5
 //export const RELOAD_COUNT = 4
@@ -45,6 +49,6 @@ export const TUTORIAL_DELAY_MS = 3000
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
-export const DARK_BROWN = 0x57453B
-export const DARK_PURPLE = 0x583E7C
-export const DARK_ORANGE = 0xD35E24
+export const DARK_BROWN = 0x57453b
+export const DARK_PURPLE = 0x583e7c
+export const DARK_ORANGE = 0xd35e24

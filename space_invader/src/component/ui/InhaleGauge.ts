@@ -1,5 +1,17 @@
 import I18nSingleton from 'i18n/I18nSingleton'
-import { LARGE_FONT_SIZE, MARGIN } from 'config'
+import {
+	BOSS1_BULLET_COUNT,
+	BOSS2_BULLET_COUNT,
+	BULLET_COUNT,
+	LARGE_FONT_SIZE,
+	MARGIN,
+} from 'config'
+
+export enum ShootPhase {
+	NORMAL = BULLET_COUNT,
+	BOSS_1 = BOSS1_BULLET_COUNT,
+	BOSS_2 = BOSS2_BULLET_COUNT,
+}
 
 export default abstract class InhaleGauge {
 	protected scene: Phaser.Scene
@@ -61,7 +73,7 @@ export default abstract class InhaleGauge {
 
 	abstract setFullCharge(): void
 
-	abstract reset(): void
+	abstract reset(bulletCount: number): void
 
 	abstract resetting(): void
 
@@ -69,13 +81,13 @@ export default abstract class InhaleGauge {
 
 	abstract isReducing(): boolean
 
-//	abstract showUp(): void
-//
-//	abstract hideUp(): void
-//
-//	abstract showDown(): void
-//
-//	abstract hideDown(): void
+	//	abstract showUp(): void
+	//
+	//	abstract hideUp(): void
+	//
+	//	abstract showDown(): void
+	//
+	//	abstract hideDown(): void
 
 	abstract setStep(step: number): void
 

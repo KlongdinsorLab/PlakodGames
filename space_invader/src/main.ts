@@ -15,6 +15,7 @@ import OtpScene from './scene/auth/OtpScene'
 import RegisterScene from './scene/auth/RegisterScene'
 import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
+import BossScene from 'scene/boss/BossScene'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -50,6 +51,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		TutorialControllerScene,
 		WarmupScene,
 		PauseScene,
+		BossScene,
 	],
 }
 
