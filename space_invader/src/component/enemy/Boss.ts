@@ -3,7 +3,7 @@ import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
 import {
-    DESTROY_METEOR_SCORE,
+    // DESTROY_METEOR_SCORE,
     BOSS_HIT_DELAY_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
