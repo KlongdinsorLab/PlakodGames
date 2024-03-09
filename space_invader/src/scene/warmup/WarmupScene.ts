@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { DARK_ORANGE, LARGE_FONT_SIZE, MARGIN } from 'config'
+import { DARK_ORANGE, LARGE_FONT_SIZE, MARGIN, TUTORIAL_DELAY_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import EventEmitter = Phaser.Events.EventEmitter
 import WebFont from 'webfontloader'
@@ -44,7 +44,7 @@ export default class WarmupScene extends Phaser.Scene {
             prefix: 'warmup_exhale_', suffix: '.png', start: 0, end: 30, zeroPad: 5
           }),
           frameRate: 24,
-          repeat: -1,
+          // repeat: -1,
         })
 
         self.anims.create({
@@ -53,7 +53,7 @@ export default class WarmupScene extends Phaser.Scene {
             prefix: 'warmup_pick_', suffix: '.png', start: 0, end: 30, zeroPad: 5
           }),
           frameRate: 24,
-          repeat: -1,
+          // repeat: -1,
         })
 
         self.anims.create({
@@ -62,7 +62,7 @@ export default class WarmupScene extends Phaser.Scene {
             prefix: 'warmup_inhale_', suffix: '.png', start: 0, end: 30, zeroPad: 5
           }),
           frameRate: 24,
-          repeat: -1,
+          // repeat: -1,
         })
 
         const spriteX = width / 2
@@ -112,7 +112,7 @@ export default class WarmupScene extends Phaser.Scene {
             targets: exhale,
             scale: 3,
             startDelay: 2000,
-            duration: 3000,
+            duration: TUTORIAL_DELAY_MS,
             ease: 'Sine.inOut',
             onComplete: (tween) => {
               if (self.step === Step.INHALE) return
@@ -131,7 +131,7 @@ export default class WarmupScene extends Phaser.Scene {
               self.step = Step.INHALE
             },
           })
-        }, 5000)
+        }, TUTORIAL_DELAY_MS)
 
 
         const warmupUiStyle = {
@@ -151,6 +151,7 @@ export default class WarmupScene extends Phaser.Scene {
     this.event.once('inhale', () => {
       this.scene.setVisible(false)
       this.event.removeListener('inhale')
+      this.scene.launch('warmupGauge', { event: this.event })
     })
   }
 }
