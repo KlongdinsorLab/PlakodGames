@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { BULLET_COUNT, DARK_ORANGE, GREEN, LARGE_FONT_SIZE, LASER_FREQUENCY_MS, MARGIN, PLAYER_START_MARGIN, TUTORIAL_DELAY_MS } from 'config'
+import { BULLET_COUNT, DARK_ORANGE, GREEN, LASER_FREQUENCY_MS, MARGIN, PLAYER_START_MARGIN, TUTORIAL_DELAY_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import EventEmitter = Phaser.Events.EventEmitter
 import WebFont from 'webfontloader'
@@ -35,7 +35,6 @@ export default class WarmupScene extends Phaser.Scene {
     const arrow = this.add.image(width/2, height - PLAYER_START_MARGIN + 2 * MARGIN, 'ui', 'arrow.png').setOrigin(0.5, 1);
     arrow.setVisible(false)
 
-    const self = this
     WebFont.load({
       google: {
         families: ['Mali']
