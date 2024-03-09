@@ -132,8 +132,8 @@ export default class GameScene extends Phaser.Scene {
       //            .defineKey(0, 'B2', 'ALT')
       .defineKey(0, 'B6', 'ONE')
       .defineKey(0, 'B3', 'TWO')
-      .defineKey(0, 'B13', 'THREE')
-      .defineKey(0, 'B15', 'FOUR')
+      .defineKey(0, 'B1', 'THREE')
+      .defineKey(0, 'B0', 'FOUR')
 
     this.gameLayer = this.add.layer();
     this.player = new Player(this, this.gameLayer)
@@ -292,9 +292,9 @@ export default class GameScene extends Phaser.Scene {
       gauge.setStep(1)
     } else if (this.controller1?.buttons.B6 > 0) {
       gauge.setStep(0)
-    } else if (this.controller1?.buttons.B13 > 0) {
+    } else if (this.controller1?.buttons.B1 > 0) {
       gauge.setStep(2)
-    } else if (this.controller1?.buttons.B15 > 0) {
+    } else if (this.controller1?.buttons.B0 > 0) {
       gauge.setStep(3)
     } else {
       gauge.setVisible(false)
