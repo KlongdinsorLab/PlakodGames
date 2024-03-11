@@ -20,7 +20,7 @@ export default class WarmupScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.atlas('warmup', 'assets/sprites/warmup/warmup_all.png', 'assets/sprites/warmup/warmup_all.json');
+    this.load.atlas('warmup', 'assets/sprites/warmup/warmup_spritesheet.png', 'assets/sprites/warmup/warmup_spritesheet.json');
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
   }
 
@@ -41,27 +41,27 @@ export default class WarmupScene extends Phaser.Scene {
         self.anims.create({
           key: 'exhale-animation',
           frames: self.anims.generateFrameNames('warmup', {
-            prefix: 'warmup_exhale_', suffix: '.png', start: 0, end: 30, zeroPad: 5
+            prefix: 'tt_exhale_', suffix: '.png', start: 1, end: 12, zeroPad: 5
           }),
-          frameRate: 24,
+          frameRate: 18,
           // repeat: -1,
         })
 
         self.anims.create({
           key: 'hold-animation',
           frames: self.anims.generateFrameNames('warmup', {
-            prefix: 'warmup_pick_', suffix: '.png', start: 0, end: 30, zeroPad: 5
+            prefix: 'tt_pick_', suffix: '.png', start: 1, end: 12, zeroPad: 5
           }),
-          frameRate: 24,
+          frameRate: 18,
           // repeat: -1,
         })
 
         self.anims.create({
           key: 'inhale-animation',
           frames: self.anims.generateFrameNames('warmup', {
-            prefix: 'warmup_inhale_', suffix: '.png', start: 0, end: 30, zeroPad: 5
+            prefix: 'tt_inhale_', suffix: '.png', start: 1, end: 12, zeroPad: 5
           }),
-          frameRate: 24,
+          frameRate: 18,
           // repeat: -1,
         })
 

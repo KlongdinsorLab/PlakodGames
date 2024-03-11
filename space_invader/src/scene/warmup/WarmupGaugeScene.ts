@@ -24,7 +24,7 @@ export default class WarmupScene extends Phaser.Scene {
     const { width, height } = this.scale
     const inhaleText1 =I18nSingleton
       .getInstance()
-      .createTranslatedText(this, width/2, 4 * MARGIN, 'tutorial_inhale_1')
+      .createTranslatedText(this, width/2, 8 * MARGIN, 'tutorial_inhale_1')
       .setOrigin(0.5, 0)
 
     const inhaleText2 = I18nSingleton
@@ -64,32 +64,43 @@ export default class WarmupScene extends Phaser.Scene {
     });
 
     this.event.once('fullInhale', () => {
+      const blackBackground = this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
       this.event.removeListener('fullInhale')
       I18nSingleton.getInstance().setTranslatedText(inhaleText1, 'tutorial_attack_1')
       I18nSingleton.getInstance().setTranslatedText(inhaleText2, 'tutorial_attack_2')
       inhaleText2.setColor('white')
+      inhaleText1.setDepth(1)
+      inhaleText2.setDepth(1)
       arrow.setVisible(true)
+      arrow.setDepth(1)
 
       setTimeout(()=> {
-        I18nSingleton.getInstance().setTranslatedText(inhaleText1, 'tutorial_start_game')
         arrow.setVisible(false)
-        inhaleText1.setY(height / 2)
-        this.tweens.add({
-          targets: inhaleText1,
-          alpha: 0,
-          scale: 2,
-          ease: 'back.in',
-          duration: TUTORIAL_DELAY_MS,
-          onComplete: () => {
-            this.scene.setVisible(false)
-          }
-        })
+        blackBackground.setVisible(false)
+        inhaleText1.setVisible(false)
         inhaleText2.setVisible(false)
-        inhaleText1
-          .setColor(`#${DARK_ORANGE.toString(16)}`)
-          .setFontSize('7.5em')
-          .setStroke('white', 16);
-      }, LASER_FREQUENCY_MS * BULLET_COUNT)
+      }, TUTORIAL_DELAY_MS)
+
+      // setTimeout(()=> {
+      //   inhaleText1.setVisible(true)
+      //   inhaleText1.setY(height/2).setOrigin(0.5, 0.5)
+      //   I18nSingleton.getInstance().setTranslatedText(inhaleText1, 'tutorial_start_game')
+      //   this.tweens.add({
+      //     targets: inhaleText1,
+      //     alpha: 0,
+      //     scale: 2,
+      //     ease: 'back.in',
+      //     duration: TUTORIAL_DELAY_MS,
+      //     onComplete: () => {
+      //       this.scene.setVisible(false)
+      //     }
+      //   })
+      //   inhaleText2.setVisible(false)
+      //   inhaleText1
+      //     .setColor(`#${DARK_ORANGE.toString(16)}`)
+      //     .setFontSize('7.5em')
+      //     .setStroke('white', 16);
+      // }, LASER_FREQUENCY_MS * BULLET_COUNT)
 
     })
   }

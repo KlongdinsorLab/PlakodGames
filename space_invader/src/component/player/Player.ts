@@ -63,27 +63,27 @@ export default class Player {
     this.scene.anims.create({
       key: 'run',
       frames: this.scene.anims.generateFrameNames('player', {
-        prefix: 'mc_normal_', suffix: '.png', start: 0, end: 19, zeroPad: 5
+        prefix: 'mc_normal_', suffix: '.png', start: 1, end: 12, zeroPad: 5
       }),
-      frameRate: 24,
+      frameRate: 18,
       repeat: -1
     });
 
     this.scene.anims.create({
       key: 'charge',
       frames: this.scene.anims.generateFrameNames('player', {
-        prefix: 'mc_inhale_', suffix: '.png', start: 0, end: 22, zeroPad: 5
+        prefix: 'mc_inhale_', suffix: '.png', start: 1, end: 12, zeroPad: 5
       }),
-      frameRate: 24,
+      frameRate: 18,
       repeat: -1
     });
 
     this.scene.anims.create({
       key: 'attack',
       frames: this.scene.anims.generateFrameNames('player', {
-        prefix: 'mc_attack_', suffix: '.png', start: 0, end: 19, zeroPad: 5
+        prefix: 'mc_attack_', suffix: '.png', start: 1, end: 12, zeroPad: 5
       }),
-      frameRate: 24,
+      frameRate: 18,
       repeat: -1
     });
 

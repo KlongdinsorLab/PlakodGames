@@ -34,7 +34,7 @@ export default class TutorialHudScene extends Phaser.Scene {
 
   preload() {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-    this.load.atlas('warmup', 'assets/sprites/warmup/warmup_all.png', 'assets/sprites/warmup/warmup_all.json');
+    this.load.atlas('warmup', 'assets/sprites/warmup/warmup_spritesheet.png', 'assets/sprites/warmup/warmup_spritesheet.json');
   }
 
   init({ score, gauge, menu, reloadCount }: Hud) {
@@ -62,7 +62,7 @@ export default class TutorialHudScene extends Phaser.Scene {
     )
 
     const scoreBackground = this.add.image(
-      score.x,
+      score.x - 2 * MARGIN,
       score.y + score.height + MARGIN / 2,
       'ui',
       'purple bubble.png'
@@ -94,7 +94,7 @@ export default class TutorialHudScene extends Phaser.Scene {
     const reloadTutorial = i18n
       .createTranslatedText(
         this,
-        reloadBackground.x - MARGIN / 2,
+        width/2,
         reloadBackground.y + MARGIN - 8,
         'tutorial_reload_title',
         undefined,
@@ -104,7 +104,7 @@ export default class TutorialHudScene extends Phaser.Scene {
       )
       .setFontSize(MEDIUM_FONT_SIZE)
       .setColor(`#${DARK_PURPLE.toString(16)}`)
-      .setOrigin(1, 0)
+      .setOrigin(0.5, 0)
 
     // menu
     const menu = this.menu.getBody()
@@ -161,9 +161,9 @@ export default class TutorialHudScene extends Phaser.Scene {
     this.anims.create({
       key: 'inhale-animation',
       frames: this.anims.generateFrameNames('warmup', {
-        prefix: 'warmup_inhale_', suffix: '.png', start: 0, end: 30, zeroPad: 5
+        prefix: 'tt_inhale_', suffix: '.png', start: 0, end: 12, zeroPad: 5
       }),
-      frameRate: 24,
+      frameRate: 18,
       repeat: -1,
     })
 
