@@ -1,130 +1,225 @@
 import {
-	FULLCHARGE_ANIMATION_MS,
-	FULLCHARGE_SCALE,
-	MARGIN,
-	PLAYER_SPEED,
-	PLAYER_START_MARGIN,
+  BULLET_COUNT,
+  FULLCHARGE_ANIMATION_MS,
+  FULLCHARGE_SCALE, LASER_FREQUENCY_MS,
+  MARGIN,
+  PLAYER_SPEED,
+  PLAYER_START_MARGIN
 } from 'config'
 
 export default class Player {
-	private scene: Phaser.Scene
-	private player!: Phaser.Types.Physics.Arcade.ImageWithDynamicBody
-	private playerHitTweens!: any
-	private isHit = false
-	private isReload = false
-	private isReloading = false
-	private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
+  private scene: Phaser.Scene
+  private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
+  private playerHitTweens!: any
+  private isHit = false
+  private isReload = false
+  private isReloading = false
+  private isAttacking = false
+  private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
 
-	constructor(scene: Phaser.Scene) {
-		this.scene = scene
-		const { width, height } = this.scene.scale
-		this.player = this.scene.physics.add.image(
-			width / 2,
-			height - PLAYER_START_MARGIN,
-			'player',
-		)
-		this.playerHitTweens = this.scene.tweens.add({
-			targets: this.player,
-			scale: FULLCHARGE_SCALE,
-			duration: FULLCHARGE_ANIMATION_MS,
-			ease: 'sine.inout',
-			yoyo: true,
-			repeat: -1,
-		})
-		this.playerHitTweens.pause()
-		this.player.setCollideWorldBounds(true)
-	}
+  constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
+    this.scene = scene
+    const { width, height } = this.scene.scale
+    //		this.player = this.scene.physics.add.image(
+    //			width / 2,
+    //			height - PLAYER_START_MARGIN,
+    //			'player',
+    //		)
 
-	addJetEngine() {
-		const jetEngine = this.scene.add.particles(0, 0, 'fire', {
-			gravityY: 200,
-			speed: 100,
-			scale: { start: 1, end: 0 },
-			blendMode: Phaser.BlendModes.ADD,
-		})
-		jetEngine.startFollow(this.player, 0, MARGIN)
-	}
+    this.player = this.scene.physics.add.sprite(
+      width / 2,
+      height - PLAYER_START_MARGIN,
+      'player',
+    );
 
-	addChargeParticle() {
-		this.chargeEmitter = this.scene.add.particles(0, 0, 'charge', {
-			speed: 64,
-			scale: 0.1,
-			blendMode: Phaser.BlendModes.ADD,
-		})
-		this.chargeEmitter.startFollow(this.player)
-		this.chargeEmitter.active = false
-	}
+    gameLayer.add(this.player)
 
-	moveLeft(delta: number): void {
-		this.player.x = this.player.x - (PLAYER_SPEED * delta) / 1000
-	}
+    //		this.scene.anims.create({
+    //			key: 'run',
+    //			frames: this.scene.anims.generateFrameNames('player', {
+    //				prefix: '01.2A_MC(N)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+    //			}),
+    //			frameRate: 24,
+    //			repeat: -1
+    //		});
+    //
+    //		this.scene.anims.create({
+    //			key: 'charge',
+    //			frames: this.scene.anims.generateFrameNames('player', {
+    //				prefix: '01.2B_MC(I)_', suffix: '.png', start: 0, end: 48, zeroPad: 5
+    //			}),
+    //			frameRate: 48,
+    //			repeat: -1
+    //		});
+    //
+    //		this.scene.anims.create({
+    //			key: 'attack',
+    //			frames: this.scene.anims.generateFrameNames('player', {
+    //				prefix: '01.2C_MC(A)_', suffix: '.png', start: 0, end: 23, zeroPad: 5
+    //			}),
+    //			frameRate: 24,
+    //			repeat: -1
+    //		});
+    this.scene.anims.create({
+      key: 'run',
+      frames: this.scene.anims.generateFrameNames('player', {
+        prefix: 'mc_normal_', suffix: '.png', start: 1, end: 12, zeroPad: 5
+      }),
+      frameRate: 18,
+      repeat: -1
+    });
 
-	moveRight(delta: number): void {
-		this.player.x = this.player.x + (PLAYER_SPEED * delta) / 1000
-	}
+    this.scene.anims.create({
+      key: 'charge',
+      frames: this.scene.anims.generateFrameNames('player', {
+        prefix: 'mc_inhale_', suffix: '.png', start: 1, end: 12, zeroPad: 5
+      }),
+      frameRate: 18,
+      repeat: -1
+    });
 
-	getLaserLocation(): { x: number; y: number } {
-		return { x: this.player.x, y: this.player.y - 20 }
-	}
+    this.scene.anims.create({
+      key: 'attack',
+      frames: this.scene.anims.generateFrameNames('player', {
+        prefix: 'mc_attack_', suffix: '.png', start: 1, end: 12, zeroPad: 5
+      }),
+      frameRate: 18,
+      repeat: -1
+    });
 
-	charge(): void {
-		this.isReloading = true
-		this.chargeEmitter.active = true
-		this.chargeEmitter.start()
-	}
 
-	damaged(): void {
-		this.playerHitTweens.resume()
-		this.player.alpha = 0.8
-	}
+    this.player.play('run')
 
-	recovered(): void {
-		this.player.alpha = 1
-		this.playerHitTweens.restart()
-		this.playerHitTweens.pause()
-	}
+    this.playerHitTweens = this.scene.tweens.add({
+      targets: this.player,
+      scale: FULLCHARGE_SCALE,
+      duration: FULLCHARGE_ANIMATION_MS,
+      ease: 'sine.inout',
+      yoyo: true,
+      repeat: -1,
+    })
+    this.playerHitTweens.pause()
+    this.player.setCollideWorldBounds(true)
+  }
 
-	isLeftOf(x: number): boolean {
-		return this.player.x > x
-	}
+  addJetEngine() {
+    const jetEngine = this.scene.add.particles(0, 0, 'fire', {
+      gravityY: 200,
+      speed: 100,
+      scale: { start: 1, end: 0 },
+      blendMode: Phaser.BlendModes.ADD,
+    })
+    jetEngine.startFollow(this.player, 0, MARGIN)
+  }
 
-	isRightOf(x: number): boolean {
-		return this.player.x < x
-	}
+  addChargeParticle() {
+    this.chargeEmitter = this.scene.add.particles(0, 0, 'charge', {
+      speed: 64,
+      scale: 0.1,
+      blendMode: Phaser.BlendModes.ADD,
+    })
+    this.chargeEmitter.startFollow(this.player)
+    this.chargeEmitter.active = false
+  }
 
-	getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
-		return this.player
-	}
+  moveLeft(delta: number): void {
+    this.player.x = this.player.x - (PLAYER_SPEED * delta) / 1000
+  }
 
-	getIsHit(): boolean {
-		return this.isHit
-	}
+  moveRight(delta: number): void {
+    this.player.x = this.player.x + (PLAYER_SPEED * delta) / 1000
+  }
 
-	setIsHit(isHit: boolean): void {
-		this.isHit = isHit
-	}
+  getLaserLocation(): { x: number; y: number } {
+    return { x: this.player.x, y: this.player.y - 20 }
+  }
 
-	startReload(): void {
-		this.isReload = true
-		this.isReloading = false
-		if (this.chargeEmitter) this.chargeEmitter.active = true
-	}
+  charge(): void {
+    this.player.play('charge', true)
+    this.isReloading = true
+    this.chargeEmitter.active = true
+    this.chargeEmitter.start()
+  }
 
-	reloadReset(): void {
-		this.isReload = false
-		this.chargeEmitter.stop()
-	}
+  damaged(): void {
+    this.playerHitTweens.resume()
+    this.player.alpha = 0.8
+  }
 
-	reloadResetting(): void {
-		this.isReloading = false
-		this.chargeEmitter.stop()
-	}
+  recovered(): void {
+    this.player.alpha = 1
+    this.playerHitTweens.restart()
+    this.playerHitTweens.pause()
+  }
 
-	getIsReload(): boolean {
-		return this.isReload
-	}
+  isLeftOf(x: number): boolean {
+    return this.player.x > x
+  }
 
-	getIsReloading(): boolean {
-		return this.isReloading
-	}
+  isRightOf(x: number): boolean {
+    return this.player.x < x
+  }
+
+  getBody(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
+    return this.player
+  }
+
+  getIsHit(): boolean {
+    return this.isHit
+  }
+
+  setIsHit(isHit: boolean): void {
+    this.isHit = isHit
+  }
+
+  startReload(): void {
+    this.isReload = true
+    this.isReloading = false
+    if (this.chargeEmitter) this.chargeEmitter.active = true
+  }
+
+  reloadReset(): void {
+    this.player.play('attack', true)
+    this.isAttacking = true
+    this.isReload = false
+    this.chargeEmitter.stop()
+    setTimeout(
+      () => {
+        this.isAttacking = false
+        this.player.play('run', true)
+      },
+      LASER_FREQUENCY_MS * BULLET_COUNT
+    )
+  }
+
+  attack(): void {
+    this.player.play('attack', true)
+  }
+
+  reloadResetting(): void {
+    this.player.play('run', true)
+    this.isAttacking = false
+    this.isReloading = false
+    this.chargeEmitter.stop()
+  }
+
+  getIsReload(): boolean {
+    return this.isReload
+  }
+
+  getIsReloading(): boolean {
+    return this.isReloading
+  }
+
+  getIsAttacking(): boolean {
+    return this.isAttacking
+  }
+
+  hide(): void {
+    this.player.setVisible(false)
+  }
+
+  show(): void {
+    this.player.setVisible(true)
+  }
 }

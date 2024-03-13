@@ -132,7 +132,10 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	setFullCharge() {
 		this.releaseText.setVisible(true)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR);
-		this.gauge.setFillStyle(HOLD_BAR_CHARGED_COLOR, 1)
+		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(
+			HOLD_BAR_CHARGED_COLOR,
+			1,
+		)
 		if (!this.shake.isPlaying()) {
 			this.shake.resume()
 		}
@@ -149,7 +152,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 			duration: LASER_FREQUENCY_MS * BULLET_COUNT,
 			ease: 'sine.inout',
 		})
-		this.gauge.setFillStyle(HOLD_BAR_COLOR, 1)
+		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(HOLD_BAR_COLOR, 1)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR);
 		this.holdButtonDuration = 0
 		setTimeout(
@@ -164,7 +167,10 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	}
 
 	deplete() {
-		this.gauge.setFillStyle(HOLD_BAR_EMPTY_COLOR, 1)
+		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(
+			HOLD_BAR_EMPTY_COLOR,
+			1,
+		)
 		//        this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR);
 	}
 
@@ -192,5 +198,13 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	hideDown(): void {
 		this.downText?.setVisible(false)
 		;(<Phaser.GameObjects.Arc>this.down).setFillStyle(HOLD_BAR_IDLE_COLOR, 1)
+	}
+
+	setStep(): void {
+		// TODO
+	}
+
+	setVisible(_: boolean) {
+		// TODO
 	}
 }
