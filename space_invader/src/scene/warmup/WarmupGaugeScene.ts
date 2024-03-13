@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { BULLET_COUNT, DARK_ORANGE, GREEN, LASER_FREQUENCY_MS, MARGIN, PLAYER_START_MARGIN, TUTORIAL_DELAY_MS } from 'config'
+import { GREEN, MARGIN, PLAYER_START_MARGIN, TUTORIAL_DELAY_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import EventEmitter = Phaser.Events.EventEmitter
 import WebFont from 'webfontloader'
@@ -13,7 +13,7 @@ export default class WarmupScene extends Phaser.Scene {
 
   preload() {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-    this.load.atlas('ui', 'assets/sprites/warmup/warmup_all.png', 'assets/sprites/warmup/warmup_all.json');
+    this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
   }
 
   init({ event }: { event: EventEmitter }) {

@@ -4,7 +4,8 @@ import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 import {
   BOSS_TIME_MS,
-  BULLET_COUNT, DARK_BROWN, HOLD_DURATION_MS, LARGE_FONT_SIZE,
+  BULLET_COUNT,
+  DARK_BROWN, HOLD_DURATION_MS, LARGE_FONT_SIZE,
   LASER_FREQUENCY_MS,
   MARGIN
 } from 'config'
@@ -16,7 +17,7 @@ import { MeteorFactory } from 'component/enemy/MeteorFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { Boss } from '../component/enemy/Boss'
+// import { Boss } from '../component/enemy/boss/Boss'
 import I18nSingleton from '../i18n/I18nSingleton'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
@@ -41,12 +42,6 @@ export default class GameScene extends Phaser.Scene {
   private tutorialMeteor!: Meteor
   private isCompleteWarmup = false
   private menu!: Menu
-
-  // TODO move to boss class
-  private boss!: Boss
-  private bossText!: Phaser.GameObjects.Text
-  private isBossTextShown!: boolean
-  private isBossShown!: boolean
 
   private event!: EventEmitter
   private gameLayer!: Phaser.GameObjects.Layer
@@ -84,18 +79,6 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('sensor_5', 'assets/ui/sensor_5.png')
 
     this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
-
-    this.load.atlas(
-      'bossMove',
-      'assets/character/enemy/Enemy-Normal-0.png',
-      'assets/character/enemy/Enemy-Normal.json',
-    );
-
-    this.load.atlas(
-      'bossHit',
-      'assets/character/enemy/Enemy_Hit-0.png',
-      'assets/character/enemy/Enemy_Hit.json',
-    );
 
     this.load.svg('resume', 'assets/icon/resume.svg')
     this.load.svg('finger press', 'assets/icon/finger-press.svg')
@@ -176,23 +159,6 @@ export default class GameScene extends Phaser.Scene {
     this.isCompleteWarmup = false
     this.event = new EventEmitter()
 
-    // TODO add to boss class
-    this.bossText = I18nSingleton
-      .getInstance()
-      .createTranslatedText(this, width / 2, height / 2, 'boss_attack')
-      .setOrigin(0.5, 1)
-      .setFontSize(LARGE_FONT_SIZE)
-    this.tweens.add({
-      targets: this.bossText,
-      scale: 1.25,
-      duration: 500,
-      yoyo: true,
-      repeat: -1,
-    })
-    this.bossText.setVisible(false)
-
-    this.boss = new Boss(this, this.player, this.score)
-
     const self = this
     WebFont.load({
       google: {
@@ -258,7 +224,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     // TODO add to boss class
-    if (this.isCompleteTutorial() && this.isCompleteWarmup && !this.isBossShown && !this.isBossTextShown) {
+    if (this.isCompleteTutorial() && this.isCompleteWarmup) {
       this.meteorFactory.createByTime(this, this.player, this.score, delta)
     }
 
@@ -316,39 +282,12 @@ export default class GameScene extends Phaser.Scene {
     this.singleLaserFactory.createByTime(
       this,
       this.player,
-      [...this.meteorFactory.getMeteors(), this.boss],
+      [...this.meteorFactory.getMeteors()],
       delta,
     )
 
     if (this.reloadCount.isDepleted()) {
       gauge.deplete()
-      return
-    }
-
-    // TODO move to boss class
-    if (this.isBossTextShown || this.isBossShown) {
-      this.bossText.setVisible(this.isBossTextShown)
-
-      // Boss text finish
-      if (this.isBossTextShown) {
-        setTimeout(() => {
-          if (!this.isBossTextShown) return
-          this.bossText.setVisible(false)
-          this.isBossTextShown = false
-          this.isBossShown = true
-          this.boss.move()
-        }, 5000)
-      }
-
-      // Start shooting Boss
-      if (this.isBossShown) {
-        this.singleLaserFactory.reset()
-        setTimeout(() => {
-          if (!this.isBossShown) return
-          this.isBossShown = false
-          this.boss.remove()
-        }, BOSS_TIME_MS)
-      }
       return
     }
 
@@ -375,9 +314,8 @@ export default class GameScene extends Phaser.Scene {
       setTimeout(() => {
         this.reloadCount.decrementCount()
       }, LASER_FREQUENCY_MS * BULLET_COUNT)
-      this.isBossTextShown = this.reloadCount.isBossShown()
 
-      if (!this.isBossTextShown) {
+      if (!this.reloadCount.isBossShown()) {
         this.player.reloadReset()
         gauge.reset()
       } else {
@@ -390,6 +328,15 @@ export default class GameScene extends Phaser.Scene {
           this.scene.launch('end game', { score: this.score.getScore() })
         }, LASER_FREQUENCY_MS * BULLET_COUNT)
       }
+    }
+
+    if(this.reloadCount.isBossShown()){
+      this.scene.start('alien boss scene', {
+      		score: this.score,
+      		player: this.player,
+      		reloadCount: this.reloadCount,
+      		menu: this.menu,
+     	})
     }
 
     if (this.player.getIsReloading() && !(this.controller1?.buttons.B2 > 0)) {
