@@ -55,5 +55,7 @@
   "warmup_exhale": "Exhale!",
   "warmup_inhale": "Inhale",
   "warmup_continue": "Touch to continue",
-  "boss_attack": "Boss Attack!"
+  "boss_attack": "Boss Attack!",
+  "avoid_poison": "Avoid Poison",
+  "collect_bullet": "Collect until full"
 }

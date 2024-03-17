@@ -2,16 +2,24 @@ import Player from 'component/player/Player'
 import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
-import { DARK_BROWN, MARGIN } from 'config'
+import {
+	BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE2_BULLET_COUNT,
+	BOSS_PHASE1_BULLET_COUNT,
+	BULLET_COUNT,
+	DARK_BROWN,
+	MARGIN,
+} from 'config'
 import Phaser from 'phaser'
 import MergedInput from 'phaser3-merged-input'
 //import { TripleLaserFactory} from "../component/weapon/TripleLaserFactory";
 import { MeteorFactory } from 'component/enemy/MeteorFactory'
+import { PosionFactory } from 'component/item/PoisonFactory'
+import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
 import { AlienBoss } from '../../component/enemy/boss/AlienBoss'
-// import { ShootPhase } from 'component/ui/InhaleGauge'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -23,6 +31,8 @@ export default class BossScene extends Phaser.Scene {
 
 	private singleLaserFactory!: SingleLaserFactory
 	private meteorFactory!: MeteorFactory
+	private poisonFactory!: PosionFactory
+	private bulletFactory!: BulletFactory
 	// private menu!: Menu
 
 	// TODO move to boss class
@@ -30,6 +40,7 @@ export default class BossScene extends Phaser.Scene {
 
 	private bossLayer!: Phaser.GameObjects.Layer
 	private menu!: Menu
+	private isCompleteItemTutorial!: boolean
 
 	constructor() {
 		super({ key: 'alien boss scene' })
@@ -45,8 +56,12 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-		  'alien', 'assets/character/enemy/alienV1.png', 'assets/character/enemy/alienV1.json'
+			'alien',
+			'assets/character/enemy/alienV1.png',
+			'assets/character/enemy/alienV1.json',
 		)
+
+		this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
 
 		this.load.image('fire', 'assets/effect/fire03.png')
 		this.load.image('laser', 'assets/effect/02.1_MCBullet.png')
@@ -88,10 +103,10 @@ export default class BossScene extends Phaser.Scene {
 		player: Player
 		reloadCount: ReloadCount
 	}) {
-		// this.score = score
-		// this.player = player
-		// this.reloadCount = reloadCount
-		// this.menu = menu
+		this.score = score
+		this.player = player
+		this.reloadCount = reloadCount
+		this.menu = menu
 	}
 
 	create() {
@@ -104,44 +119,36 @@ export default class BossScene extends Phaser.Scene {
 
 		this.bossLayer = this.add.layer()
 
-		// const menu = this.menu.getBody()
-		// this.bossLayer.add(menu)
-	  this.player = new Player(this, this.bossLayer)
-    // this.player.addChargeParticle()
-
-		this.gaugeRegistry = new InhaleGaugeRegistry(this)
-    this.gaugeRegistry.createbyDivision(1)
-
-    this.reloadCount = new ReloadCount(this, width / 2, MARGIN)
-    this.reloadCount.getBody().setOrigin(0.5, 0)
-
-    this.score = new Score(this)
-		this.menu = new Menu(this)
+		const menu = this.menu.getBody()
+		this.bossLayer.add(menu)
 
 		this.singleLaserFactory = new SingleLaserFactory()
 
-		// this.score
-		// 	.getLayer()
-		// 	.getAll()
-		// 	.forEach((layer) => this.bossLayer.add(layer))
+		this.score
+			.getLayer()
+			.getAll()
+			.forEach((layer) => this.bossLayer.add(layer))
 
-		// this.reloadCount
-		// 	.getLayer()
-		// 	.getAll()
-		// 	.forEach((layer) => this.bossLayer.add(layer))
+		this.reloadCount
+			.getLayer()
+			.getAll()
+			.forEach((layer) => this.bossLayer.add(layer))
 
-		// const player = this.player.getBody()
-		// this.bossLayer.add(player)
-		// this.player.reloadResetting()
+		const player = this.player.getBody()
+		this.bossLayer.add(player)
+		this.player.reloadResetting()
 
 		this.boss = new AlienBoss(this, this.player, this.score)
 
-		// this.gaugeRegistry = new InhaleGaugeRegistry(this)
-		// this.gaugeRegistry.createbyDivision(1)
-		// this.gaugeRegistry.get(0).setVisible(false)
+		this.gaugeRegistry = new InhaleGaugeRegistry(this)
+		this.gaugeRegistry.createbyDivision(1)
+		this.gaugeRegistry.get(0).setVisible(false)
 
-		// this.meteorFactory = new MeteorFactory()
-		// this.singleLaserFactory = new SingleLaserFactory()
+		this.meteorFactory = new MeteorFactory()
+		this.poisonFactory = new PosionFactory()
+		this.bulletFactory = new BulletFactory()
+
+		this.isCompleteItemTutorial = false
 
 		const self = this
 		WebFont.load({
@@ -161,9 +168,20 @@ export default class BossScene extends Phaser.Scene {
 
 	update(_: number, delta: number) {
 		const gauge = this.gaugeRegistry?.get(0)
+		// this.bulletFactory.createByTime(this, this.player, gauge, delta)
 
 		if (!this.boss.getIsCutSceneShown()) {
 			this.boss.showCutscene()
+		}
+		
+		if (!this.isCompleteItemTutorial && this.boss.getIsItemPhase()) {
+			this.scene.launch('boss item tutorial')
+			this.isCompleteItemTutorial = true
+			
+		} else if (this.boss.getIsItemPhase()){
+			console.log(this.player.getBullet())
+			this.poisonFactory.createByTime(this, this.player, gauge, delta)
+			this.bulletFactory.createByTime(this, this.player, gauge, delta)
 		}
 
 		if (this.input.pointer1.isDown) {
@@ -181,20 +199,21 @@ export default class BossScene extends Phaser.Scene {
 		// scroll the background
 		this.background.tilePositionY += 1.5
 
-		this.singleLaserFactory.reset()
-		this.singleLaserFactory.createByTime(
-			this,
-			this.player,
-			[this.boss],
-			delta,
-		)
+		this.singleLaserFactory.createByTime(this, this.player, [this.boss], delta)
 
-		// if (this.player.getIsReload()) {
-		// 	this.singleLaserFactory.reset(ShootPhase.BOSS_1)
-		// 	this.player.reloadReset(ShootPhase.BOSS_1)
-		// 	gauge.reset(ShootPhase.BOSS_1)
-		// }
+		if (this.player.getIsReload()) {
+			this.singleLaserFactory.reset(SHOOT_PHASE.BOSS_PHASE_1)
+			this.player.reloadReset(SHOOT_PHASE.BOSS_PHASE_1)
+			gauge.reset(SHOOT_PHASE.BOSS_PHASE_1)
+		}
 	}
+}
+
+export enum SHOOT_PHASE {
+	NORMAL = BULLET_COUNT,
+	BOSS_PHASE_1 = BOSS_PHASE1_BULLET_COUNT,
+	BOSSV1_PHASE_2 = BOSSV1_PHASE2_BULLET_COUNT,
+	BOSSV2_PHASE_2 = BOSSV2_PHASE2_BULLET_COUNT,
 }
 
 // TODO create test

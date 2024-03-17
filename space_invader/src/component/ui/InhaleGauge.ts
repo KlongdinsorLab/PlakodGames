@@ -61,7 +61,7 @@ export default abstract class InhaleGauge {
 
 	abstract setFullCharge(): void
 
-	abstract reset(): void
+	abstract reset(bulletCount: number): void
 
 	abstract resetting(): void
 

@@ -6,6 +6,7 @@ import {
 	BOSS_HIT_DELAY_MS,
 	FIRST_STAGE_BOSS_TIME_MS,
 	LARGE_FONT_SIZE,
+	BOSS_TIME_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 import I18nSingleton from 'i18n/I18nSingleton'
@@ -112,7 +113,6 @@ export class AlienBoss extends Boss {
 		this.move()
 		setTimeout(() => {
 			this.remove()
-			this.isItemPhase = true
 		}, FIRST_STAGE_BOSS_TIME_MS)
 	}
 
@@ -155,6 +155,7 @@ export class AlienBoss extends Boss {
 			-140,
 		)
 		this.enemy.setPath(path).startFollow({ duration: 200 })
+		this.isItemPhase = true
 	}
 
 	showCutscene(): void {
@@ -170,10 +171,6 @@ export class AlienBoss extends Boss {
 
 	getIsCutSceneShown(): boolean {
 		return this.isCutSceneShown
-	}
-
-	enterItemPhase(): void {
-		this.isItemPhase = false
 	}
 
 	isAttackPhase(): boolean {

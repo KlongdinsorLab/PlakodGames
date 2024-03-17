@@ -55,5 +55,7 @@
   "warmup_exhale": "เป่าลมออกจากปาก ให้หมด",
   "warmup_inhale": "ดูด",
   "warmup_continue": "แตะจอเพื่อไปต่อ",
-  "boss_attack": "บอสโจมตี!"
+  "boss_attack": "บอสโจมตี!",
+  "avoid_poison": "หลบ",
+  "collect_bullet": "เก็บให้เต็มหลอด"
 }

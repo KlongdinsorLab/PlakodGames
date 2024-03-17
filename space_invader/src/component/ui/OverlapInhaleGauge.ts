@@ -120,8 +120,8 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    reset() {
-        let currentBulletCount = BULLET_COUNT
+    reset(bulletCount:number) {
+        let currentBulletCount = bulletCount
         isReloading = true
         this.isHoldbarReducing = true
         bulletText.setVisible(true)
@@ -137,7 +137,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
                 this.holdButtonDuration = 0
                 isReloading = false
             },
-            LASER_FREQUENCY_MS * BULLET_COUNT,
+            LASER_FREQUENCY_MS * bulletCount,
             )
 
 
@@ -145,7 +145,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
             currentBulletCount--
             bulletText.setText(`⚡️: ${currentBulletCount}`)
 
-        }, LASER_FREQUENCY_MS, BULLET_COUNT
+        }, LASER_FREQUENCY_MS, bulletCount
         )
 
     }
@@ -195,6 +195,36 @@ export default class OverlapInhaleGauge extends InhaleGauge {
             ease: 'sine.inout',
         })
         stepBar.setFillStyle(this.stepColors[step])
+        this.gauge.setAlpha(0.2)
+    }
+
+    chargeItem(_: number) {
+        if(isReloading) return
+        const gauge = <Phaser.GameObjects.Rectangle>this.gauge
+        gauge.setVisible(true)
+        this.gauge.setAlpha(1)
+        stepBar.setVisible(false)
+        gauge.setFillStyle(0x7FCF01)
+        gauge.setScale(this.getScaleX(), 1)
+        this.soundManager.play(this.chargingSound!)
+    }
+
+    setItemStep(step: number): void {
+        if(isReloading) {
+            stepBar.setVisible(false)
+            return
+        }
+        if(step >= 2) {
+            step++
+        }
+        stepBar.setVisible(true)
+        this.scene.tweens.add({
+            targets: stepBar,
+            x: this.getX(step/2) + this.getBarWidth()/2,
+            duration: 20,
+            ease: 'sine.inout',
+        })
+        stepBar.setFillStyle(0x7FCF01)
         this.gauge.setAlpha(0.2)
     }
     

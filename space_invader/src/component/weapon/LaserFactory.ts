@@ -45,7 +45,7 @@ export abstract class LaserFactory {
 		})
 	}
 
-	reset(): void {
-		this.bulletCount = BULLET_COUNT
+	reset(bulletCount:number): void {
+		this.bulletCount = bulletCount
 	}
 }

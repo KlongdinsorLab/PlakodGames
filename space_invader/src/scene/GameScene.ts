@@ -21,6 +21,7 @@ import WebFont from 'webfontloader'
 import I18nSingleton from '../i18n/I18nSingleton'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
+import { SHOOT_PHASE } from './boss/BossScene'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -310,14 +311,14 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
-      this.singleLaserFactory.reset()
+      this.singleLaserFactory.reset(SHOOT_PHASE.NORMAL)
       setTimeout(() => {
         this.reloadCount.decrementCount()
       }, LASER_FREQUENCY_MS * BULLET_COUNT)
 
       if (!this.reloadCount.isBossShown()) {
-        this.player.reloadReset()
-        gauge.reset()
+        this.player.reloadReset(SHOOT_PHASE.NORMAL)
+        gauge.reset(SHOOT_PHASE.NORMAL)
       } else {
         this.player.attack()
       }
@@ -331,7 +332,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if(this.reloadCount.isBossShown()){
-      this.scene.start('alien boss scene', {
+      this.scene.pause()
+      this.scene.launch('alien boss scene', {
       		score: this.score,
       		player: this.player,
       		reloadCount: this.reloadCount,

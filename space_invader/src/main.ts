@@ -17,6 +17,8 @@ import RegisterScene from './scene/auth/RegisterScene'
 import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
 import BossScene from 'scene/boss/BossScene'
+import BossTransition from 'scene/boss/BossTransition'
+import BossItemTutorial from 'scene/boss/BossItemTutorial'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -53,7 +55,9 @@ const config: Phaser.Types.Core.GameConfig = {
 		WarmupGaugeScene,
 		WarmupScene,
 		PauseScene,
-		BossScene
+		BossScene,
+		BossTransition,
+		BossItemTutorial
 	],
 }
 
