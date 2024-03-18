@@ -55,7 +55,10 @@
   "warmup_exhale": "เป่าลมออกจากปาก ให้หมด",
   "warmup_inhale": "ดูด",
   "warmup_continue": "แตะจอเพื่อไปต่อ",
-  "boss_attack": "บอสโจมตี!",
+  "boss_attack": "โจมตีบอส",
+  "boss_escape": "บอสหลบหนี",
   "avoid_poison": "หลบ",
-  "collect_bullet": "เก็บให้เต็มหลอด"
+  "collect_bullet": "เก็บให้เต็มหลอด",
+  "alien_boss_name": "เอเลี่ยนซ่า",
+  "player_name": "น้องปิ๊ด"
 }

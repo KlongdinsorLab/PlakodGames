@@ -15,6 +15,7 @@ export const BOSS_MULTIPLE_COUNT = 5
 export const BOSS_TIME_MS = 120_000
 export const FIRST_STAGE_BOSS_TIME_MS = 30_000
 export const SECOND_STAGE_BOSS_TIME_MS = 45_000
+export const COLLECT_BULLET_COUNT = 10
 
 //export const BULLET_COUNT = 5
 //export const RELOAD_COUNT = 4

@@ -5,12 +5,10 @@ import {
 	DESTROY_METEOR_SCORE,
 	BOSS_HIT_DELAY_MS,
 	FIRST_STAGE_BOSS_TIME_MS,
-	LARGE_FONT_SIZE,
-	BOSS_TIME_MS,
+	SECOND_STAGE_BOSS_TIME_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
-import I18nSingleton from 'i18n/I18nSingleton'
-import { Boss } from './Boss'
+import {  Boss } from './Boss'
 
 let isHit = false
 
@@ -20,28 +18,19 @@ export enum BOSS {
 
 export class AlienBoss extends Boss {
 	private soundManager: SoundManager
-	private bossText!: Phaser.GameObjects.Text
-	private isCutSceneShown!: boolean
+	private isStartAttack!: boolean
 	private isItemPhase!: boolean
+	private isAttackPhase!: boolean
+	private isSecondPhase!: boolean
 
 	constructor(scene: Phaser.Scene, player: Player, score: Score) {
-		const { width, height } = scene.scale
+		// const { width, height } = scene.scale
 		super(scene, player, score)
 		this.soundManager = new SoundManager(scene)
 
-		this.bossText = I18nSingleton.getInstance()
-			.createTranslatedText(this.scene, width / 2, height / 2, 'boss_attack')
-			.setOrigin(0.5, 1)
-			.setFontSize(LARGE_FONT_SIZE)
-		this.scene.tweens.add({
-			targets: this.bossText,
-			scale: 1.25,
-			duration: 500,
-			yoyo: true,
-			repeat: -1,
-		})
-		this.bossText.setVisible(false)
-		this.isCutSceneShown = false
+		this.isStartAttack = false
+		this.isAttackPhase = true
+		this.isItemPhase = false
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
@@ -65,7 +54,7 @@ export class AlienBoss extends Boss {
 				prefix: 'alienv1_hurt_',
 				suffix: '.png',
 				start: 1,
-				end: 2,
+				end: 1,
 				zeroPad: 5,
 			}),
 			frameRate: 18,
@@ -74,7 +63,7 @@ export class AlienBoss extends Boss {
 
 		this.enemy = this.scene.add
 			.follower(path, width / 2, -140, 'alien')
-			.setOrigin(0.5)
+			.setOrigin(0.5).setScale(0.8)
 		this.enemy.play('boss-move')
 
 		this.scene.physics.world.enable(this.enemy)
@@ -110,10 +99,16 @@ export class AlienBoss extends Boss {
 	}
 
 	attack(): void {
+		let bossTime
+		if (!this.isSecondPhase) {
+			bossTime = FIRST_STAGE_BOSS_TIME_MS
+		} else {
+			bossTime = SECOND_STAGE_BOSS_TIME_MS
+		}
 		this.move()
 		setTimeout(() => {
 			this.remove()
-		}, FIRST_STAGE_BOSS_TIME_MS)
+		}, bossTime)
 	}
 
 	hit(): void {
@@ -155,29 +150,46 @@ export class AlienBoss extends Boss {
 			-140,
 		)
 		this.enemy.setPath(path).startFollow({ duration: 200 })
-		this.isItemPhase = true
+		this.endAttackPhase()
 	}
 
-	showCutscene(): void {
-		this.bossText.setVisible(true)
-		this.isCutSceneShown = true
-
+	
+	startAttackPhase(bossPhase: number): void {
+		this.isSecondPhase = bossPhase === 2
+		this.isStartAttack = true
 		setTimeout(() => {
-			this.bossText.setVisible(false)
+			this.isAttackPhase = true
+			this.isItemPhase = false
 			this.attack()
 			this.player.startReload()
-		}, 5000)
+		}, 2000)
 	}
 
-	getIsCutSceneShown(): boolean {
-		return this.isCutSceneShown
+	endAttackPhase(): void {
+		if (!this.isSecondPhase) {
+			this.isItemPhase = true
+			this.isAttackPhase = false
+			this.isStartAttack = false
+		} else {
+			this.isAttackPhase = false
+			this.isItemPhase = false
+		}
 	}
 
-	isAttackPhase(): boolean {
-		return false
+
+	getIsStartAttack(): boolean {
+		return this.isStartAttack
+	}
+
+	getIsAttackPhase(): boolean {
+		return this.isAttackPhase
 	}
 
 	getIsItemPhase(): boolean {
 		return this.isItemPhase
+	}
+
+	getIsSecondPhase(): boolean {
+		return this.isSecondPhase
 	}
 }

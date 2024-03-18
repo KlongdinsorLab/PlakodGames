@@ -18,7 +18,10 @@ import DifficultyScene from './scene/level/DifficultyScene'
 import AirflowScene from './scene/level/AirflowScene'
 import BossScene from 'scene/boss/BossScene'
 import BossTransition from 'scene/boss/BossTransition'
-import BossItemTutorial from 'scene/boss/BossItemTutorial'
+import BossCutSceneVS from 'scene/boss/bossCutScene/BossCutSceneVS'
+import BossItemTutorial from 'scene/boss/bossTutorial/BossItemTutorial'
+import BossAttackTutorial from 'scene/boss/bossTutorial/BossAttackTutorial'
+import BossCutSceneEscape from 'scene/boss/bossCutScene/BossCutSceneEscape'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -57,7 +60,10 @@ const config: Phaser.Types.Core.GameConfig = {
 		PauseScene,
 		BossScene,
 		BossTransition,
-		BossItemTutorial
+		BossItemTutorial,
+		BossAttackTutorial,
+		BossCutSceneVS,
+		BossCutSceneEscape,
 	],
 }
 

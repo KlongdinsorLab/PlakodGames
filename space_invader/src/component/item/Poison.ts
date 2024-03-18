@@ -2,8 +2,10 @@ import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 
 import {
+  HIT_METEOR_SCORE,
 	MARGIN,
 	METEOR_SPEED,
+  PLAYER_HIT_DELAY_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 import { Item } from './item'
@@ -15,10 +17,11 @@ export class Poison extends Item {
 	constructor(
 		scene: Phaser.Scene,
 		player: Player,
+    score: Score,
     gauge: InhaleGauge,
 		isTutorial?: boolean,
 	) {
-		super(scene, player, gauge, isTutorial)
+		super(scene, player, score, gauge, isTutorial)
 		this.move()
 		this.soundManager = new SoundManager(scene)
 	}
@@ -35,13 +38,13 @@ export class Poison extends Item {
 			'item_poison.png',
 		)
 
-		const poisonGet = this.scene.physics.add.overlap(
+		const poisonCollider = this.scene.physics.add.overlap(
 			this.item,
 			this.player.getBody(),
-			(_, _poison) => {
-        this.player.reduceBullet()
+			() => {
+        this.score.add(HIT_METEOR_SCORE)
 				this.scene.tweens.add({ targets: this.item, duration: 200, alpha: 0 })
-        poisonGet.active = false
+        poisonCollider.active = false
 			},
 		)
 

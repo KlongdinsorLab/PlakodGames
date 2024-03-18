@@ -11,22 +11,24 @@ export class PosionFactory extends ItemFactory {
 	create(
 		scene: Phaser.Scene,
 		player: Player,
+		score: Score,
 		gauge: InhaleGauge,
 		tutorial?: boolean,
 	): Poison {
-		return new Poison(scene, player, gauge, tutorial)
+		return new Poison(scene, player, score, gauge, tutorial)
 	}
 
 	createByTime(
 		scene: Phaser.Scene,
 		player: Player,
+		score: Score,
 		gauge: InhaleGauge,
 		delta: number,
 	): void {
 		this.poisonTimer += delta
 		while (this.poisonTimer > 3000) {
 			this.poisonTimer -= 3000
-			const poison = this.create(scene, player, gauge)
+			const poison = this.create(scene, player, score, gauge)
 			this.poisons.forEach((poison) => {
 				if (!poison.isActive()) {
 					this.poisons.splice(this.poisons.indexOf(poison), 1)

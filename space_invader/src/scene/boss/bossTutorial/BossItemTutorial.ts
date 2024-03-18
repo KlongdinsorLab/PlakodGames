@@ -1,13 +1,13 @@
 import Phaser from 'phaser'
-import { GREEN, MARGIN, PLAYER_START_MARGIN, TUTORIAL_DELAY_MS } from 'config'
+import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
-import EventEmitter = Phaser.Events.EventEmitter
 import WebFont from 'webfontloader'
+import { BOSS_TTSCENE } from 'component/enemy/boss/Boss'
 
 export default class BossItemTutorial extends Phaser.Scene {
 
   constructor() {
-    super('boss item tutorial')
+    super(BOSS_TTSCENE.COLLECT_ITEM)
   }
 
   preload() {
@@ -28,7 +28,7 @@ export default class BossItemTutorial extends Phaser.Scene {
         .createTranslatedText(this, width/2, 18 * MARGIN, 'collect_bullet')
         .setOrigin(0.5, 0)
     
-    const arrow = this.add.image(width/2, height - PLAYER_START_MARGIN + 2 * MARGIN, 'bossAsset', 'arrow.png').setOrigin(0.5, 1);
+    // const arrow = this.add.image(width/2, height - PLAYER_START_MARGIN + 2 * MARGIN, 'bossAsset', 'arrow.png').setOrigin(0.5, 1);
     const poison = this.add.image(width/2, 9 * MARGIN, 'bossAsset', 'item_poison.png').setOrigin(0.5, 1);
     const bullet = this.add.image(width/2, 17 * MARGIN, 'bossAsset', 'item_bullet.png').setOrigin(0.5, 1);
     
@@ -36,8 +36,6 @@ export default class BossItemTutorial extends Phaser.Scene {
     const poisonBox = this.add.graphics().lineStyle(8,0xFB511C,1).strokeRoundedRect(width/3, 6 * MARGIN + 8, width/3, height/8, 32);
     const bulletBox = this.add.graphics().lineStyle(8,0x7EAF08,1).strokeRoundedRect(width/3 , 14 * MARGIN + 8, width/3, height/8, 32);
     
-   
-
     WebFont.load({
       google: {
         families: ['Mali']
@@ -68,7 +66,7 @@ export default class BossItemTutorial extends Phaser.Scene {
     });
 
       setTimeout(()=> {
-        arrow.setVisible(false)
+        // arrow.setVisible(false)
         poison.setVisible(false)
         bullet.setVisible(false)
         poisonBox.setVisible(false)

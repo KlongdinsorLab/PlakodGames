@@ -120,7 +120,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    reset(bulletCount:number) {
+    set(bulletCount:number) {
         let currentBulletCount = bulletCount
         isReloading = true
         this.isHoldbarReducing = true

@@ -55,7 +55,10 @@
   "warmup_exhale": "Exhale!",
   "warmup_inhale": "Inhale",
   "warmup_continue": "Touch to continue",
-  "boss_attack": "Boss Attack!",
+  "boss_attack": "Attack Boss",
+  "boss_escape": "Boss Escape",
   "avoid_poison": "Avoid Poison",
-  "collect_bullet": "Collect until full"
+  "collect_bullet": "Collect until full",
+  "alien_boss_name": "AlienZa",
+  "player_name": "Nong Pid"
 }

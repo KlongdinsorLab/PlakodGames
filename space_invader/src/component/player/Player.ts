@@ -1,5 +1,5 @@
 import {
-  BULLET_COUNT,
+  COLLECT_BULLET_COUNT,
   FULLCHARGE_ANIMATION_MS,
   FULLCHARGE_SCALE, LASER_FREQUENCY_MS,
   MARGIN,
@@ -16,6 +16,7 @@ export default class Player {
   private isReloading = false
   private isAttacking = false
   private bullet: number = 0
+  private isBulletFull: boolean = false
   private chargeEmitter!: Phaser.GameObjects.Particles.ParticleEmitter
 
   constructor(scene: Phaser.Scene, gameLayer: Phaser.GameObjects.Layer) {
@@ -179,7 +180,7 @@ export default class Player {
     if (this.chargeEmitter) this.chargeEmitter.active = true
   }
 
-  reloadReset(bulletCount:number): void {
+  reloadSet(bulletCount:number): void {
     this.player.play('attack', true)
     this.isAttacking = true
     this.isReload = false
@@ -225,18 +226,24 @@ export default class Player {
   }
 
   addBullet(): void {
+    if(this.isBulletFull) return
+    
     this.bullet++
+    if(this.bullet >= COLLECT_BULLET_COUNT){
+      this.isBulletFull = true
+    }
   }
 
-  reduceBullet(): void{
-    this.bullet--
+  resetBullet(): void {
+    this.bullet = 0
+    this.isBulletFull = false
   }
 
-  isBulletFull(): boolean{
-    return this.bullet === 10
+  getIsBulletFull(): boolean{
+    return this.isBulletFull
   }
 
-  getBullet(): number{
+  getBulletCount(): number {
     return this.bullet
   }
 }

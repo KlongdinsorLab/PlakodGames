@@ -11,18 +11,15 @@ import InhaleGauge from 'component/ui/InhaleGauge'
 
 export class Bullet extends Item {
   private soundManager: SoundManager
-  private gaugeItem: InhaleGauge
-  private step: number
 
   constructor(
     scene: Phaser.Scene,
     player: Player,
+    score: Score,
     gauge: InhaleGauge,
     isTutorial?: boolean,
   ) {
-    super(scene, player, gauge, isTutorial)
-    this.gaugeItem = gauge
-    this.step = 0
+    super(scene, player, score, gauge, isTutorial)
     this.move()
     this.soundManager = new SoundManager(scene)
   }
@@ -38,13 +35,13 @@ export class Bullet extends Item {
       'bossAsset', 'item_bullet.png'
     )
     
-    const bulletGet = this.scene.physics.add.overlap(
+    const bulletCollider = this.scene.physics.add.overlap(
       this.item,
       this.player.getBody(),
       () => {
         this.player.addBullet()
         this.scene.tweens.add({ targets: this.item, duration: 200, alpha: 0 })
-        bulletGet.active = false
+        bulletCollider.active = false
       },
     )
     return this.item

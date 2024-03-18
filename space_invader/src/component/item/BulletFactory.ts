@@ -12,22 +12,24 @@ export class BulletFactory extends ItemFactory {
 	create(
 		scene: Phaser.Scene,
 		player: Player,
+		score: Score,
 		gauge: InhaleGauge,
 		tutorial?: boolean,
 	): Bullet {
-		return new Bullet(scene, player, gauge, tutorial)
+		return new Bullet(scene, player, score, gauge, tutorial)
 	}
 
 	createByTime(
 		scene: Phaser.Scene,
 		player: Player,
+		score: Score,
 		gauge: InhaleGauge,
 		delta: number,
 	): void {
 		this.bulletTimer += delta
-		while (this.bulletTimer > METEOR_FREQUENCY_MS) {
-			this.bulletTimer -= METEOR_FREQUENCY_MS
-			const bullet = this.create(scene, player, gauge)
+		while (this.bulletTimer > 2000) {
+			this.bulletTimer -= 2000
+			const bullet = this.create(scene, player, score, gauge)
 			this.bullets.forEach((bullet) => {
 				if (!bullet.isActive()) {
 					this.bullets.splice(this.bullets.indexOf(bullet), 1)
