@@ -17,8 +17,14 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { AlienBoss } from '../../component/enemy/boss/AlienBoss'
-import { BOSS_CUTSCENE, BOSS_PHASE, BOSS_TTSCENE, SHOOT_PHASE } from 'component/enemy/boss/Boss'
+import { Boss, BossCutScene, BossName, BossPhase, BossTutorialScene, ShootingPhase, importClassByName } from 'component/enemy/boss/Boss'
+
+interface Props {
+	  name: BossName,
+		score: number,
+		playerX: number,
+		reloadCount: number, // TODO change name and class to lap
+}
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -35,15 +41,18 @@ export default class BossScene extends Phaser.Scene {
 	// private menu!: Menu
 
 	// TODO move to boss class
-	private boss!: AlienBoss
+	private boss!: Boss
 
 	private bossLayer!: Phaser.GameObjects.Layer
 	private menu!: Menu
 	private isCompleteItemTutorial!: boolean
 	private bulletText!: Phaser.GameObjects.Text
 
+	private isCompleteInit = false
+	private props!: Props
+
 	constructor() {
-		super({ key: 'alien boss scene' })
+		super({ key: 'bossScene' })
 	}
 
 	preload() {
@@ -92,22 +101,12 @@ export default class BossScene extends Phaser.Scene {
 		)
 	}
 
-	init({
-		score,
-		reloadCount,
-		menu,
-	}: {
-		score: Score
-		menu: Menu
-		player: Player
-		reloadCount: ReloadCount
-	}) {
-		this.score = score
-		this.reloadCount = reloadCount
-		this.menu = menu
+	init(props: Props) {
+	 this.props = props
 	}
 
-	create() {
+	async create() {
+	  const {name, score,	playerX, reloadCount} = this.props
 		const { width, height } = this.scale
 
 		this.background = this.add
@@ -117,19 +116,24 @@ export default class BossScene extends Phaser.Scene {
 
 		this.bossLayer = this.add.layer()
 
-		this.menu = new Menu(this)
-
-		this.score = new Score(this)
-		
-		this.singleLaserFactory = new SingleLaserFactory()
-
-		this.reloadCount = new ReloadCount(this, width / 2, MARGIN)
-    	this.reloadCount.getBody().setOrigin(0.5, 0)
-
 		this.player = new Player(this, this.bossLayer)
+		this.player.getBody().setX(playerX)
 		this.player.addChargeParticle()
 
-		this.boss = new AlienBoss(this, this.player, this.score)
+		this.menu = new Menu(this)
+
+		this.singleLaserFactory = new SingleLaserFactory()
+
+	  this.score = new Score(this)
+		this.score.setScore(score)
+
+		this.reloadCount = new ReloadCount(this, width / 2, MARGIN)
+    this.reloadCount.getBody().setOrigin(0.5, 0)
+    this.reloadCount.setCount(reloadCount)
+
+    const classRef = await importClassByName<Boss>(`${name}Boss`);
+		this.boss = new classRef(this, this.player, this.score)
+		this.isCompleteInit = true
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
 		this.gaugeRegistry.createbyDivision(1)
@@ -165,32 +169,34 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	update(_: number, delta: number) {
+	  if(!this.isCompleteInit) return
+
 		const gauge = this.gaugeRegistry?.get(0)
 
 		if (!this.boss.getIsStartAttack() && !this.boss.getIsItemPhase()) {
 			// Boss Phase 1
 			this.scene.pause()
-			this.scene.launch(BOSS_CUTSCENE.VS)
+			this.scene.launch(BossCutScene.VS)
 			setTimeout(() => {
-				this.scene.stop(BOSS_CUTSCENE.VS)
+				this.scene.stop(BossCutScene.VS)
 				this.scene.resume()
-				this.scene.launch(BOSS_TTSCENE.ATTACK_BOSS)
-				this.boss.startAttackPhase(BOSS_PHASE.PHASE_1)
+				this.scene.launch(BossTutorialScene.ATTACK_BOSS)
+				this.boss.startAttackPhase(BossPhase.PHASE_1)
 				setTimeout(() => {
-					this.scene.stop(BOSS_TTSCENE.ATTACK_BOSS)
-				}, 2000)
-			}, 3000)
+					this.scene.stop(BossTutorialScene.ATTACK_BOSS)
+				}, 2000) // TODO put in config
+			}, 3000) // TODO put in config
 		}
 
 		if (!this.isCompleteItemTutorial && this.boss.getIsItemPhase()) {
 			this.isCompleteItemTutorial = true
 				setTimeout(() => {
 					this.scene.pause()
-					this.scene.launch(BOSS_CUTSCENE.ESCAPE)
+					this.scene.launch(BossCutScene.ESCAPE)
 					setTimeout(() => {
 						this.scene.resume()
-						this.scene.stop(BOSS_CUTSCENE.ESCAPE)
-						this.scene.launch(BOSS_TTSCENE.COLLECT_ITEM)
+						this.scene.stop(BossCutScene.ESCAPE)
+						this.scene.launch(BossTutorialScene.COLLECT_ITEM)
 					},3000)
 				},1500)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()){
@@ -198,7 +204,7 @@ export default class BossScene extends Phaser.Scene {
 			this.meteorFactory.createByTime(this, this.player, this.score, delta)
 			this.poisonFactory.createByTime(this, this.player, this.score, gauge, delta)
 			this.bulletFactory.createByTime(this, this.player, this.score, gauge, delta)
-			
+
 			gauge.setVisible(false)
 			this.bulletText.setVisible(true)
         	this.bulletText.setText(` ${this.player.getBulletCount()} / 10`)
@@ -206,19 +212,19 @@ export default class BossScene extends Phaser.Scene {
 		} else if(this.player.getIsBulletFull() && !this.boss.getIsStartAttack()){
 			// Boss Phase 2
 			this.bulletText.setVisible(false)
-			this.scene.launch(BOSS_TTSCENE.ATTACK_BOSS)
-			this.boss.startAttackPhase(BOSS_PHASE.PHASE_2)
+			this.scene.launch(BossTutorialScene.ATTACK_BOSS)
+			this.boss.startAttackPhase(BossPhase.PHASE_2)
 			setTimeout(() => {
-				this.scene.stop(BOSS_TTSCENE.ATTACK_BOSS)
+				this.scene.stop(BossTutorialScene.ATTACK_BOSS)
 			}, 2000)
 		}
 
 		if(this.boss.getIsSecondPhase() && !this.boss.getIsAttackPhase() && !this.boss.getIsItemPhase()){
 			this.scene.pause()
-			this.scene.launch(BOSS_CUTSCENE.ESCAPE2)
+			this.scene.launch(BossCutScene.ESCAPE2)
 			setTimeout(() => {
 				// TODO: go back to gameScene
-				this.scene.stop(BOSS_CUTSCENE.ESCAPE2)
+				this.scene.stop(BossCutScene.ESCAPE2)
 			}, 3000)
 		}
 
@@ -239,13 +245,13 @@ export default class BossScene extends Phaser.Scene {
 
 		if (this.player.getIsReload() ) {
 			if(!this.boss.getIsSecondPhase()){
-				this.singleLaserFactory.set(SHOOT_PHASE.BOSS_PHASE_1)
-				this.player.reloadSet(SHOOT_PHASE.BOSS_PHASE_1)
-				gauge.set(SHOOT_PHASE.BOSS_PHASE_1)
+				this.singleLaserFactory.set(ShootingPhase.BOSS_PHASE_1)
+				this.player.reloadSet(ShootingPhase.BOSS_PHASE_1)
+				gauge.set(ShootingPhase.BOSS_PHASE_1)
 			} else {
-				this.singleLaserFactory.set(SHOOT_PHASE.BOSSV1_PHASE_2)
-				this.player.reloadSet(SHOOT_PHASE.BOSSV1_PHASE_2)
-				gauge.set(SHOOT_PHASE.BOSSV1_PHASE_2)
+				this.singleLaserFactory.set(ShootingPhase.BOSSV1_PHASE_2)
+				this.player.reloadSet(ShootingPhase.BOSSV1_PHASE_2)
+				gauge.set(ShootingPhase.BOSSV1_PHASE_2)
 			}
 		}
 	}

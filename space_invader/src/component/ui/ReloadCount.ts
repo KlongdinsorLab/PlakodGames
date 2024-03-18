@@ -54,6 +54,10 @@ export default class ReloadCount {
     return `${RELOAD_COUNT - count} / ${RELOAD_COUNT}`
   }
 
+  getCount(): number {
+    return this.reloadCount
+  }
+
   setCount(count: number): void {
     this.reloadCount = count
     this.body.setText(this.getCountText(count))

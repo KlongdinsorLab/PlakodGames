@@ -1,4 +1,4 @@
-import { BOSS_CUTSCENE } from 'component/enemy/boss/Boss'
+import { BossCutScene } from 'component/enemy/boss/Boss'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 
@@ -6,7 +6,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
 
 	constructor() {
-		super({ key: BOSS_CUTSCENE.VS })
+		super({ key: BossCutScene.VS })
 	}
 
 	preload() {
@@ -27,14 +27,14 @@ export default class BossCutSceneVS extends Phaser.Scene {
 
 	create() {
 		const { width, height } = this.scale
-		
+
 		this.background = this.add
 			.tileSprite(0, 0, width, height, 'boss_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
 
 		this.background.tilePositionY = 1
-		
+
 		const bossImage = this.add.image(-350, 500, 'alien', 'alienv1_attack_00000.png').setOrigin(0.5, 1).setScale(1.5);
 		const playerImage = this.add.image(850, 1200, 'player', 'mc_attack_00001.png').setOrigin(0.5, 1).setScale(2.5);
 		const rectangleBox = this.add.rectangle(width / 2, 630, 2 * width, 50, 0x000000)
@@ -66,7 +66,7 @@ export default class BossCutSceneVS extends Phaser.Scene {
 					})
 					.setFontSize('200px')
 					.setStroke('#000000', 36)
-	
+
 				bossName.setStyle({
 					...bossTutorialUiStyle,
 					color: 'white',

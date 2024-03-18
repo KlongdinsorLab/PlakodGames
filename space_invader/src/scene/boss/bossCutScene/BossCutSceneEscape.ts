@@ -1,10 +1,10 @@
-import { BOSS_CUTSCENE } from 'component/enemy/boss/Boss'
+import { BossCutScene } from 'component/enemy/boss/Boss'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 
 export default class BossCutSceneEscape extends Phaser.Scene {
 	constructor() {
-		super({ key: BOSS_CUTSCENE.ESCAPE })
+		super({ key: BossCutScene.ESCAPE })
 	}
 
 	preload() {
@@ -51,7 +51,7 @@ export default class BossCutSceneEscape extends Phaser.Scene {
             width / 2,
             -140,
         )
-        
+
         setTimeout(() => {
             boss.setPath(path2).startFollow({ duration: 1500 })
         }, 1000)

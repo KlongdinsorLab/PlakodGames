@@ -56,4 +56,11 @@ export default class Score {
   getScore(): number {
     return this.score
   }
+
+  setScore(score: number): void {
+    this.score = score
+    I18nSingleton.getInstance().setTranslatedText(this.scoreText, 'score', {
+      score: this.score,
+    })
+  }
 }

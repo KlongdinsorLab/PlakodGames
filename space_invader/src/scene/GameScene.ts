@@ -3,9 +3,8 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 import {
-  BOSS_TIME_MS,
   BULLET_COUNT,
-  DARK_BROWN, HOLD_DURATION_MS, LARGE_FONT_SIZE,
+  DARK_BROWN, HOLD_DURATION_MS,
   LASER_FREQUENCY_MS,
   MARGIN
 } from 'config'
@@ -18,10 +17,10 @@ import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
 // import { Boss } from '../component/enemy/boss/Boss'
-import I18nSingleton from '../i18n/I18nSingleton'
+// import I18nSingleton from '../i18n/I18nSingleton'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
-import { BOSS_CUTSCENE, SHOOT_PHASE } from 'component/enemy/boss/Boss'
+import { BossName, ShootingPhase } from 'component/enemy/boss/Boss'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -311,14 +310,14 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if (this.player.getIsReload() && !(this.controller1?.buttons.B2 > 0)) {
-      this.singleLaserFactory.set(SHOOT_PHASE.NORMAL)
+      this.singleLaserFactory.set(ShootingPhase.NORMAL)
       setTimeout(() => {
         this.reloadCount.decrementCount()
       }, LASER_FREQUENCY_MS * BULLET_COUNT)
 
       if (!this.reloadCount.isBossShown()) {
-        this.player.reloadSet(SHOOT_PHASE.NORMAL)
-        gauge.set(SHOOT_PHASE.NORMAL)
+        this.player.reloadSet(ShootingPhase.NORMAL)
+        gauge.set(ShootingPhase.NORMAL)
       } else {
         this.player.attack()
       }
@@ -332,13 +331,14 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if(this.reloadCount.isBossShown()){
+
       this.scene.pause()
-      this.scene.launch('alien boss scene', {
-        score: this.score,
-        player: this.player,
-        reloadCount: this.reloadCount,
-        menu: this.menu,
-       })
+      this.scene.launch('bossScene', {
+        name: BossName.B1,
+        score: this.score.getScore(),
+        playerX: this.player.getBody().x,
+        reloadCount: this.reloadCount.getCount(),
+      })
     }
 
     if (this.player.getIsReloading() && !(this.controller1?.buttons.B2 > 0)) {

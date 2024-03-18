@@ -12,11 +12,7 @@ import {  Boss } from './Boss'
 
 let isHit = false
 
-export enum BOSS {
-	ALIEN = 'alien',
-}
-
-export class AlienBoss extends Boss {
+export class B1Boss extends Boss {
 	private soundManager: SoundManager
 	private isStartAttack!: boolean
 	private isItemPhase!: boolean
@@ -24,10 +20,8 @@ export class AlienBoss extends Boss {
 	private isSecondPhase!: boolean
 
 	constructor(scene: Phaser.Scene, player: Player, score: Score) {
-		// const { width, height } = scene.scale
 		super(scene, player, score)
 		this.soundManager = new SoundManager(scene)
-
 		this.isStartAttack = false
 		this.isAttackPhase = true
 		this.isItemPhase = false
@@ -153,7 +147,7 @@ export class AlienBoss extends Boss {
 		this.endAttackPhase()
 	}
 
-	
+
 	startAttackPhase(bossPhase: number): void {
 		this.isSecondPhase = bossPhase === 2
 		this.isStartAttack = true
@@ -175,7 +169,6 @@ export class AlienBoss extends Boss {
 			this.isItemPhase = false
 		}
 	}
-
 
 	getIsStartAttack(): boolean {
 		return this.isStartAttack

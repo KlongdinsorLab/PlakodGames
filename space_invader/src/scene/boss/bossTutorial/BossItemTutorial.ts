@@ -2,17 +2,17 @@ import Phaser from 'phaser'
 import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
-import { BOSS_TTSCENE } from 'component/enemy/boss/Boss'
+import { BossTutorialScene } from 'component/enemy/boss/Boss'
 
 export default class BossItemTutorial extends Phaser.Scene {
 
   constructor() {
-    super(BOSS_TTSCENE.COLLECT_ITEM)
+    super(BossTutorialScene.COLLECT_ITEM)
   }
 
   preload() {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-    
+
     this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
   }
 
@@ -27,15 +27,15 @@ export default class BossItemTutorial extends Phaser.Scene {
         .getInstance()
         .createTranslatedText(this, width/2, 18 * MARGIN, 'collect_bullet')
         .setOrigin(0.5, 0)
-    
+
     // const arrow = this.add.image(width/2, height - PLAYER_START_MARGIN + 2 * MARGIN, 'bossAsset', 'arrow.png').setOrigin(0.5, 1);
     const poison = this.add.image(width/2, 9 * MARGIN, 'bossAsset', 'item_poison.png').setOrigin(0.5, 1);
     const bullet = this.add.image(width/2, 17 * MARGIN, 'bossAsset', 'item_bullet.png').setOrigin(0.5, 1);
-    
+
 
     const poisonBox = this.add.graphics().lineStyle(8,0xFB511C,1).strokeRoundedRect(width/3, 6 * MARGIN + 8, width/3, height/8, 32);
     const bulletBox = this.add.graphics().lineStyle(8,0x7EAF08,1).strokeRoundedRect(width/3 , 14 * MARGIN + 8, width/3, height/8, 32);
-    
+
     WebFont.load({
       google: {
         families: ['Mali']
@@ -52,8 +52,8 @@ export default class BossItemTutorial extends Phaser.Scene {
           })
             .setFontSize('6em')
             .setStroke('#FB511C', 12);
-  
-  
+
+
           bulletText.setStyle({
             ...bossTutorialUiStyle,
             color: 'white',

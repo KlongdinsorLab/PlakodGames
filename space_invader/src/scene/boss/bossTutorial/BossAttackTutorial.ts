@@ -1,4 +1,4 @@
-import { BOSS_TTSCENE } from 'component/enemy/boss/Boss'
+import { BossTutorialScene } from 'component/enemy/boss/Boss'
 import { LARGE_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
@@ -6,7 +6,7 @@ import WebFont from 'webfontloader'
 export default class BossAttackTutorial extends Phaser.Scene {
 
 	constructor() {
-		super({ key: BOSS_TTSCENE.ATTACK_BOSS })
+		super({ key: BossTutorialScene.ATTACK_BOSS })
 	}
 
 	preload() {
@@ -50,7 +50,7 @@ export default class BossAttackTutorial extends Phaser.Scene {
 		const bossImage = this.add
 			.image(width / 2, -140, 'alien', 'alienv1_attack_00000.png')
 			.setOrigin(0.5, 1)
-			
+
 		this.tweens.add({
 			targets: bossImage,
 			y: 480,
