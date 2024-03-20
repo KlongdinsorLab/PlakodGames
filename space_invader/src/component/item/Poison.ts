@@ -1,13 +1,12 @@
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
-
 import {
   HIT_METEOR_SCORE,
 	MARGIN,
 	METEOR_SPEED,
 } from 'config'
 // import SoundManager from 'component/sound/SoundManager'
-import { Item } from './item'
+import { Item } from './Item'
 import InhaleGauge from 'component/ui/InhaleGauge'
 
 export class Poison extends Item {
