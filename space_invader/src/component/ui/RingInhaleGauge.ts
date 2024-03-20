@@ -34,7 +34,7 @@ export default class RingInhaleGauge extends InhaleGauge {
 		this.scene.add.image(x, y, 'ring').setScale(0.65)
 		this.soundManager = new SoundManager(scene)
 	}
-	
+
 	drawArc(index: number, gauge: Phaser.GameObjects.Graphics, startDegree:number, endDegree:number, color: number = HOLD_BAR_IDLE_COLOR): Phaser.GameObjects.Graphics {
 		const { width, height } = this.scene.scale
 		const x =
@@ -42,7 +42,7 @@ export default class RingInhaleGauge extends InhaleGauge {
 			index * (2 * CIRCLE_GAUGE_RADUIS) +
 			(this.division !== 1 ? CIRCLE_GAUGE_RADUIS : 0)
 		const y = height - CIRCLE_GAUGE_MARGIN
-		
+
 		gauge.lineStyle(16, color, 1);
 		gauge.beginPath();
 		gauge.arc(x, y, CIRCLE_GAUGE_RADUIS, Phaser.Math.DegToRad(startDegree), Phaser.Math.DegToRad(endDegree), true);
@@ -117,7 +117,7 @@ export default class RingInhaleGauge extends InhaleGauge {
 //			.setFontSize(MEDIUM_FONT_SIZE)
 //			.setOrigin(1, 0.5)
 	}
-	
+
 	getHoldDegree(duration: number): number {
 		return (360 / (HOLD_DURATION_MS / -duration)) + this.START_DEGREE
 	}
@@ -142,7 +142,7 @@ export default class RingInhaleGauge extends InhaleGauge {
 		if(this.getHoldDegree(this.holdButtonDuration) <= this.START_DEGREE) {
 			this.gauge = this.drawArc(0, gauge, this.START_DEGREE, this.getHoldDegree(this.holdButtonDuration))
 		}
-		
+
 		this.soundManager.pause(this.chargingSound!)
 	}
 
@@ -157,7 +157,7 @@ export default class RingInhaleGauge extends InhaleGauge {
 		this.soundManager.play(this.chargedSound!)
 	}
 
-	reset() {
+	set(bulletCount: number) {
 //		this.releaseText.setVisible(false)
 //		this.shake.restart()
 //		this.shake.pause()
@@ -177,9 +177,8 @@ export default class RingInhaleGauge extends InhaleGauge {
 				this.holdButtonDuration = 0
 				isReloading = false
 			},
-			LASER_FREQUENCY_MS * BULLET_COUNT,
+			LASER_FREQUENCY_MS * bulletCount,
 		)
-		
 	}
 
 	resetting() {

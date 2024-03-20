@@ -185,4 +185,11 @@ export class B1Boss extends Boss {
 	getIsSecondPhase(): boolean {
 		return this.isSecondPhase
 	}
+
+	resetState(): void {
+	  this.isStartAttack = false
+		this.isAttackPhase = true
+		this.isItemPhase = false
+	  this.isSecondPhase = false
+	}
 }

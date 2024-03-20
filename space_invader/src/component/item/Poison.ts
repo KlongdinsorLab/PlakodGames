@@ -5,14 +5,13 @@ import {
   HIT_METEOR_SCORE,
 	MARGIN,
 	METEOR_SPEED,
-  PLAYER_HIT_DELAY_MS,
 } from 'config'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import { Item } from './item'
 import InhaleGauge from 'component/ui/InhaleGauge'
 
 export class Poison extends Item {
-	private soundManager: SoundManager
+	// private soundManager: SoundManager
 
 	constructor(
 		scene: Phaser.Scene,
@@ -23,7 +22,7 @@ export class Poison extends Item {
 	) {
 		super(scene, player, score, gauge, isTutorial)
 		this.move()
-		this.soundManager = new SoundManager(scene)
+		// this.soundManager = new SoundManager(scene)
 	}
 
 	create(

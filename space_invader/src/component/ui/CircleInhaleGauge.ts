@@ -1,5 +1,4 @@
 import {
-	BULLET_COUNT,
 	HOLD_BAR_BORDER,
 	HOLD_BAR_CHARGED_COLOR,
 	//    HOLD_BAR_CHARGING_COLOR,
@@ -142,14 +141,14 @@ export default class CircleInhaleGauge extends InhaleGauge {
 		this.soundManager.play(this.chargedSound!)
 	}
 
-	reset() {
+	set(bulletCount: number) {
 		this.releaseText.setVisible(false)
 		this.shake.restart()
 		this.shake.pause()
 		this.scene.tweens.add({
 			targets: this.gauge,
 			radius: HOLD_BAR_BORDER / 2,
-			duration: LASER_FREQUENCY_MS * BULLET_COUNT,
+			duration: LASER_FREQUENCY_MS * bulletCount,
 			ease: 'sine.inout',
 		})
 		;(<Phaser.GameObjects.Shape>this.gauge).setFillStyle(HOLD_BAR_COLOR, 1)
@@ -157,7 +156,7 @@ export default class CircleInhaleGauge extends InhaleGauge {
 		this.holdButtonDuration = 0
 		setTimeout(
 			() => (this.holdButtonDuration = 0),
-			LASER_FREQUENCY_MS * BULLET_COUNT,
+			LASER_FREQUENCY_MS * bulletCount,
 		)
 	}
 

@@ -6,7 +6,8 @@ import {
   BULLET_COUNT,
   DARK_BROWN, HOLD_DURATION_MS,
   LASER_FREQUENCY_MS,
-  MARGIN
+  MARGIN,
+  RELOAD_COUNT
 } from 'config'
 import Phaser from 'phaser'
 import MergedInput, { Player as PlayerInput } from 'phaser3-merged-input'
@@ -27,6 +28,8 @@ export default class GameScene extends Phaser.Scene {
   private player!: Player
   private gaugeRegistry!: InhaleGaugeRegistry
   private score!: Score
+  private scoreNumber = 0
+  private reloadCountNumber = RELOAD_COUNT
 
   private reloadCount!: ReloadCount
   //	private reloadCount = RELOAD_COUNT
@@ -41,6 +44,7 @@ export default class GameScene extends Phaser.Scene {
   private tutorial!: Tutorial
   private tutorialMeteor!: Meteor
   private isCompleteWarmup = false
+  private isCompleteBoss = false
   private menu!: Menu
 
   private event!: EventEmitter
@@ -92,6 +96,15 @@ export default class GameScene extends Phaser.Scene {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
   }
 
+  init({ score, reloadCount, isCompleteBoss }: { score: number, reloadCount: number, isCompleteBoss: boolean }) {
+    if(score)
+      this.scoreNumber = score
+    if(reloadCount)
+      this.reloadCountNumber = reloadCount
+    if(isCompleteBoss !== undefined)
+      this.isCompleteBoss = isCompleteBoss
+	}
+
   create() {
 
     const { width, height } = this.scale
@@ -136,8 +149,10 @@ export default class GameScene extends Phaser.Scene {
 
     this.reloadCount = new ReloadCount(this, width / 2, MARGIN)
     this.reloadCount.getBody().setOrigin(0.5, 0)
+    this.reloadCount.setCount(this.reloadCountNumber)
 
     this.score = new Score(this)
+    this.score.setScore(this.scoreNumber)
     // this.timerText = this.add.text(width - MARGIN, MARGIN, `time: ${Math.floor(GAME_TIME_LIMIT_MS / 1000)}`, {fontSize: '42px'}).setOrigin(1, 0)
 
     this.meteorFactory = new MeteorFactory()
@@ -156,7 +171,7 @@ export default class GameScene extends Phaser.Scene {
       this.gameLayer.add(this.tutorialMeteor.getBody())
     }
 
-    this.isCompleteWarmup = false
+    this.isCompleteWarmup = this.reloadCountNumber !== RELOAD_COUNT
     this.event = new EventEmitter()
 
     const self = this
@@ -286,9 +301,20 @@ export default class GameScene extends Phaser.Scene {
       delta,
     )
 
+    if(this.reloadCount.isBossShown(this.isCompleteBoss)){
+      this.scene.stop()
+      this.scene.launch('bossScene', {
+        name: BossName.B1,
+        score: this.score.getScore(),
+        playerX: this.player.getBody().x,
+        reloadCount: this.reloadCount.getCount(),
+      })
+    }
+
     if (this.reloadCount.isDepleted()) {
       gauge.deplete()
-      return
+      this.scene.launch('end game', {score: this.score.getScore()})
+      this.scene.pause()
     }
 
     if (
@@ -313,9 +339,10 @@ export default class GameScene extends Phaser.Scene {
       this.singleLaserFactory.set(ShootingPhase.NORMAL)
       setTimeout(() => {
         this.reloadCount.decrementCount()
+        this.isCompleteBoss = false
       }, LASER_FREQUENCY_MS * BULLET_COUNT)
 
-      if (!this.reloadCount.isBossShown()) {
+      if (!this.reloadCount.isBossShown(this.isCompleteBoss)) {
         this.player.reloadSet(ShootingPhase.NORMAL)
         gauge.set(ShootingPhase.NORMAL)
       } else {
@@ -328,17 +355,6 @@ export default class GameScene extends Phaser.Scene {
           this.scene.launch('end game', { score: this.score.getScore() })
         }, LASER_FREQUENCY_MS * BULLET_COUNT)
       }
-    }
-
-    if(this.reloadCount.isBossShown()){
-
-      this.scene.pause()
-      this.scene.launch('bossScene', {
-        name: BossName.B1,
-        score: this.score.getScore(),
-        playerX: this.player.getBody().x,
-        reloadCount: this.reloadCount.getCount(),
-      })
     }
 
     if (this.player.getIsReloading() && !(this.controller1?.buttons.B2 > 0)) {

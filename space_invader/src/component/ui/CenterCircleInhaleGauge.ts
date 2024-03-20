@@ -33,7 +33,7 @@ export default class CenterCircleInhaleGauge extends InhaleGauge {
             .setFillStyle(HOLD_BAR_IDLE_COLOR)
             .setDepth(100)
             .setStrokeStyle(0)
-        
+
         const {width} = this.scene.scale
 
         bulletText = this.scene.add
@@ -47,25 +47,25 @@ export default class CenterCircleInhaleGauge extends InhaleGauge {
         const barWidth = this.getBarWidth()
         const x = this.getX(index)
         const bar = this.scene.add.rectangle(x, this.getY(), barWidth, HOLD_BAR_HEIGHT * 2).setOrigin(0, 1)
-        
+
         bar.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
         return bar
     }
-    
+
     getY(): number {
         const { height } = this.scene.scale
         return height - MARGIN + HOLD_BAR_BORDER
     }
-    
+
     getX(index: number): number {
         return 3 * MARGIN + (this.getBarWidth() * index)
     }
-    
+
     getBarWidth(): number {
         const { width } = this.scene.scale
         return (width - (6 * MARGIN)) / sections
     }
-    
+
     createUpDownGauge(): void {
         // TODO
     }
@@ -74,11 +74,11 @@ export default class CenterCircleInhaleGauge extends InhaleGauge {
         if(isReloading) return
         this.holdButtonDuration += delta
     }
-    
+
     getHoldWithIncrement(delta: number): number {
         return ((<Phaser.GameObjects.Rectangle>this.gauge).width * 2 + HOLD_BAR_BORDER) / (HOLD_DURATION_MS / delta)
     }
-    
+
     getScaleX(): number {
         return 1 + ((this.holdButtonDuration / HOLD_DURATION_MS) * (sections -1))
     }
@@ -110,8 +110,8 @@ export default class CenterCircleInhaleGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    reset() {
-        let currentBulletCount = BULLET_COUNT
+    set(bulletCount: number) {
+        let currentBulletCount = bulletCount
         isReloading = true
         this.isHoldbarReducing = true
         bulletText.setVisible(true)
@@ -126,19 +126,18 @@ export default class CenterCircleInhaleGauge extends InhaleGauge {
                 this.holdButtonDuration = 0
                 isReloading = false
             },
-            LASER_FREQUENCY_MS * BULLET_COUNT,
+            LASER_FREQUENCY_MS * bulletCount,
         )
-        
-        
+
         this.setIntervalTimes(()=> {
                 currentBulletCount--
             bulletText.setText(`⚡️: ${currentBulletCount}`)
-            
-            }, LASER_FREQUENCY_MS, BULLET_COUNT
+
+            }, LASER_FREQUENCY_MS, bulletCount
         )
 
     }
-    
+
     setIntervalTimes(callback: ()=>void, delay: number, repetitions: number) {
         let x = 0;
         const intervalId = window.setInterval(function () {

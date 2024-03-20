@@ -51,4 +51,5 @@ export abstract class Boss extends Enemy {
 	abstract getIsStartAttack(): boolean
 	abstract startAttackPhase(phase: BossPhase): void
 	abstract getIsSecondPhase(): boolean
+	abstract resetState(): void
 }

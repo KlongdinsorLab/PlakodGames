@@ -7,6 +7,7 @@ import {
 	HOLD_BAR_BORDER,
 	LARGE_FONT_SIZE,
 	MARGIN,
+    RELOAD_COUNT,
 } from 'config'
 import Phaser from 'phaser'
 import MergedInput from 'phaser3-merged-input'
@@ -44,7 +45,6 @@ export default class BossScene extends Phaser.Scene {
 	private boss!: Boss
 
 	private bossLayer!: Phaser.GameObjects.Layer
-	private menu!: Menu
 	private isCompleteItemTutorial!: boolean
 	private bulletText!: Phaser.GameObjects.Text
 
@@ -120,7 +120,7 @@ export default class BossScene extends Phaser.Scene {
 		this.player.getBody().setX(playerX)
 		this.player.addChargeParticle()
 
-		this.menu = new Menu(this)
+		new Menu(this)
 
 		this.singleLaserFactory = new SingleLaserFactory()
 
@@ -162,7 +162,7 @@ export default class BossScene extends Phaser.Scene {
 
 		// Mock bullet count, delete when finish test
 		this.bulletText = this.add
-                    .text(width /2 , height - MARGIN + HOLD_BAR_BORDER, ` /10`)
+                    .text(width /2 , height - MARGIN + HOLD_BAR_BORDER, ` /${RELOAD_COUNT}`)
                     .setFontSize(LARGE_FONT_SIZE)
                     .setOrigin(0.5, 1)
         this.bulletText.setVisible(false)
@@ -207,7 +207,7 @@ export default class BossScene extends Phaser.Scene {
 
 			gauge.setVisible(false)
 			this.bulletText.setVisible(true)
-        	this.bulletText.setText(` ${this.player.getBulletCount()} / 10`)
+        	this.bulletText.setText(` ${this.player.getBulletCount()} / ${RELOAD_COUNT}`)
 
 		} else if(this.player.getIsBulletFull() && !this.boss.getIsStartAttack()){
 			// Boss Phase 2
@@ -220,12 +220,15 @@ export default class BossScene extends Phaser.Scene {
 		}
 
 		if(this.boss.getIsSecondPhase() && !this.boss.getIsAttackPhase() && !this.boss.getIsItemPhase()){
+			this.scene.launch('boss transition', {score: this.score.getScore(), reloadCount: this.reloadCount.getCount()})
 			this.scene.pause()
-			this.scene.launch(BossCutScene.ESCAPE2)
-			setTimeout(() => {
-				// TODO: go back to gameScene
-				this.scene.stop(BossCutScene.ESCAPE2)
-			}, 3000)
+			this.boss.resetState()
+			// TODO booster
+			// this.scene.launch(BossCutScene.ESCAPE2)
+			// setTimeout(() => {
+			// 	// TODO: go back to gameScene
+			// 	this.scene.stop('game')
+			// }, 3000)
 		}
 
 		if (this.input.pointer1.isDown) {

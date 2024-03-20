@@ -31,20 +31,20 @@ export default class StackInhaleGauge extends InhaleGauge {
     createGauge(_: number): void {
         const { width } = this.scene.scale
         rectanglesBackground = [...Array(sections).keys()].map((arrayIndex) => this.createBar(arrayIndex));
-        
+
         this.gauge = this.scene.add
             .rectangle(width/2, this.getY(), this.getBarWidth(), HOLD_BAR_HEIGHT)
             .setOrigin(0.5, 1)
             .setDepth(100)
             .setFillStyle(HOLD_BAR_COLOR)
-        
+
         chargeBorder = this.scene.add
             .rectangle(width/2, this.getY(), this.getBarWidth() * 5, HOLD_BAR_HEIGHT)
             .setOrigin(0.5, 1)
             .setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_COLOR)
-        
+
         stepBar = this.createBar(0).setFillStyle(HOLD_BAR_IDLE_COLOR).setOrigin(0.5, 1)
-        
+
         bulletText = this.scene.add
                     .text(width /2 , this.getY(), `⚡️: `)
                     .setFontSize(LARGE_FONT_SIZE)
@@ -122,8 +122,8 @@ export default class StackInhaleGauge extends InhaleGauge {
         this.soundManager.play(this.chargedSound!)
     }
 
-    reset() {
-        let currentBulletCount = BULLET_COUNT
+    set(bulletCount: number) {
+        let currentBulletCount = bulletCount
         isReloading = true
         this.isHoldbarReducing = true
         bulletText.setVisible(true)
@@ -140,7 +140,7 @@ export default class StackInhaleGauge extends InhaleGauge {
                 this.holdButtonDuration = 0
                 isReloading = false
             },
-            LASER_FREQUENCY_MS * BULLET_COUNT,
+            LASER_FREQUENCY_MS * bulletCount,
             )
 
 
@@ -148,9 +148,8 @@ export default class StackInhaleGauge extends InhaleGauge {
             currentBulletCount--
             bulletText.setText(`⚡️: ${currentBulletCount}`)
 
-        }, LASER_FREQUENCY_MS, BULLET_COUNT
+        }, LASER_FREQUENCY_MS, bulletCount
         )
-
     }
 
     setIntervalTimes(callback: ()=>void, delay: number, repetitions: number) {
@@ -195,7 +194,7 @@ export default class StackInhaleGauge extends InhaleGauge {
             ease: 'sine.inout',
         })
     }
-    
+
     setVisible(visible:boolean): void {
         if(isReloading) return
         stepBar.setVisible(visible)

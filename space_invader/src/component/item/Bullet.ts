@@ -5,12 +5,12 @@ import {
   MARGIN,
   METEOR_SPEED,
 } from 'config'
-import SoundManager from 'component/sound/SoundManager'
+// import SoundManager from 'component/sound/SoundManager'
 import { Item } from './item'
 import InhaleGauge from 'component/ui/InhaleGauge'
 
 export class Bullet extends Item {
-  private soundManager: SoundManager
+  // private soundManager: SoundManager
 
   constructor(
     scene: Phaser.Scene,
@@ -21,7 +21,7 @@ export class Bullet extends Item {
   ) {
     super(scene, player, score, gauge, isTutorial)
     this.move()
-    this.soundManager = new SoundManager(scene)
+    // this.soundManager = new SoundManager(scene)
   }
 
   create(
@@ -34,7 +34,7 @@ export class Bullet extends Item {
       -MARGIN,
       'bossAsset', 'item_bullet.png'
     )
-    
+
     const bulletCollider = this.scene.physics.add.overlap(
       this.item,
       this.player.getBody(),

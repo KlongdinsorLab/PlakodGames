@@ -1,4 +1,4 @@
-import { METEOR_FREQUENCY_MS } from 'config'
+// import { METEOR_FREQUENCY_MS } from 'config'
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 import { ItemFactory } from './ItemFactory'

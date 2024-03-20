@@ -227,7 +227,7 @@ export default class Player {
 
   addBullet(): void {
     if(this.isBulletFull) return
-    
+
     this.bullet++
     if(this.bullet >= COLLECT_BULLET_COUNT){
       this.isBulletFull = true

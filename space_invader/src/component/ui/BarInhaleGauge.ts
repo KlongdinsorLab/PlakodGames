@@ -1,5 +1,4 @@
 import {
-	BULLET_COUNT,
 	HOLD_BAR_BORDER,
 	HOLD_BAR_CHARGED_COLOR,
 	HOLD_BAR_CHARGING_COLOR,
@@ -126,18 +125,18 @@ export default class BarInhaleGauge extends InhaleGauge {
 		this.soundManager.play(this.chargedSound!)
 	}
 
-	reset() {
+	set(bulletCount: number) {
 		this.scene.tweens.add({
 			targets: this.gauge,
 			width: HOLD_BAR_BORDER / 2,
-			duration: LASER_FREQUENCY_MS * BULLET_COUNT,
+			duration: LASER_FREQUENCY_MS * bulletCount,
 			ease: 'sine.inout',
 		})
 		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
 		this.holdButtonDuration = 0
 		setTimeout(
 			() => (this.holdButtonDuration = 0),
-			LASER_FREQUENCY_MS * BULLET_COUNT,
+			LASER_FREQUENCY_MS * bulletCount,
 		)
 	}
 
