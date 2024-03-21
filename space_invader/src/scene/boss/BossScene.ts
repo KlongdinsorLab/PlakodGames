@@ -3,11 +3,11 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 import {
+    COLLECT_BULLET_COUNT,
 	DARK_BROWN,
 	HOLD_BAR_BORDER,
 	LARGE_FONT_SIZE,
 	MARGIN,
-    RELOAD_COUNT,
 } from 'config'
 import Phaser from 'phaser'
 import MergedInput from 'phaser3-merged-input'
@@ -162,7 +162,7 @@ export default class BossScene extends Phaser.Scene {
 
 		// Mock bullet count, delete when finish test
 		this.bulletText = this.add
-                    .text(width /2 , height - MARGIN + HOLD_BAR_BORDER, ` /${RELOAD_COUNT}`)
+                    .text(width /2 , height - MARGIN + HOLD_BAR_BORDER, ` /${COLLECT_BULLET_COUNT}`)
                     .setFontSize(LARGE_FONT_SIZE)
                     .setOrigin(0.5, 1)
         this.bulletText.setVisible(false)
@@ -207,7 +207,7 @@ export default class BossScene extends Phaser.Scene {
 
 			gauge.setVisible(false)
 			this.bulletText.setVisible(true)
-        	this.bulletText.setText(` ${this.player.getBulletCount()} / ${RELOAD_COUNT}`)
+        	this.bulletText.setText(` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`)
 
 		} else if(this.player.getIsBulletFull() && !this.boss.getIsStartAttack()){
 			// Boss Phase 2
