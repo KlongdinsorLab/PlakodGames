@@ -107,7 +107,7 @@ export default class BossScene extends Phaser.Scene {
 	}
 
 	async create() {
-	  const {name, score,	playerX, reloadCount} = this.props
+	  const { score,	playerX, reloadCount} = this.props
 		const { width, height } = this.scale
 
 		this.background = this.add
