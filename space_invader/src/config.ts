@@ -6,14 +6,15 @@ export const PLAYER_SPEED = 480
 export const LASER_SPEED = 800
 export const TRIPLE_LASER_X_SPEED = 80
 export const LASER_FREQUENCY_MS = 500
-export const BULLET_COUNT = 30
-export const BOSS1_BULLET_COUNT = 60
-export const BOSS2_BULLET_COUNT = 90
-export const RELOAD_COUNT = 10
-export const BOSS_MULTIPLE_COUNT = 5
-export const BOSS_TIME_MS = 120_000
-export const FIRST_STAGE_BOSS_TIME_MS = 30_000
-export const SECOND_STAGE_BOSS_TIME_MS = 45_000
+export const BULLET_COUNT = 3
+export const BOSS_PHASE1_BULLET_COUNT = 3
+export const BOSSV1_PHASE2_BULLET_COUNT = 3
+export const BOSSV2_PHASE2_BULLET_COUNT = 3
+export const RELOAD_COUNT = 4
+export const BOSS_MULTIPLE_COUNT = 2
+export const BOSS_TIME_MS = 1000
+export const FIRST_STAGE_BOSS_TIME_MS = 1000
+export const SECOND_STAGE_BOSS_TIME_MS = 1000
 export const COLLECT_BULLET_COUNT = 10
 
 //export const BULLET_COUNT = 5
@@ -46,7 +47,7 @@ export const HIT_METEOR_SCORE = -200
 export const DESTROY_METEOR_SCORE = 400
 
 export const GAME_TIME_LIMIT_MS = 160000
-export const TUTORIAL_DELAY_MS = 3000
+export const TUTORIAL_DELAY_MS = 300
 export const MEDIUM_FONT_SIZE = '3.6em'
 export const LARGE_FONT_SIZE = '5em'
 
