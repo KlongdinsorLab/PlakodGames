@@ -18,7 +18,8 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { Boss, BossCutScene, BossName, BossPhase, BossTutorialScene, ShootingPhase, importClassByName } from 'component/enemy/boss/Boss'
+import { Boss, BossCutScene, BossName, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
+import { B1Boss } from 'component/enemy/boss/B1Boss'
 
 interface Props {
 	  name: BossName,
@@ -131,8 +132,9 @@ export default class BossScene extends Phaser.Scene {
     this.reloadCount.getBody().setOrigin(0.5, 0)
     this.reloadCount.setCount(reloadCount)
 
-    const classRef = await importClassByName<Boss>(`${name}Boss`);
-		this.boss = new classRef(this, this.player, this.score)
+  //   const classRef = await importClassByName<Boss>(`${name}Boss`);
+		// this.boss = new classRef(this, this.player, this.score)
+		this.boss = new B1Boss(this, this.player, this.score)
 		this.isCompleteInit = true
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
