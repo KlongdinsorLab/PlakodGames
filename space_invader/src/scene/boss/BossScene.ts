@@ -3,6 +3,8 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 import {
+	BOSS_CUTSCENE_DELAY_MS,
+    BOSS_TUTORIAL_DELAY_MS,
     COLLECT_BULLET_COUNT,
 	DARK_BROWN,
 	HOLD_BAR_BORDER,
@@ -186,8 +188,8 @@ export default class BossScene extends Phaser.Scene {
 				this.boss.startAttackPhase(BossPhase.PHASE_1)
 				setTimeout(() => {
 					this.scene.stop(BossTutorialScene.ATTACK_BOSS)
-				}, 2000) // TODO put in config
-			}, 3000) // TODO put in config
+				}, BOSS_TUTORIAL_DELAY_MS)
+			}, BOSS_CUTSCENE_DELAY_MS)
 		}
 
 		if (!this.isCompleteItemTutorial && this.boss.getIsItemPhase()) {
@@ -199,8 +201,8 @@ export default class BossScene extends Phaser.Scene {
 						this.scene.resume()
 						this.scene.stop(BossCutScene.ESCAPE)
 						this.scene.launch(BossTutorialScene.COLLECT_ITEM)
-					},3000)
-				},1500)
+					}, BOSS_CUTSCENE_DELAY_MS)
+				}, 1000)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()){
 			// Collecting Item Phase
 			this.meteorFactory.createByTime(this, this.player, this.score, delta)
@@ -218,19 +220,14 @@ export default class BossScene extends Phaser.Scene {
 			this.boss.startAttackPhase(BossPhase.PHASE_2)
 			setTimeout(() => {
 				this.scene.stop(BossTutorialScene.ATTACK_BOSS)
-			}, 2000)
+			}, BOSS_TUTORIAL_DELAY_MS)
 		}
 
 		if(this.boss.getIsSecondPhase() && !this.boss.getIsAttackPhase() && !this.boss.getIsItemPhase()){
-			this.scene.launch('boss transition', {score: this.score.getScore(), reloadCount: this.reloadCount.getCount()})
+			this.scene.launch(BossCutScene.ESCAPE2, {score: this.score.getScore(), reloadCount: this.reloadCount.getCount()})
 			this.scene.pause()
 			this.boss.resetState()
 			// TODO booster
-			// this.scene.launch(BossCutScene.ESCAPE2)
-			// setTimeout(() => {
-			// 	// TODO: go back to gameScene
-			// 	this.scene.stop('game')
-			// }, 3000)
 		}
 
 		if (this.input.pointer1.isDown) {

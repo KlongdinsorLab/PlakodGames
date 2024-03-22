@@ -6,6 +6,7 @@ import {
 	BOSS_HIT_DELAY_MS,
 	FIRST_STAGE_BOSS_TIME_MS,
 	SECOND_STAGE_BOSS_TIME_MS,
+	BOSS_TUTORIAL_DELAY_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
 import {  Boss } from './Boss'
@@ -156,7 +157,7 @@ export class B1Boss extends Boss {
 			this.isItemPhase = false
 			this.attack()
 			this.player.startReload()
-		}, 2000)
+		}, BOSS_TUTORIAL_DELAY_MS)
 	}
 
 	endAttackPhase(): void {
@@ -165,8 +166,10 @@ export class B1Boss extends Boss {
 			this.isAttackPhase = false
 			this.isStartAttack = false
 		} else {
-			this.isAttackPhase = false
-			this.isItemPhase = false
+			setTimeout(() => {
+				this.isAttackPhase = false
+				this.isItemPhase = false
+			}, 1000)
 		}
 	}
 

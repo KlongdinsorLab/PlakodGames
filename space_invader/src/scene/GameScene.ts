@@ -171,7 +171,7 @@ export default class GameScene extends Phaser.Scene {
       this.gameLayer.add(this.tutorialMeteor.getBody())
     }
 
-    this.isCompleteWarmup = this.reloadCountNumber !== RELOAD_COUNT
+    this.isCompleteWarmup = this.reloadCountNumber !== RELOAD_COUNT || true
     this.event = new EventEmitter()
 
     const self = this
