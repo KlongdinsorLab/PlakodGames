@@ -9,17 +9,20 @@ export abstract class Enemy {
 	protected score: Score
 	protected enermyDestroyedSound?: Phaser.Sound.BaseSound
 	protected isTutorial = false
+	protected isInItemPhase = false
 
 	protected constructor(
 		scene: Phaser.Scene,
 		player: Player,
 		score: Score,
 		isTutorial?: boolean,
+		isItemPhase?: boolean
 	) {
 		this.scene = scene
 		this.player = player
 		this.score = score
 		this.isTutorial = isTutorial ?? false
+		this.isInItemPhase = isItemPhase ?? false
 		this.create(isTutorial)
 	}
 

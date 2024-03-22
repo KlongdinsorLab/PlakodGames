@@ -6,6 +6,7 @@ import {
   DESTROY_METEOR_SCORE,
   HIT_METEOR_SCORE,
   MARGIN,
+  METEOR_ITEMPHASE_SPEED,
   METEOR_SPEED,
   METEOR_SPIN_SPEED,
   PLAYER_HIT_DELAY_MS,
@@ -21,8 +22,9 @@ export class Meteor extends Enemy {
     player: Player,
     score: Score,
     isTutorial?: boolean,
+    isInItemPhase?: boolean
   ) {
-    super(scene, player, score, isTutorial)
+    super(scene, player, score, isTutorial, isInItemPhase)
     this.move()
     this.attack()
     this.soundManager = new SoundManager(scene)
@@ -70,7 +72,7 @@ export class Meteor extends Enemy {
   }
 
   move(): void {
-    this.enemy.setVelocityY(METEOR_SPEED)
+    this.isInItemPhase ? this.enemy.setVelocityY(METEOR_ITEMPHASE_SPEED) : this.enemy.setVelocityY(METEOR_SPEED)
     const velocityX = Math.floor(
       Math.random() * (METEOR_SPEED / 3) - METEOR_SPEED / 6,
     )

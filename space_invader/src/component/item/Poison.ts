@@ -1,9 +1,9 @@
 import Player from 'component/player/Player'
 import Score from 'component/ui/Score'
 import {
-  HIT_METEOR_SCORE,
+	HIT_POISON_SCORE,
 	MARGIN,
-	METEOR_SPEED,
+	POISON_SPEED,
 } from 'config'
 // import SoundManager from 'component/sound/SoundManager'
 import { Item } from './Item'
@@ -40,7 +40,7 @@ export class Poison extends Item {
 			this.item,
 			this.player.getBody(),
 			() => {
-        this.score.add(HIT_METEOR_SCORE)
+        this.score.add(HIT_POISON_SCORE)
 				this.scene.tweens.add({ targets: this.item, duration: 200, alpha: 0 })
         poisonCollider.active = false
 			},
@@ -50,9 +50,9 @@ export class Poison extends Item {
 	}
 
 	move(): void {
-		this.item.setVelocityY(METEOR_SPEED)
+		this.item.setVelocityY(POISON_SPEED)
 		const velocityX = Math.floor(
-			Math.random() * (METEOR_SPEED / 3) - METEOR_SPEED / 6,
+			Math.random() * (POISON_SPEED / 3) - POISON_SPEED / 6,
 		)
 		this.item.setVelocityX(this.isTutorial ? -120 : velocityX)
 	}

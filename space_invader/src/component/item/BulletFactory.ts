@@ -4,6 +4,7 @@ import Score from 'component/ui/Score'
 import { ItemFactory } from './ItemFactory'
 import { Bullet } from './Bullet'
 import InhaleGauge from 'component/ui/InhaleGauge'
+import { BULLET_FREQUENCY_MS } from 'config'
 
 export class BulletFactory extends ItemFactory {
 	private bullets: Bullet[] = []
@@ -27,8 +28,8 @@ export class BulletFactory extends ItemFactory {
 		delta: number,
 	): void {
 		this.bulletTimer += delta
-		while (this.bulletTimer > 2000) {
-			this.bulletTimer -= 2000
+		while (this.bulletTimer > BULLET_FREQUENCY_MS) {
+			this.bulletTimer -= BULLET_FREQUENCY_MS
 			const bullet = this.create(scene, player, score, gauge)
 			this.bullets.forEach((bullet) => {
 				if (!bullet.isActive()) {

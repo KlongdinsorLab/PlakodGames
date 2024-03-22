@@ -3,6 +3,7 @@ import Score from 'component/ui/Score'
 import { ItemFactory } from './ItemFactory'
 import { Poison } from './Poison'
 import InhaleGauge from 'component/ui/InhaleGauge'
+import { POISON_FREQUENCY_MS } from 'config'
 
 export class PosionFactory extends ItemFactory {
 	private poisons: Poison[] = []
@@ -26,8 +27,8 @@ export class PosionFactory extends ItemFactory {
 		delta: number,
 	): void {
 		this.poisonTimer += delta
-		while (this.poisonTimer > 3000) {
-			this.poisonTimer -= 3000
+		while (this.poisonTimer > POISON_FREQUENCY_MS) {
+			this.poisonTimer -= POISON_FREQUENCY_MS
 			const poison = this.create(scene, player, score, gauge)
 			this.poisons.forEach((poison) => {
 				if (!poison.isActive()) {
