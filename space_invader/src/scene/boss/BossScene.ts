@@ -22,6 +22,7 @@ import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
 import { Boss, BossCutScene, BossName, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
 import { B1Boss } from 'component/enemy/boss/B1Boss'
+import SoundManager from 'component/sound/SoundManager'
 
 interface Props {
 	  name: BossName,
@@ -53,9 +54,12 @@ export default class BossScene extends Phaser.Scene {
 
 	private isCompleteInit = false
 	private props!: Props
+	private bgm!: Phaser.Sound.BaseSound
+	private soundManager: SoundManager
 
 	constructor() {
 		super({ key: 'bossScene' })
+		this.soundManager = new SoundManager(this)
 	}
 
 	preload() {
@@ -96,6 +100,7 @@ export default class BossScene extends Phaser.Scene {
 		this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
 		this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
 		this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
+		this.load.audio('boss_bgm', 'sound/BGM_BossScene.mp3')
 
 		this.load.scenePlugin('mergedInput', MergedInput)
 		this.load.script(
@@ -116,6 +121,10 @@ export default class BossScene extends Phaser.Scene {
 			.tileSprite(0, 0, width, height, 'boss_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
+		
+		this.bgm = this.sound.add('boss_bgm', {volume: 1, loop: true})
+    	this.soundManager.init()
+    	this.soundManager.play(this.bgm)
 
 		this.bossLayer = this.add.layer()
 
@@ -227,6 +236,9 @@ export default class BossScene extends Phaser.Scene {
 			this.scene.launch(BossCutScene.ESCAPE2, {score: this.score.getScore(), reloadCount: this.reloadCount.getCount()})
 			this.scene.pause()
 			this.boss.resetState()
+			setTimeout(() => {
+				this.soundManager.stop(this.bgm)
+			}, 5000)
 			// TODO booster
 		}
 

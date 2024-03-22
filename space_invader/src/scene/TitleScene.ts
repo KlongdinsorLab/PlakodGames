@@ -24,7 +24,8 @@ export default class TitleScene extends Phaser.Scene {
     this.load.image('logo', 'assets/logo/logo_1-01.png')
     //		this.load.image('player', 'assets/character/player/playerShip1_blue.png')
     this.load.image('fire', 'assets/effect/fire03.png')
-    this.load.audio('bgm', 'sound/hofman-138068.mp3')
+    // this.load.audio('bgm', 'sound/hofman-138068.mp3')
+    this.load.audio('bgm', 'sound/BGM_GameScene.mp3')
 
     this.load.scenePlugin('mergedInput', MergedInput)
   }
@@ -61,7 +62,7 @@ export default class TitleScene extends Phaser.Scene {
     //		this.player = new Player(this)
     //		this.player.addJetEngine()
 
-    this.bgm = this.sound.add('bgm')
+    this.bgm = this.sound.add('bgm', {volume: 0.5, loop: true})
     const soundManager = new SoundManager(this)
     soundManager.init()
     soundManager.play(this.bgm)

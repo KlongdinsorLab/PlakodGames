@@ -22,6 +22,7 @@ import WebFont from 'webfontloader'
 import Tutorial, { Step } from './tutorial/Tutorial'
 import EventEmitter = Phaser.Events.EventEmitter
 import { BossName, ShootingPhase } from 'component/enemy/boss/Boss'
+import SoundManager from 'component/sound/SoundManager'
 
 export default class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite
@@ -50,8 +51,12 @@ export default class GameScene extends Phaser.Scene {
   private event!: EventEmitter
   private gameLayer!: Phaser.GameObjects.Layer
 
+  private bgm!: Phaser.Sound.BaseSound
+  private soundManager: SoundManager
+
   constructor() {
     super({ key: 'game' })
+    this.soundManager = new SoundManager(this)
   }
 
   preload() {
@@ -89,6 +94,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.load.audio('shootSound', 'sound/shooting-sound-fx-159024.mp3')
     this.load.audio('meteorDestroyedSound', 'sound/rock-destroy-6409.mp3')
+    this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.wav')
     this.load.audio('chargingSound', 'sound/futuristic-beam-81215.mp3')
     this.load.audio('chargedSound', 'sound/sci-fi-charge-up-37395.mp3')
 
@@ -103,14 +109,19 @@ export default class GameScene extends Phaser.Scene {
       this.reloadCountNumber = reloadCount
     if(isCompleteBoss !== undefined)
       this.isCompleteBoss = isCompleteBoss
+    this.soundManager.unmute()
 	}
 
   create() {
-
     const { width, height } = this.scale
     // const queryString = window.location.search;
     // const urlParams = new URLSearchParams(queryString);
     // this.controlType = <'tilt' | 'touch'>urlParams.get('control')
+
+    this.bgm = this.sound.add('bgm', {volume: 0.5, loop: true})
+    this.soundManager.init()
+    this.soundManager.play(this.bgm)
+    
 
     this.background = this.add
       .tileSprite(0, 0, width, height, 'background')
@@ -302,6 +313,7 @@ export default class GameScene extends Phaser.Scene {
     )
 
     if(this.reloadCount.isBossShown(this.isCompleteBoss)){
+      this.soundManager.stop(this.bgm)
       this.scene.stop()
       this.scene.launch('bossScene', {
         name: BossName.B1,
