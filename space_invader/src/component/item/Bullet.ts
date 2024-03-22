@@ -3,7 +3,6 @@ import Score from 'component/ui/Score'
 import {
   BULLET_SPEED,
   MARGIN,
-  METEOR_SPEED,
 } from 'config'
 // import SoundManager from 'component/sound/SoundManager'
 import { Item } from './Item'
