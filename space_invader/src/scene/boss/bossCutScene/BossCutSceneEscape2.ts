@@ -21,7 +21,7 @@ export default class BossTransition extends Phaser.Scene {
 			'webfont',
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
-		this.load.image('smoke', 'assets/background/smoke-transition.png')
+		this.load.image('smoke', 'assets/background/smoke-transition_01.png')
 	}
 
 	create() {
@@ -55,7 +55,6 @@ export default class BossTransition extends Phaser.Scene {
 		const path = new Phaser.Curves.Path(0, 0)
 		const boss = this.add.follower(path, width / 2, 300, 'alien').setOrigin(0.5)
 		const path2 = new Phaser.Curves.Path(width / 2, 300).lineTo(width / 2, -140)
-    
     const smoke = this.add.image(0, height / 2, 'smoke').setOrigin(1, 0.5)
 
 		setTimeout(() => {
@@ -72,23 +71,35 @@ export default class BossTransition extends Phaser.Scene {
 
       this.tweens.add({
         targets: smoke,
-        x: smoke.width,
+        x: smoke.width - 200,
         duration: 3500,
         repeat: 0,
         ease: 'sine.out',
         onComplete: () => {
-          if (this.reloadCount === 0) {
-            this.scene.launch('end game', { score: this.score })
-          } else {
-            this.scene.launch('game', {
-              score: this.score,
-              reloadCount: this.reloadCount,
-              isCompleteBoss: true,
-            })
-          }
-          this.scene.stop()
           this.scene.stop('bossScene')
-        },
+          const updatedCount  = this.reloadCount - 1
+          if (updatedCount === 0) {
+            this.scene.launch('end game', { score: this.score })
+            this.scene.stop()
+            return
+          }
+
+          this.scene.launch('game', {
+            score: this.score,
+            reloadCount: updatedCount,
+            isCompleteBoss: true,
+          })
+          this.tweens.add({
+            targets: smoke,
+            x: 2 * smoke.width,
+            duration: 3500,
+            repeat: 0,
+            ease: 'sine.out',
+            onComplete: () => {
+              this.scene.stop()
+            }
+          })
+        }
       })
 		}, 1000)
 	}

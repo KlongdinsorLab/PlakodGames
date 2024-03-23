@@ -85,6 +85,6 @@ export default class ReloadCount {
     if(isCompleteBoss) return false
     const count = RELOAD_COUNT - this.reloadCount
     if (count === 0) return false
-    return count % BOSS_MULTIPLE_COUNT === 0
+    return (count + 1) % BOSS_MULTIPLE_COUNT === 0
   }
 }

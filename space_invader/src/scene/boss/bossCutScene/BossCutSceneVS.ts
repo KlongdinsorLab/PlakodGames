@@ -10,7 +10,6 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('smoke', 'assets/background/smoke-transition.png')
 		this.load.image('boss_background', 'assets/background/bg_boss.jpg')
 		this.load.atlas(
 			'player',
