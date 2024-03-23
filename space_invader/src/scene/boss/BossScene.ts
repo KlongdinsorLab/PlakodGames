@@ -20,16 +20,10 @@ import { BulletFactory } from 'component/item/BulletFactory'
 import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
-import { Boss, BossCutScene, BossName, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
-import { B1Boss } from 'component/enemy/boss/B1Boss'
+import { Boss, BossCutScene, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
+import { BossInterface } from './boosInterface'
 import SoundManager from 'component/sound/SoundManager'
-
-interface Props {
-	  name: BossName,
-		score: number,
-		playerX: number,
-		reloadCount: number, // TODO change name and class to lap
-}
+import { B1Boss } from 'component/enemy/boss/B1Boss'
 
 export default class BossScene extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -53,7 +47,7 @@ export default class BossScene extends Phaser.Scene {
 	private bulletText!: Phaser.GameObjects.Text
 
 	private isCompleteInit = false
-	private props!: Props
+  private props!: BossInterface
 	private bgm!: Phaser.Sound.BaseSound
 	private soundManager: SoundManager
 
@@ -109,7 +103,7 @@ export default class BossScene extends Phaser.Scene {
 		)
 	}
 
-	init(props: Props) {
+	init(props: BossInterface) {
 	 this.props = props
 	}
 
@@ -121,7 +115,7 @@ export default class BossScene extends Phaser.Scene {
 			.tileSprite(0, 0, width, height, 'boss_background')
 			.setOrigin(0)
 			.setScrollFactor(0, 0)
-		
+
 		this.bgm = this.sound.add('boss_bgm', {volume: 1, loop: true})
     	this.soundManager.init()
     	this.soundManager.play(this.bgm)
