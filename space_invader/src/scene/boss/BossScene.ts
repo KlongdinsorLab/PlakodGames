@@ -21,7 +21,7 @@ import Menu from 'component/ui/Menu'
 import ReloadCount from 'component/ui/ReloadCount'
 import WebFont from 'webfontloader'
 import { Boss, BossCutScene, BossPhase, BossTutorialScene, ShootingPhase } from 'component/enemy/boss/Boss'
-import { BossInterface } from './boosInterface'
+import { BossInterface } from './bossInterface'
 import SoundManager from 'component/sound/SoundManager'
 import { B1Boss } from 'component/enemy/boss/B1Boss'
 
