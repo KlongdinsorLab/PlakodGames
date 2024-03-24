@@ -1,4 +1,5 @@
-import { BossCutScene } from 'component/enemy/boss/Boss'
+import { BossCutScene, BossTutorialScene } from 'component/enemy/boss/Boss'
+import { BOSS_CUTSCENE_DELAY_MS } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 
@@ -16,7 +17,6 @@ export default class BossCutSceneEscape extends Phaser.Scene {
 
 	create() {
 		const { width } = this.scale
-
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(this, width / 2, 600, 'boss_escape')
 			.setOrigin(0.5, 1)
@@ -43,7 +43,7 @@ export default class BossCutSceneEscape extends Phaser.Scene {
 		})
 
 		const path = new Phaser.Curves.Path(0, 0)
-		const boss = this.add.follower(path, width / 2, 300, 'alien').setOrigin(0.5)
+		const boss = this.add.follower(path, width / 2, 300, 'b1v1').setOrigin(0.5)
 
 		boss.play('boss-hit')
 
@@ -63,5 +63,11 @@ export default class BossCutSceneEscape extends Phaser.Scene {
 				alpha: 1,
 			})
 		}, 1500)
+
+		setTimeout(() => {
+			this.scene.stop()
+			this.scene.launch(BossTutorialScene.COLLECT_ITEM)
+			this.scene.resume("bossScene")
+		}, BOSS_CUTSCENE_DELAY_MS)
 	}
 }

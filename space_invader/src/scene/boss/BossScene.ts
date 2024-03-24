@@ -3,8 +3,6 @@ import InhaleGaugeRegistry from 'component/ui/InhaleGaugeRegistry'
 import Score from 'component/ui/Score'
 import { SingleLaserFactory } from 'component/weapon/SingleLaserFactory'
 import {
-	BOSS_CUTSCENE_DELAY_MS,
-    BOSS_TUTORIAL_DELAY_MS,
     COLLECT_BULLET_COUNT,
 	DARK_BROWN,
 	HOLD_BAR_BORDER,
@@ -66,9 +64,9 @@ export default class BossScene extends Phaser.Scene {
 		)
 
 		this.load.atlas(
-			'alien',
-			'assets/character/enemy/alienV1.png',
-			'assets/character/enemy/alienV1.json',
+			'b1v1',
+			'assets/character/enemy/b1v1_spritesheet.png',
+			'assets/character/enemy/b1v1_spritesheet.json',
 		)
 
 		this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
@@ -182,30 +180,14 @@ export default class BossScene extends Phaser.Scene {
 
 		if (!this.boss.getIsStartAttack() && !this.boss.getIsItemPhase()) {
 			// Boss Phase 1
-			this.scene.pause()
-			this.scene.launch(BossCutScene.VS)
-			setTimeout(() => {
-				this.scene.stop(BossCutScene.VS)
-				this.scene.resume()
-				this.scene.launch(BossTutorialScene.ATTACK_BOSS)
-				this.boss.startAttackPhase(BossPhase.PHASE_1)
-				setTimeout(() => {
-					this.scene.stop(BossTutorialScene.ATTACK_BOSS)
-				}, BOSS_TUTORIAL_DELAY_MS)
-			}, BOSS_CUTSCENE_DELAY_MS)
+			this.boss.startAttackPhase(BossPhase.PHASE_1)
+			this.scene.launch(BossTutorialScene.ATTACK_BOSS)
 		}
 
 		if (!this.isCompleteItemTutorial && this.boss.getIsItemPhase()) {
 			this.isCompleteItemTutorial = true
-				setTimeout(() => {
-					this.scene.pause()
-					this.scene.launch(BossCutScene.ESCAPE)
-					setTimeout(() => {
-						this.scene.resume()
-						this.scene.stop(BossCutScene.ESCAPE)
-						this.scene.launch(BossTutorialScene.COLLECT_ITEM)
-					}, BOSS_CUTSCENE_DELAY_MS)
-				}, 1000)
+			this.scene.pause()
+			this.scene.launch(BossCutScene.ESCAPE)
 		} else if (this.boss.getIsItemPhase() && !this.player.getIsBulletFull()){
 			// Collecting Item Phase
 			this.meteorFactory.createByTime(this, this.player, this.score, delta)
@@ -221,9 +203,6 @@ export default class BossScene extends Phaser.Scene {
 			this.bulletText.setVisible(false)
 			this.scene.launch(BossTutorialScene.ATTACK_BOSS)
 			this.boss.startAttackPhase(BossPhase.PHASE_2)
-			setTimeout(() => {
-				this.scene.stop(BossTutorialScene.ATTACK_BOSS)
-			}, BOSS_TUTORIAL_DELAY_MS)
 		}
 
 		if(this.boss.getIsSecondPhase() && !this.boss.getIsAttackPhase() && !this.boss.getIsItemPhase()){

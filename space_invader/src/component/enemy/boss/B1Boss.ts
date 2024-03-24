@@ -33,20 +33,20 @@ export class B1Boss extends Boss {
 		const path = new Phaser.Curves.Path(0, 0)
 		this.scene.anims.create({
 			key: 'boss-move',
-			frames: this.scene.anims.generateFrameNames('alien', {
-				prefix: 'alienv1_attack_',
+			frames: this.scene.anims.generateFrameNames('b1v1', {
+				prefix: 'b1v1_attack_',
 				suffix: '.png',
 				start: 0,
 				end: 24,
 				zeroPad: 5,
 			}),
-			frameRate: 24,
+			frameRate: 18,
 			repeat: -1,
 		})
 		this.scene.anims.create({
 			key: 'boss-hit',
-			frames: this.scene.anims.generateFrameNames('alien', {
-				prefix: 'alienv1_hurt_',
+			frames: this.scene.anims.generateFrameNames('b1v1', {
+				prefix: 'b1v1_hurt_',
 				suffix: '.png',
 				start: 1,
 				end: 1,
@@ -57,8 +57,8 @@ export class B1Boss extends Boss {
 		})
 
 		this.enemy = this.scene.add
-			.follower(path, width / 2, -140, 'alien')
-			.setOrigin(0.5).setScale(0.8)
+			.follower(path, width / 2, -140, 'b1v1')
+			.setOrigin(0.5)
 		this.enemy.play('boss-move')
 
 		this.scene.physics.world.enable(this.enemy)
@@ -145,7 +145,9 @@ export class B1Boss extends Boss {
 			-140,
 		)
 		this.enemy.setPath(path).startFollow({ duration: 200 })
-		this.endAttackPhase()
+		setTimeout(() => {
+			this.endAttackPhase()
+		}, 1500)
 	}
 
 
@@ -166,10 +168,8 @@ export class B1Boss extends Boss {
 			this.isAttackPhase = false
 			this.isStartAttack = false
 		} else {
-			setTimeout(() => {
-				this.isAttackPhase = false
-				this.isItemPhase = false
-			}, 1000)
+			this.isAttackPhase = false
+			this.isItemPhase = false
 		}
 	}
 
