@@ -8,7 +8,8 @@ import {
 	SECOND_STAGE_BOSS_TIME_MS,
 } from 'config'
 import SoundManager from 'component/sound/SoundManager'
-import {  Boss } from './Boss'
+import {  Boss } from '../Boss'
+import { BossVersion } from '../BossVersion'
 
 let isHit = false
 
@@ -18,13 +19,15 @@ export class B1Boss extends Boss {
 	private isItemPhase!: boolean
 	private isAttackPhase!: boolean
 	private isSecondPhase!: boolean
+	private bossVersion!: BossVersion
 
-	constructor(scene: Phaser.Scene, player: Player, score: Score) {
-		super(scene, player, score)
+	constructor(scene: Phaser.Scene, player: Player, score: Score, version: BossVersion) {
+		super(scene, player, score, version)
 		this.soundManager = new SoundManager(scene)
 		this.isStartAttack = false
 		this.isAttackPhase = true
 		this.isItemPhase = false
+		this.bossVersion = version
 	}
 
 	create(): Phaser.Types.Physics.Arcade.ImageWithDynamicBody {
@@ -192,4 +195,8 @@ export class B1Boss extends Boss {
 		this.isItemPhase = false
 	  this.isSecondPhase = false
 	}
+
+  setVersion(bossVersion: BossVersion): void {
+    this.bossVersion = bossVersion
+  }
 }

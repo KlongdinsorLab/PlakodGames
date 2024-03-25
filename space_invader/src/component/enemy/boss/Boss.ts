@@ -2,6 +2,7 @@ import { BULLET_COUNT, BOSS_PHASE1_BULLET_COUNT, BOSSV1_PHASE2_BULLET_COUNT, BOS
 import { Enemy } from '../Enemy'
 import Player from 'component/player/Player';
 import Score from 'component/ui/Score';
+import { BossVersion } from './BossVersion';
 
 export enum ShootingPhase {
 	NORMAL = BULLET_COUNT,
@@ -41,7 +42,7 @@ export async function importClassByName<T>(className: string): Promise<Construct
 }
 
 export abstract class Boss extends Enemy {
-  constructor(protected scene: Phaser.Scene, protected player: Player, protected score: Score){
+  constructor(protected scene: Phaser.Scene, protected player: Player, protected score: Score, protected version: BossVersion){
     super(scene, player, score, false);
   }
 	abstract remove(): void
@@ -52,4 +53,5 @@ export abstract class Boss extends Enemy {
 	abstract startAttackPhase(phase: BossPhase): void
 	abstract getIsSecondPhase(): boolean
 	abstract resetState(): void
+	abstract setVersion(bossVersion: BossVersion): void
 }

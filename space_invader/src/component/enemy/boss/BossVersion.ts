@@ -1,4 +1,4 @@
-export abstract class BossPhase  {
+export abstract class BossVersion {
 	abstract getMovePattern(): void
 	abstract isShootAttack(): boolean
 	abstract hasObstacle(): boolean
