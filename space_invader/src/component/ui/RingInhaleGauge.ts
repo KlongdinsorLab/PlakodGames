@@ -202,4 +202,8 @@ export default class RingInhaleGauge extends InhaleGauge {
 	setVisible(visible: boolean) {
 		this.steps.map((s) => s.setVisible(visible))
 	}
+
+	setVisibleAll(_: boolean): void {
+		// TODO
+    }
 }

@@ -199,4 +199,8 @@ export default class StackInhaleGauge extends InhaleGauge {
         if(isReloading) return
         stepBar.setVisible(visible)
     }
+
+    setVisibleAll(_: boolean): void {
+		// TODO
+    }
 }

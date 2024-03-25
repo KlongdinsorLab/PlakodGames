@@ -176,4 +176,8 @@ export default class BarInhaleGauge extends InhaleGauge {
 	setVisible(_:boolean): void {
 		// TODO
 	}
+
+	setVisibleAll(_: boolean): void {
+		// TODO
+    }
 }

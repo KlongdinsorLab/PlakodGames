@@ -256,7 +256,7 @@ export default class GameScene extends Phaser.Scene {
     // TODO move to controller class
     if (!this.controller1) return
     // Must be in this order if B3 press with B6, B3 will be activated
-    if (this.controller1?.buttons.B2 > 0) {
+    if (!this.player.getIsAttacking() && this.controller1?.buttons.B2 > 0) {
       gauge.hold(delta)
     } else if (this.controller1?.buttons.B3 > 0) {
       gauge.setStep(1)

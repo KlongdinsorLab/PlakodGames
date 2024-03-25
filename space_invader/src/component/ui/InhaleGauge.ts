@@ -81,6 +81,8 @@ export default abstract class InhaleGauge {
 
 	abstract setVisible(visible: boolean): void
 
+	abstract setVisibleAll(visible: boolean): void
+
 	getBody(): Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics {
 		return this.gauge
 	}

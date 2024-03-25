@@ -206,4 +206,8 @@ export default class CircleInhaleGauge extends InhaleGauge {
 	setVisible(_: boolean) {
 		// TODO
 	}
+
+	setVisibleAll(_: boolean): void {
+		// TODO
+    }
 }

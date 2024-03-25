@@ -142,7 +142,7 @@ export default class BossScene extends Phaser.Scene {
 
 		this.gaugeRegistry = new InhaleGaugeRegistry(this)
 		this.gaugeRegistry.createbyDivision(1)
-		this.gaugeRegistry.get(0).setVisible(false)
+		this.gaugeRegistry.get(0).setVisibleAll(false)
 
 		this.meteorFactory = new MeteorFactory()
 		this.poisonFactory = new PosionFactory()
@@ -177,6 +177,7 @@ export default class BossScene extends Phaser.Scene {
 	  if(!this.isCompleteInit) return
 
 		const gauge = this.gaugeRegistry?.get(0)
+		gauge.setVisibleAll(false)
 
 		if (!this.boss.getIsStartAttack() && !this.boss.getIsItemPhase()) {
 			// Boss Phase 1
@@ -194,7 +195,6 @@ export default class BossScene extends Phaser.Scene {
 			this.poisonFactory.createByTime(this, this.player, this.score, gauge, delta)
 			this.bulletFactory.createByTime(this, this.player, this.score, gauge, delta)
 
-			gauge.setVisible(false)
 			this.bulletText.setVisible(true)
         	this.bulletText.setText(` ${this.player.getBulletCount()} / ${COLLECT_BULLET_COUNT}`)
 

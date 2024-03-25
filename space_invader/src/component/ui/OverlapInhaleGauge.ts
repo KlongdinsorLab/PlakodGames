@@ -126,6 +126,7 @@ export default class OverlapInhaleGauge extends InhaleGauge {
         this.isHoldbarReducing = true
         bulletText.setVisible(true)
         bulletText.setText(`⚡️: ${currentBulletCount}`)
+        stepBar.setVisible(false)
         progressBar.setVisible(false)
         this.gauge.setVisible(false)
         rectanglesBackground.map(r => r.setVisible(false))
@@ -231,5 +232,12 @@ export default class OverlapInhaleGauge extends InhaleGauge {
     setVisible(visible:boolean): void {
         if(isReloading) return
         stepBar.setVisible(visible)
+    }
+
+    setVisibleAll(visible: boolean): void {
+        if(isReloading) return
+        stepBar.setVisible(visible)
+        progressBar.setVisible(false)
+        this.gauge.setVisible(false)
     }
 }

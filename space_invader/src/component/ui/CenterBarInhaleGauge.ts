@@ -181,4 +181,8 @@ export default class CenterBarInhaleGauge extends InhaleGauge {
     setVisible(_: boolean) {
         // TODO
     }
+
+    setVisibleAll(_: boolean): void {
+		// TODO
+    }
 }
