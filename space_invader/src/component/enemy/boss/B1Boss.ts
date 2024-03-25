@@ -109,16 +109,22 @@ export class B1Boss extends Boss {
 	hit(): void {
 		if (isHit) return
 
-		//@ts-ignore
 		const bossHit1 = this.scene.sound.add('bossHit1')
-		//@ts-ignore
     const bossHit2 = this.scene.sound.add('bossHit2')
-    //@ts-ignore
     const bossHit3 = this.scene.sound.add('bossHit3')
-    //@ts-ignore
     const bossHit4 = this.scene.sound.add('bossHit4')
 
-    this.soundManager.play(eval(`bossHit${Math.floor(Math.random() * 4) + 1}`), false)
+    // TODO fixes me
+    const randomSoundIndex = Math.floor(Math.random() * 4) + 1
+    if(randomSoundIndex === 1) {
+      this.soundManager.play(bossHit1, false)
+    } else if (randomSoundIndex === 2) {
+      this.soundManager.play(bossHit2, false)
+    } else if (randomSoundIndex === 3) {
+      this.soundManager.play(bossHit3, false)
+    } else if (randomSoundIndex === 4) {
+      this.soundManager.play(bossHit4, false)
+    }
 
     this.enemy.stop()
 		// this.enemy.setTexture('boss')
