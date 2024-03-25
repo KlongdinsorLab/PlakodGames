@@ -13,8 +13,9 @@ export class MeteorFactory extends EnemyFactory {
 		player: Player,
 		score: Score,
 		tutorial?: boolean,
+		itemPhase?: boolean
 	): Meteor {
-		return new Meteor(scene, player, score, tutorial)
+		return new Meteor(scene, player, score, tutorial, itemPhase)
 	}
 
 	createByTime(
@@ -22,11 +23,12 @@ export class MeteorFactory extends EnemyFactory {
 		player: Player,
 		score: Score,
 		delta: number,
+		itemPhase?: boolean
 	): void {
 		this.meteorTimer += delta
 		while (this.meteorTimer > METEOR_FREQUENCY_MS) {
 			this.meteorTimer -= METEOR_FREQUENCY_MS
-			const meteor = this.create(scene, player, score)
+			const meteor = this.create(scene, player, score, false, itemPhase)
 			this.meteors.forEach((meteor) => {
 				if (!meteor.isActive()) {
 					this.meteors.splice(this.meteors.indexOf(meteor), 1)

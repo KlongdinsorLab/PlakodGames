@@ -1,5 +1,4 @@
 import {
-	BULLET_COUNT,
 	HOLD_BAR_BORDER,
 	HOLD_BAR_CHARGED_COLOR,
 	HOLD_BAR_CHARGING_COLOR,
@@ -109,49 +108,49 @@ export default class BarInhaleGauge extends InhaleGauge {
 	}
 
 	charge(delta: number) {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR)
-		this.gauge.width += this.getHoldWithIncrement(delta)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGING_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).width += this.getHoldWithIncrement(delta)
 		this.soundManager.play(this.chargingSound!)
 	}
 
 	release(delta: number) {
-		this.gauge.width -=
+		;(<Phaser.GameObjects.Shape>this.gauge).width -=
 			this.getHoldWithIncrement(delta) * HOLDBAR_REDUCING_RATIO
 		this.holdButtonDuration -= delta * HOLDBAR_REDUCING_RATIO
 		this.soundManager.pause(this.chargingSound!)
 	}
 
 	setFullCharge() {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_CHARGED_COLOR)
 		this.soundManager.play(this.chargedSound!)
 	}
 
-	reset() {
+	set(bulletCount: number) {
 		this.scene.tweens.add({
 			targets: this.gauge,
 			width: HOLD_BAR_BORDER / 2,
-			duration: LASER_FREQUENCY_MS * BULLET_COUNT,
+			duration: LASER_FREQUENCY_MS * bulletCount,
 			ease: 'sine.inout',
 		})
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
 		this.holdButtonDuration = 0
 		setTimeout(
 			() => (this.holdButtonDuration = 0),
-			LASER_FREQUENCY_MS * BULLET_COUNT,
+			LASER_FREQUENCY_MS * bulletCount,
 		)
 	}
 
 	resetting() {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_IDLE_COLOR)
 		this.isHoldbarReducing = true
 	}
 
 	deplete() {
-		this.gauge.setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR)
+		;(<Phaser.GameObjects.Shape>this.gauge).setStrokeStyle(HOLD_BAR_BORDER, HOLD_BAR_EMPTY_COLOR)
 	}
 
 	isReducing(): boolean {
-		return this.isHoldbarReducing && this.gauge.width > 0
+		return this.isHoldbarReducing && (<Phaser.GameObjects.Shape>this.gauge).width > 0
 	}
 
 	showUp(): void {
@@ -169,4 +168,16 @@ export default class BarInhaleGauge extends InhaleGauge {
 	hideDown(): void {
 		this.down.setVisible(false)
 	}
+
+	setStep(_:number): void {
+		// TODO
+	}
+
+	setVisible(_:boolean): void {
+		// TODO
+	}
+
+	setVisibleAll(_: boolean): void {
+		// TODO
+    }
 }

@@ -6,7 +6,7 @@ export default abstract class InhaleGauge {
 	protected division: number
 	protected holdButtonDuration = 0
 	protected isHoldbarReducing = false
-	protected gauge!: Phaser.GameObjects.Shape
+	protected gauge!: Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics
 
 	protected up!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
 	protected down!: Phaser.GameObjects.Shape | Phaser.GameObjects.Image
@@ -18,6 +18,8 @@ export default abstract class InhaleGauge {
 	protected chargedSound?: Phaser.Sound.BaseSound
 
 	protected releaseText!: Phaser.GameObjects.Text
+
+	protected steps!: Phaser.GameObjects.Shape[]
 
 	protected constructor(scene: Phaser.Scene, division: number, index: number) {
 		this.scene = scene
@@ -59,7 +61,7 @@ export default abstract class InhaleGauge {
 
 	abstract setFullCharge(): void
 
-	abstract reset(): void
+	abstract set(bulletCount: number): void
 
 	abstract resetting(): void
 
@@ -67,15 +69,21 @@ export default abstract class InhaleGauge {
 
 	abstract isReducing(): boolean
 
-	abstract showUp(): void
+//	abstract showUp(): void
+//
+//	abstract hideUp(): void
+//
+//	abstract showDown(): void
+//
+//	abstract hideDown(): void
 
-	abstract hideUp(): void
+	abstract setStep(step: number): void
 
-	abstract showDown(): void
+	abstract setVisible(visible: boolean): void
 
-	abstract hideDown(): void
+	abstract setVisibleAll(visible: boolean): void
 
-	getBody(): Phaser.GameObjects.Shape {
+	getBody(): Phaser.GameObjects.Shape | Phaser.GameObjects.Graphics {
 		return this.gauge
 	}
 

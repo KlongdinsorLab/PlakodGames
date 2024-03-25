@@ -1,6 +1,6 @@
 import { Laser } from './Laser'
 import Player from '../player/Player'
-import { BULLET_COUNT, LASER_FREQUENCY_MS } from 'config'
+import { LASER_FREQUENCY_MS } from 'config'
 import { Scene } from 'phaser'
 import { Enemy } from '../enemy/Enemy'
 
@@ -36,16 +36,16 @@ export abstract class LaserFactory {
 		enemies: Enemy[],
 	) {
 		if (!Array.isArray(enemies) || enemies.length === 0) return
-		enemies.forEach((enermy) => {
+		enemies.forEach((enemy) => {
 			lasers.forEach((laser) => {
-				scene.physics.add.overlap(laser, enermy.getBody(), () =>
-					enermy.destroy(),
+				scene.physics.add.overlap(laser, enemy.getBody(), () =>
+					enemy.hit()
 				)
 			})
 		})
 	}
 
-	reset(): void {
-		this.bulletCount = BULLET_COUNT
+	set(bulletCount:number): void {
+		this.bulletCount = bulletCount
 	}
 }
