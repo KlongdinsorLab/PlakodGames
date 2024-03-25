@@ -71,20 +71,18 @@ export default class BossScene extends Phaser.Scene {
 
 		this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
 
-		this.load.image('fire', 'assets/effect/fire03.png')
-		this.load.image('laser', 'assets/effect/02.1_MCBullet.png')
-		this.load.image('charge', 'assets/effect/chargeBlue.png')
-		this.load.image('explosion', 'assets/effect/explosionYellow.png')
-		this.load.image('chevron', 'assets/icon/chevron-down.svg')
+		this.load.atlas('ui', 'assets/ui/asset_warmup.png', 'assets/ui/asset_warmup.json');
+
+		this.load.image('laser', 'assets/effect/mc_bullet.png')
+
+		this.load.audio('lapChangedSound', 'sound/soundeffect_count_round.mp3')
 
 		this.load.image('progress_bar', 'assets/ui/progress_bar.png')
-		this.load.image('sensor_1', 'assets/ui/sensor_1.png')
-		this.load.image('sensor_2', 'assets/ui/sensor_2.png')
-		this.load.image('sensor_3', 'assets/ui/sensor_3.png')
-		this.load.image('sensor_4', 'assets/ui/sensor_4.png')
-		this.load.image('sensor_5', 'assets/ui/sensor_5.png')
 
-		this.load.image('ring', 'assets/icon/chargebar_C0_normal.png')
+		this.load.image('meteor1', 'assets/character/enemy/meteorBrown_big1.png')
+    	this.load.image('meteor2', 'assets/character/enemy/meteorBrown_big2.png')
+    	this.load.image('meteor3', 'assets/character/enemy/meteorBrown_big3.png')
+    	this.load.image('meteor4', 'assets/character/enemy/meteorBrown_big4.png')
 
 		this.load.svg('resume', 'assets/icon/resume.svg')
 
