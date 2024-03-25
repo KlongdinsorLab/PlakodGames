@@ -2,6 +2,7 @@ import { BossCutScene, BossName } from 'component/enemy/boss/Boss'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import { BossInterface } from '../bossInterface'
+import SoundManager from 'component/sound/SoundManager'
 
 export default class BossCutSceneVS extends Phaser.Scene {
 	private background!: Phaser.GameObjects.TileSprite
@@ -24,6 +25,9 @@ export default class BossCutSceneVS extends Phaser.Scene {
 			'assets/character/enemy/b1v1_spritesheet.png',
 			'assets/character/enemy/b1v1_spritesheet.json',
 		)
+
+    this.load.audio('bossVs', 'sound/boss-vs.mp3')
+    this.load.audio('bossB1', 'sound/boss-b1.mp3')
 	}
 
 	init(props: BossInterface) {
@@ -33,6 +37,14 @@ export default class BossCutSceneVS extends Phaser.Scene {
 	create() {
 		const { width, height } = this.scale
 		const { score,	playerX, reloadCount} = this.props
+    const soundManager = new SoundManager(this)
+    const bossB1 = this.sound.add('bossB1')
+    const bossVs = this.sound.add('bossVs')
+    soundManager.play(bossVs, false)
+
+    setTimeout(()=> {
+      soundManager.play(bossB1, false)
+    }, 500)
 
 		this.background = this.add
 			.tileSprite(0, 0, width, height, 'boss_cutscene_background')

@@ -3,6 +3,7 @@ import { MARGIN } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
 import { BossTutorialScene } from 'component/enemy/boss/Boss'
+import SoundManager from 'component/sound/SoundManager'
 
 export default class BossItemTutorial extends Phaser.Scene {
 
@@ -14,10 +15,15 @@ export default class BossItemTutorial extends Phaser.Scene {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
 
     this.load.atlas('bossAsset', 'assets/sprites/boss/asset_boss.png', 'assets/sprites/boss/asset_boss.json');
+    this.load.audio('bossItem', 'sound/boss-item.mp3')
   }
 
   create() {
     const { width, height } = this.scale
+
+    const soundManager = new SoundManager(this)
+	  const bossItem = this.sound.add('bossItem')
+    soundManager.play(bossItem, false)
 
     const avoidText =I18nSingleton
       .getInstance()

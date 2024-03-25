@@ -1,4 +1,5 @@
 import { BossTutorialScene } from 'component/enemy/boss/Boss'
+import SoundManager from 'component/sound/SoundManager'
 import { BOSS_TUTORIAL_DELAY_MS, LARGE_FONT_SIZE } from 'config'
 import I18nSingleton from 'i18n/I18nSingleton'
 import WebFont from 'webfontloader'
@@ -10,11 +11,16 @@ export default class BossAttackTutorial extends Phaser.Scene {
 	}
 
 	preload() {
-        this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+     this.load.audio('bossAttack', 'sound/boss-attack.mp3')
 	}
 
 	create() {
 		const { width, height } = this.scale
+
+    const soundManager = new SoundManager(this)
+	  const bossAttack = this.sound.add('bossAttack')
+    soundManager.play(bossAttack, false)
 
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(this, width / 2, height / 2, 'boss_attack')

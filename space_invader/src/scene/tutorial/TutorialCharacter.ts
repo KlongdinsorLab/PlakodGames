@@ -38,12 +38,16 @@ export default class TutorialCharacterScene extends Phaser.Scene {
 
   preload() {
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+    this.load.audio('tutorialEvade', 'sound/tutorial-evade.mp3')
   }
 
   create() {
     const soundManager = new SoundManager(this)
     const isMute = soundManager.isMute()
-    soundManager.mute()
+    // soundManager.mute()
+
+    const tutorialEvade = this.sound.add('tutorialEvade')
+    soundManager.play(tutorialEvade, false)
 
     const { width, height } = this.scale
     this.add.rectangle(0, 0, width, height, 0, 0.5).setOrigin(0, 0)
