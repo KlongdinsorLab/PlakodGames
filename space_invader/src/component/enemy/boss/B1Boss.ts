@@ -36,8 +36,8 @@ export class B1Boss extends Boss {
 			frames: this.scene.anims.generateFrameNames('b1v1', {
 				prefix: 'b1v1_attack_',
 				suffix: '.png',
-				start: 0,
-				end: 24,
+				start: 1,
+				end: 12,
 				zeroPad: 5,
 			}),
 			frameRate: 18,
@@ -109,7 +109,14 @@ export class B1Boss extends Boss {
 	hit(): void {
 		if (isHit) return
 
-		this.enemy.stop()
+		const bossHit1 = this.scene.sound.add('bossHit1')
+    const bossHit2 = this.scene.sound.add('bossHit2')
+    const bossHit3 = this.scene.sound.add('bossHit3')
+    const bossHit4 = this.scene.sound.add('bossHit4')
+
+    this.soundManager.play(eval(`bossHit${Math.floor(Math.random() * 4) + 1}`), false)
+
+    this.enemy.stop()
 		// this.enemy.setTexture('boss')
 		this.enemy.play('boss-hit')
 

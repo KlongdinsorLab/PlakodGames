@@ -24,6 +24,7 @@ export default class BossTransition extends Phaser.Scene {
 		)
 		this.load.image('smoke', 'assets/background/smoke-transition_01.png')
     this.load.audio('bossEscape', 'sound/boss-escape.mp3')
+    this.load.audio('bossEscapeVoice', 'sound/boss-escape-voice.mp3')
 	}
 
 	create() {
@@ -31,7 +32,11 @@ export default class BossTransition extends Phaser.Scene {
 
     const soundManager = new SoundManager(this)
     const bossEscape = this.sound.add('bossEscape')
+    const bossEscapeVoice = this.sound.add('bossEscapeVoice')
     soundManager.play(bossEscape, false)
+    setTimeout(() => {
+      soundManager.play(bossEscapeVoice, false)
+    }, 500)
 
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(this, width / 2, 600, 'boss_escape')

@@ -15,6 +15,7 @@ export default class BossCutSceneEscape extends Phaser.Scene {
 			'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
 		)
     this.load.audio('bossEscape', 'sound/boss-escape.mp3')
+    this.load.audio('bossEscapeVoice', 'sound/boss-escape-voice.mp3')
 	}
 
 	create() {
@@ -22,7 +23,11 @@ export default class BossCutSceneEscape extends Phaser.Scene {
 
     const soundManager = new SoundManager(this)
     const bossEscape = this.sound.add('bossEscape')
+    const bossEscapeVoice = this.sound.add('bossEscapeVoice')
     soundManager.play(bossEscape, false)
+    setTimeout(() => {
+      soundManager.play(bossEscapeVoice, false)
+    }, 500)
 
 		const bossText = I18nSingleton.getInstance()
 			.createTranslatedText(this, width / 2, 600, 'boss_escape')
